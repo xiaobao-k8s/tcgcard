@@ -1,0 +1,25 @@
+id: xfd-004
+generation: 1
+name:
+  zh: 喷火龙
+  ja: リザードン
+number: XFD-004
+attribute: 火
+rarity: legendary
+evolution_stage: 3
+evolves_from: xfd-003
+evolves_to: []
+effect_type: attack
+image_front: /cards/gen1/xfd-004-front.png
+image_frame_a: /cards/gen1/xfd-004-frame-a.png
+image_frame_b: /cards/gen1/xfd-004-frame-b.png
+image_frame_c: /cards/gen1/xfd-004-frame-c.png
+back:
+  skill: 喷射火焰
+  dp_attack: 120
+  dp_defense: 90
+  dp_speed: 100
+  height: 1.7m
+  weight: 90.5kg
+  description: 传说中的宝可梦，翅膀扇动时能刮起巨大的热风。
+  character_type: pokemon

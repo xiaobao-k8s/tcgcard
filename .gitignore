@@ -2,3 +2,18 @@
 node_modules/
 .next/
 out/
+/.turbo/
+
+# Build output
+/build/
+/public/data/
+
+# Development
+*.tsbuildinfo
+.env*.local
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

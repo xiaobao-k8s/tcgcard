@@ -1,0 +1,25 @@
+id: xfd-001
+generation: 1
+name:
+  zh: 小火龙
+  ja: ヒトカゲ
+number: XFD-001
+attribute: 火
+rarity: common
+evolution_stage: 1
+evolves_from: null
+evolves_to:
+  - xfd-002
+effect_type: evolution
+image_front: /cards/gen1/xfd-001-front.png
+image_frame_a: /cards/gen1/xfd-001-frame-a.png
+image_frame_b: /cards/gen1/xfd-001-frame-b.png
+back:
+  skill: 火花
+  dp_attack: 50
+  dp_defense: 40
+  dp_speed: 50
+  height: 0.6m
+  weight: 8.5kg
+  description: 背上的火焰代表生命力，健康时火焰更旺。
+  character_type: pokemon

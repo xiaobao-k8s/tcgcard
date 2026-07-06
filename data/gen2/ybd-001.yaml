@@ -1,0 +1,25 @@
+id: ybd-001
+generation: 2
+name:
+  zh: 妙蛙种子
+  ja: フシギダネ
+number: YBD-001
+attribute: 草
+rarity: common
+evolution_stage: 1
+evolves_from: null
+evolves_to:
+  - ybd-002
+effect_type: evolution
+image_front: /cards/gen2/ybd-001-front.png
+image_frame_a: /cards/gen2/ybd-001-frame-a.png
+image_frame_b: /cards/gen2/ybd-001-frame-b.png
+back:
+  skill: 飞叶快刀
+  dp_attack: 45
+  dp_defense: 55
+  dp_speed: 45
+  height: 0.7m
+  weight: 6.9kg
+  description: 背上有一颗神奇的种子，吸收阳光后慢慢长大。
+  character_type: pokemon
