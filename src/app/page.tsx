@@ -1,4 +1,5 @@
 import { loadCards } from "@/lib/cards";
+import { getAttributeEmoji } from "@/lib/attribute-emoji";
 import Link from "next/link";
 
 export default function Home() {
@@ -31,7 +32,7 @@ export default function Home() {
             >
               <div className="w-20 h-20 mx-auto rounded-full bg-primary/20 flex items-center justify-center mb-3">
                 <span className="text-2xl">
-                  {card.attribute === "火" ? "🔥" : card.attribute === "草" ? "🌿" : card.attribute === "水" ? "💧" : "✨"}
+                  {getAttributeEmoji(card.attribute)}
                 </span>
               </div>
               <p className="font-medium text-text-primary truncate">

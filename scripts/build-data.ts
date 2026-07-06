@@ -6,43 +6,14 @@
 
 import fs from 'fs';
 import path from 'path';
-import yaml from 'js-yaml';
+import { loadCards } from '../src/lib/cards';
 
-const DATA_DIR = path.join(process.cwd(), 'data');
 const OUTPUT_DIR = path.join(process.cwd(), 'public', 'data');
 const OUTPUT_FILE = path.join(OUTPUT_DIR, 'cards.json');
 
-interface CardData {
-  id: string;
-  [key: string]: unknown;
-}
-
-function loadAllCards(): CardData[] {
-  const cards: CardData[] = [];
-  const generations = [1, 2];
-
-  for (const gen of generations) {
-    const genDir = path.join(DATA_DIR, `gen${gen}`);
-    if (!fs.existsSync(genDir)) continue;
-
-    const files = fs
-      .readdirSync(genDir)
-      .filter((f) => f.endsWith('.yaml') || f.endsWith('.yml'));
-
-    for (const file of files) {
-      const filePath = path.join(genDir, file);
-      const content = fs.readFileSync(filePath, 'utf-8');
-      const data = yaml.load(content) as CardData;
-      cards.push(data);
-    }
-  }
-
-  return cards;
-}
-
 function main() {
   console.log('Loading YAML card data...');
-  const cards = loadAllCards();
+  const cards = loadCards();
   console.log(`Found ${cards.length} cards.`);
 
   if (!fs.existsSync(OUTPUT_DIR)) {

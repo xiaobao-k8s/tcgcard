@@ -1,4 +1,5 @@
 import { getCardById, loadCards } from "@/lib/cards";
+import { getAttributeEmoji } from "@/lib/attribute-emoji";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -29,7 +30,7 @@ export default function CardDetailPage({ params }: PageProps) {
           <div className="text-center">
             <div className="w-32 h-32 mx-auto rounded-full bg-primary/20 flex items-center justify-center mb-4">
               <span className="text-5xl">
-                {card.attribute === "火" ? "🔥" : card.attribute === "草" ? "🌿" : card.attribute === "水" ? "💧" : "✨"}
+                {getAttributeEmoji(card.attribute)}
               </span>
             </div>
             <h1 className="text-2xl font-bold text-text-primary">

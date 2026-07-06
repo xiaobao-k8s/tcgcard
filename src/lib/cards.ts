@@ -6,10 +6,19 @@ import type { Card, CardFilters, Generation, Rarity } from './types';
 const DATA_DIR = path.join(process.cwd(), 'data');
 
 /**
+ * Module-level cached cards data to avoid repeated disk reads.
+ */
+const cardsCache = loadCardsRaw();
+
+export function loadCards(): Card[] {
+  return cardsCache;
+}
+
+/**
  * Load all card YAML files from the data directory.
  * Reads data/gen1/*.yaml and data/gen2/*.yaml
  */
-export function loadCards(): Card[] {
+function loadCardsRaw(): Card[] {
   const cards: Card[] = [];
   const generations: Generation[] = [1, 2];
 
