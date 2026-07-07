@@ -9,6 +9,7 @@
 
 import fs from 'fs';
 import path from 'path';
+import sharp from 'sharp';
 
 // ─── Constants ───────────────────────────────────────────────────────
 
@@ -402,7 +403,7 @@ function printReport(result: ImportResult): void {
   console.log(`\n📊 当前进度：${cardsWithImages}/${total} (${Math.round(cardsWithImages / total * 100)}%) 卡片有主图`);
 }
 
-function main(): void {
+async function main(): Promise<void> {
   console.log('========================================');
   console.log('  奇多卡片百科 · 图片导入');
   console.log('========================================\n');
@@ -490,10 +491,9 @@ function main(): void {
       result.success.push(`${image} → ${destPath} [DRY RUN]`);
     } else {
       try {
-        // Convert to PNG if needed
+        // Convert to PNG using sharp for real format conversion
         const finalDest = destPath.replace(/\.(jpg|jpeg|webp)$/i, '.png');
-
-        fs.copyFileSync(srcPath, finalDest);
+        await sharp(srcPath).png().toFile(finalDest);
         result.success.push(`${image} → ${finalDest}`);
       } catch (err) {
         result.failed.push(`${image} — copy failed: ${(err as Error).message}`);
@@ -510,4 +510,7 @@ function main(): void {
   }
 }
 
-main();
+main().catch((err) => {
+  console.error('Fatal error:', err);
+  process.exit(1);
+});

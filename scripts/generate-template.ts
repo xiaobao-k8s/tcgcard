@@ -122,44 +122,19 @@ function generateTemplate(args: TemplateArgs): void {
     source: 'user-provided',
   };
 
-  // Generate YAML manually for cleaner output (js-yaml default format is verbose)
-  const yamlContent = `# === 基础信息 ===
-id: "${id}"
-generation: ${actualGen}
-name:
-  zh: ""
-  ja: ""
-number: ""
-attribute: ""
-rarity: "common"
+  // Generate YAML using js-yaml with section comments for readability
+  const yamlBody = yaml.dump(template, {
+    lineWidth: -1, // Don't wrap long lines
+    noRefs: true, // Don't use YAML anchors/references
+    quotingType: '"',
+    forceQuotes: false,
+  });
 
-# === 进化链 ===
-evolution_stage: 1
-evolves_from: null
-evolves_to: []
-
-# === 光栅效果 ===
-effect_type: "evolution"
-
-# === 图片路径 ===
-image_front: "/cards/gen${actualGen}/${id}-front.png"
-image_frame_a: "/cards/gen${actualGen}/${id}-frame-a.png"
-image_frame_b: "/cards/gen${actualGen}/${id}-frame-b.png"
-
-# === 背面数据 ===
-back:
-  skill: ""
-  dp_attack: ${dp.attack}
-  dp_defense: ${dp.defense}
-  dp_speed: ${actualGen === 1 ? 'null' : '50'}
-  height: ""
-  weight: ""
-  description: ""
-  character_type: "pokemon"
-
-# === 数据溯源 ===
-source: "user-provided"
+  // Prepend section comments for human readability
+  const sectionComments = `# === 基础信息 ===
 `;
+
+  const yamlContent = sectionComments + yamlBody;
 
   fs.writeFileSync(outPath, yamlContent, 'utf-8');
 

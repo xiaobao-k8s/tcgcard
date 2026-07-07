@@ -188,16 +188,14 @@ function generateFramePrompt(
 - 分辨率 1024×1024，精灵居中`;
 }
 
-function generateCardPrompts(info: MissingImageInfo): string {
+function generateCardPrompts(info: MissingImageInfo, cardMap: Map<string, CardRaw>): string {
   const { card, missingFrames } = info;
   const { id, name, number, attribute, rarity, evolution_stage, effect_type, evolves_from, evolves_to } = card;
   const gen = card.generation;
   const genLabel = gen === 1 ? '一代旋风卡' : '二代比斗卡';
   const stageLabel = getStageLabel(evolution_stage);
 
-  // Find evolution partner names for context
-  const allCards = loadAllCards();
-  const cardMap = new Map(allCards.map((c) => [c.id, c]));
+  // Use pre-loaded cardMap for evolution partner lookups
   const evolvesFromCard = evolves_from ? cardMap.get(evolves_from) : null;
   const evolvesToCards = (evolves_to || []).map((eid) => cardMap.get(eid)).filter(Boolean);
 
@@ -321,7 +319,7 @@ function generateCardPrompts(info: MissingImageInfo): string {
   return lines.join('\n');
 }
 
-function generateBatchAll(infos: MissingImageInfo[]): string {
+function generateBatchAll(infos: MissingImageInfo[], cardMap: Map<string, CardRaw>): string {
   const lines: string[] = [];
 
   lines.push('# 奇多卡片百科 · AI 生图批量提示词');
@@ -342,7 +340,7 @@ function generateBatchAll(infos: MissingImageInfo[]): string {
     lines.push(`稀有度：${card.rarity} | 属性：${card.attribute} | 进化阶段：${stageLabel}`);
     lines.push(`effect_type: ${card.effect_type} (${getEffectLabel(card.effect_type)})`);
     lines.push('');
-    lines.push(generateCardPrompts(info));
+    lines.push(generateCardPrompts(info, cardMap));
     lines.push('');
   }
 
@@ -364,6 +362,7 @@ function main(): void {
   }
 
   const cards = loadAllCards();
+  const cardMap = new Map(cards.map((c) => [c.id, c]));
   console.log(`Loaded ${cards.length} cards.\n`);
 
   const missingInfos = findMissingImages(cards);
@@ -382,7 +381,7 @@ function main(): void {
     const fileName = `${card.id}-prompts.md`;
     const outPath = path.join(PROMPTS_DIR, gen, fileName);
 
-    const content = generateCardPrompts(info);
+    const content = generateCardPrompts(info, cardMap);
     fs.writeFileSync(outPath, content, 'utf-8');
 
     console.log(`  📝 ${fileName} → ${gen}/`);
@@ -390,7 +389,7 @@ function main(): void {
 
   // Generate batch-all.md
   const batchAllPath = path.join(PROMPTS_DIR, 'batch-all.md');
-  const batchAllContent = generateBatchAll(missingInfos);
+  const batchAllContent = generateBatchAll(missingInfos, cardMap);
   fs.writeFileSync(batchAllPath, batchAllContent, 'utf-8');
   console.log(`\n  📦 batch-all.md（所有 ${missingInfos.length} 张卡片汇总）`);
 
