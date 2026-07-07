@@ -1,34 +1,12 @@
 'use client';
 
+import { useState, useRef, type TouchEvent } from 'react';
 import type { Card } from '@/lib/types';
 import { getAttributeEmoji } from '@/lib/attribute-emoji';
+import { getAttributeGradient } from '@/lib/attribute-gradient';
 
 interface LenticularFlipProps {
   card: Card;
-}
-
-/**
- * Map attribute to gradient background colors for the card face.
- */
-function getGradient(attribute: string): string {
-  const base: Record<string, string> = {
-    '火': 'from-orange-400 to-red-500',
-    '草': 'from-green-400 to-emerald-500',
-    '水': 'from-blue-400 to-cyan-500',
-    '雷': 'from-yellow-400 to-amber-500',
-    '超能力': 'from-pink-400 to-purple-500',
-    '格斗': 'from-amber-400 to-orange-500',
-    '毒': 'from-purple-400 to-fuchsia-500',
-    '地面': 'from-yellow-500 to-amber-600',
-    '岩石': 'from-stone-400 to-stone-500',
-    '虫': 'from-lime-400 to-green-500',
-    '幽灵': 'from-indigo-400 to-purple-500',
-    '钢': 'from-gray-400 to-slate-500',
-    '飞行': 'from-sky-400 to-blue-400',
-    '冰': 'from-cyan-400 to-blue-400',
-    '龙': 'from-violet-500 to-purple-600',
-  };
-  return base[attribute] ?? 'from-orange-300 to-yellow-400';
 }
 
 /**
@@ -47,21 +25,47 @@ function getFrameLabel(card: Card, isFrameB: boolean): string {
 }
 
 export default function LenticularFlip({ card }: LenticularFlipProps) {
-  const gradient = getGradient(card.attribute);
+  const [isFlipped, setIsFlipped] = useState(false);
+  const touchStartX = useRef<number | null>(null);
+  const gradient = getAttributeGradient(card.attribute, 'dark');
+
+  const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: TouchEvent<HTMLDivElement>) => {
+    if (touchStartX.current === null) return;
+    const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+    // Swipe threshold: 50px horizontal swipe triggers flip
+    if (Math.abs(deltaX) > 50) {
+      setIsFlipped((prev) => !prev);
+    }
+    touchStartX.current = null;
+  };
+
+  const handleTouchCancel = () => {
+    touchStartX.current = null;
+  };
 
   return (
     <div className="flex flex-col items-center gap-4">
       {/* 3D lenticular card container */}
       <div className="perspective-[1000px]">
         <div
-          className="
+          className={`
             group relative
             w-56 h-56 sm:w-72 sm:h-72
             [transform-style:preserve-3d]
             [transition:transform_0.6s_cubic-bezier(0.4,0,0.2,1)]
-            hover:[transform:rotateY(180deg)]
             cursor-pointer
-          "
+            ${isFlipped ? '[transform:rotateY(180deg)]' : 'hover:[transform:rotateY(180deg)]'}
+          `}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          onTouchCancel={handleTouchCancel}
+          role="button"
+          tabIndex={0}
+          aria-label="点击或悬停翻转卡片"
         >
           {/* Frame A (front face) */}
           <div
@@ -133,7 +137,7 @@ export default function LenticularFlip({ card }: LenticularFlipProps) {
 
       {/* Status label below */}
       <p className="text-text-secondary text-sm">
-        悬停查看光栅翻转效果
+        悬停或滑动查看光栅翻转效果
       </p>
     </div>
   );

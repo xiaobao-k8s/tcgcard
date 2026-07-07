@@ -3,36 +3,13 @@
 import Link from 'next/link';
 import type { Card } from '@/lib/types';
 import { getAttributeEmoji } from '@/lib/attribute-emoji';
+import { getAttributeGradient } from '@/lib/attribute-gradient';
 
 interface EvolutionChainProps {
   /** The full evolution chain, ordered from base form to final form. */
   chain: Card[];
   /** The currently viewed card ID. */
   currentCardId: string;
-}
-
-/**
- * Map attribute to a small gradient for the mini circle.
- */
-function getMiniGradient(attribute: string): string {
-  const base: Record<string, string> = {
-    '火': 'from-orange-300 to-red-400',
-    '草': 'from-green-300 to-emerald-400',
-    '水': 'from-blue-300 to-cyan-400',
-    '雷': 'from-yellow-300 to-amber-400',
-    '超能力': 'from-pink-300 to-purple-400',
-    '格斗': 'from-amber-300 to-orange-400',
-    '毒': 'from-purple-300 to-fuchsia-400',
-    '地面': 'from-yellow-400 to-amber-500',
-    '岩石': 'from-stone-300 to-stone-400',
-    '虫': 'from-lime-300 to-green-400',
-    '幽灵': 'from-indigo-300 to-purple-400',
-    '钢': 'from-gray-300 to-slate-400',
-    '飞行': 'from-sky-300 to-blue-300',
-    '冰': 'from-cyan-300 to-blue-300',
-    '龙': 'from-violet-400 to-purple-500',
-  };
-  return base[attribute] ?? 'from-orange-200 to-yellow-300';
 }
 
 export default function EvolutionChain({ chain, currentCardId }: EvolutionChainProps) {
@@ -63,7 +40,7 @@ export default function EvolutionChain({ chain, currentCardId }: EvolutionChainP
                 className={`
                   w-14 h-14 sm:w-16 sm:h-16
                   rounded-full
-                  bg-gradient-to-br ${getMiniGradient(card.attribute)}
+                  bg-gradient-to-br ${getAttributeGradient(card.attribute, 'light')}
                   border-2
                   flex items-center justify-center
                   transition-all duration-200

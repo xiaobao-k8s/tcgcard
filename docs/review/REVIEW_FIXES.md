@@ -78,6 +78,78 @@ export function loadCards(): Card[] {
 
 ---
 
+## 新增修复 (T3+T4 Review P2 问题)
+
+> 修复日期: 2026-07-07
+> 修复人: developer-agent
+
+### P2 #1: `ATTRIBUTE_EMOJI` 映射不完整
+
+**文件**: `src/lib/attribute-emoji.ts`
+
+**问题**: 仅定义了 3 个属性（火/草/水），其余 15 个属性回退到 ✨。
+
+**修复**: 补全所有 18 个 Pokemon 属性 emoji 映射：
+- 已有: 火🔥、草🌿、水💧
+- 新增: 雷⚡、超能力🔮、格斗🥊、毒☠️、地面🌍、岩石🪨、虫🐛、幽灵👻、钢⚙️、飞行🐦、冰❄️、龙🐉、一般⭐、妖精🎀、恶🌑
+
+---
+
+### P2 #2: 光栅翻转缺少移动端交互
+
+**文件**: `src/components/LenticularFlip.tsx`
+
+**问题**: 仅 CSS hover 触发翻转，移动端无 hover 概念。
+
+**修复**:
+- 添加 `useState` 管理翻转状态 `isFlipped`
+- 添加 `touchstart`/`touchend`/`touchcancel` 事件监听
+- 水平滑动 >50px 触发翻转，再次滑动翻回
+- 底部文案更新为"悬停或滑动查看光栅翻转效果"
+
+---
+
+### P2 #3: attribute gradient 映射重复
+
+**文件**:
+- 新建: `src/lib/attribute-gradient.ts`
+- 修改: `src/components/CardCircle.tsx`
+- 修改: `src/components/LenticularFlip.tsx`
+- 修改: `src/components/EvolutionChain.tsx`
+
+**问题**: `getGradient` (CardCircle)、`getGradient` (LenticularFlip)、`getMiniGradient` (EvolutionChain) 包含相同的 15 个属性到 Tailwind 渐变类的映射。
+
+**修复**:
+1. 创建 `src/lib/attribute-gradient.ts`，包含 `light`/`medium`/`dark` 三种色阶变体
+2. CardCircle 使用 `getAttributeGradient(attr, 'medium')`
+3. LenticularFlip 使用 `getAttributeGradient(attr, 'dark')`
+4. EvolutionChain 使用 `getAttributeGradient(attr, 'light')`
+5. 删除三个组件中各自的 `getGradient`/`getMiniGradient` 本地函数
+
+---
+
+### P2 #4: 缺少 `not-found.tsx`
+
+**文件**: `src/app/not-found.tsx`
+
+**问题**: 详情页调用 `notFound()` 时无自定义 404 页面。
+
+**修复**:
+- 创建 `'use client'` 自定义 404 页面
+- 奇多橙主题风格：大号 404 + emoji + 品牌配色
+- 提供"返回图鉴首页"和"返回上一页"两个操作按钮
+- 文案适配： "卡片没有找到"
+
+---
+
+## 未修复的 P2 问题
+
+| 编号 | 描述 | 原因 | 计划 |
+|------|------|------|------|
+| (原 P2 #2) | 缺失架构文档中列出的组件 | 属于 T3-T4 范围 | 已实现 |
+
+---
+
 ## 二次 Review（review-agent 验收）
 
 > 验收日期: 2026-07-06
