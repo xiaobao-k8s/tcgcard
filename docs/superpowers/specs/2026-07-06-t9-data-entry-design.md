@@ -267,77 +267,81 @@ effect_type: evolution (2帧：进化前→进化后)
 - Frame B: 火恐龙进化形态，战斗姿态，火焰更旺
 ```
 
-#### 3.2.5 提示词模板（中英双语版）
+#### 3.2.5 提示词模板（中文优先）
 
-**通用模板**：
+> ChatGPT 现在对中文生图支持非常好，优先使用中文提示词。
+> 英文版作为备选，供 Midjourney / Stable Diffusion 用户使用。
+
+**通用模板（中文，ChatGPT 首选）**：
 ```
-[中文] 生成一张 2001 年奇多 Pokémon 旋风卡风格的圆形卡片插画。
-[EN] Generate a Pokemon card illustration in the style of 2001 Cheetos Pokemon lenticular snack card.
-
-精灵/Pokemon: {中文名} ({英文名})
-全国图鉴/National Dex: #{编号}
-姿态/Pose: {姿态描述}
-元素特效/Effects: {属性特效}
-背景/Background: {背景描述}
-
-风格要求 / Style requirements:
-[中] 2000年代怀旧日式动画风，鲜艳饱和配色，粗线条描边
-[EN] Retro 2000s anime aesthetic, vibrant saturated colors, bold outlines
-[中] 圆形卡片构图（约4cm直径感），光栅卡质感（轻微3D深度、光泽表面）
-[EN] Circular card composition, lenticular card look (slight 3D depth, glossy)
-[中] 精灵正面朝向，动态但轮廓清晰
-[EN] Front-facing character, dynamic but clear silhouette
-[中] 干净插图，不要文字
-[EN] Clean illustration, no text overlay
-[中] 分辨率 1024x1024，精灵居中
-[EN] 1024x1024px, character centered
+生成一张 2001 年奇多 Pokémon 旋风卡风格的圆形卡片插画。
+精灵：{中文名}（{英文名}），{一句话外形描述}。
+全国图鉴：#{编号}
+姿态：{姿态描述}
+元素特效：{属性特效描述}
+背景：{背景描述}
+风格要求：
+- 2000 年代怀旧日式动画风，鲜艳饱和配色，粗线条描边
+- 圆形卡片构图（约 4cm 直径感），光栅卡质感（轻微 3D 深度、光泽表面）
+- 精灵正面朝向，动态但轮廓清晰
+- 干净插图，不要任何文字
+- 分辨率 1024×1024，精灵居中
 ```
 
-**按稀有度的姿态/特效模板**：
-
-| 稀有度 | 姿态（中文） | 特效（中文） | Pose (EN) | Effects (EN) |
-|--------|------------|------------|-----------|--------------|
-| common | 简单站立或坐下，平静放松 | 极简特效，干净清爽 | Simple standing or sitting, calm | Minimal effects, clean |
-| rare | 动态动作姿态，展现个性 | 中等特效，{属性}能量可见 | Dynamic action, showing personality | Moderate effects, visible energy |
-| ultra-rare | 戏剧性强力姿态，全身可见 | 强烈特效，发光光环 | Dramatic power pose, full body | Strong effects, glowing aura |
-| legendary | 史诗传奇姿态，无上威严 | 满屏元素光环，彩虹全息微光 | Epic legendary pose, commanding | Full aura, holographic shimmer |
-
-**按属性的特效描述**（中英对照）：
-
-| 属性 | 中文特效 | EN Effects |
-|------|---------|------------|
-| 火 | 小火苗飘散，暖橙红光 | small flames, warm orange-red glow |
-| 水 | 水滴飞溅，流动波浪，冷蓝微光 | water splashes, flowing waves, cool blue |
-| 草 | 叶片飘落，藤蔓缠绕，绿色自然能量 | leaves, vines, green nature energy |
-| 电 | 闪电火花，黄色电流裂纹 | lightning sparks, yellow electric crackling |
-| 超能力 | 紫色灵能光环，物体漂浮 | purple psychic aura, floating objects |
-| 格斗 | 格斗架势，冲击线条，红色力量爆发 | fighting stance, impact lines, red burst |
-| 龙 | 龙鳞微光，古老力量光环，紫金色光芒 | dragon scales shimmer, purple-gold aura |
-| 冰 | 冰晶碎片，霜冻粒子，冷蓝白光芒 | ice crystals, frost particles, cold blue-white |
-| 幽灵 | 半透明身影，紫色暗影飘带 | ghostly translucency, purple shadow wisps |
-
-**光栅帧的生成规则**：
-
-效果类型 `evolution`（2 帧）：
+**通用模板（英文，Midjourney / SD 备用）**：
 ```
-Frame A (进化前 / Pre-evolution):
-[中文] 同一精灵【进化前】形态，尺寸稍小，姿态温和
-[EN] Same Pokemon in pre-evolved form, slightly smaller, gentler pose
-
-Frame B (进化后 / Post-evolution):
-[中文] 同一精灵【进化后】形态，尺寸稍大，姿态更强、更自信
-[EN] Same Pokemon in evolved form, slightly larger, stronger pose
+A Pokemon card illustration in the style of 2001 Cheetos Pokemon lenticular snack card.
+Pokemon: {english name}, {description}.
+National Dex: #{number}
+Pose: {pose}. Effects: {effects}.
+Style: retro 2000s anime aesthetic, vibrant saturated colors, bold outlines,
+circular card composition, lenticular gloss, no text.
+1024x1024, character centered.
 ```
 
-效果类型 `attack`（2 帧，无进化精灵）：
-```
-Frame A (常态 / Normal):
-[中文] 平静站姿，无特殊效果
-[EN] Calm standing pose, no special effects
+**按稀有度的姿态/特效模板**（中文）：
 
-Frame B (攻击 / Attack):
-[中文] 释放技能姿态，{技能名}效果全开
-[EN] Using {skill name}, full effect display
+| 稀有度 | 姿态 | 特效 |
+|--------|------|------|
+| common | 简单站立或坐下，平静放松 | 极简特效，干净清爽 |
+| rare | 动态动作姿态，展现个性 | 中等特效，{属性}能量可见 |
+| ultra-rare | 戏剧性强力姿态，全身可见 | 强烈特效，发光光环，边缘全息微光 |
+| legendary | 史诗传奇姿态，无上威严 | 满屏元素光环，彩虹全息光芒，最华丽精美 |
+
+**按属性的特效描述**（中文）：
+
+| 属性 | 特效描述 |
+|------|---------|
+| 火 | 小火苗飘散，暖橙红色光芒，火焰粒子 |
+| 水 | 水滴飞溅，流动波浪纹理，冷蓝色微光 |
+| 草 | 叶片飘落，藤蔓缠绕，绿色自然能量 |
+| 电 | 闪电火花，黄色电流裂纹，电气光芒 |
+| 超能力 | 紫色灵能光环，物体漂浮，精神能量波纹 |
+| 格斗 | 格斗架势，冲击线条，红色力量爆发 |
+| 龙 | 龙鳞微光闪烁，古老紫色-金色光环 |
+| 冰 | 冰晶碎片飘散，霜冻粒子，冷蓝白光芒 |
+| 幽灵 | 半透明身影，紫色暗影飘带，诡异微光 |
+
+**光栅帧的生成规则**（中文）：
+
+效果类型 `evolution`（2 帧，进化前后对比）：
+```
+Frame A (进化前)：
+同一精灵的【进化前形态】，尺寸稍小，姿态温和。
+保持完全相同的画风和背景，仅精灵形态变化。
+
+Frame B (进化后)：
+同一精灵的【进化后形态】，尺寸稍大，姿态更强更有力。
+保持完全相同的画风和背景，精灵更大、特效更强。
+```
+
+效果类型 `attack`（2 帧，无进化精灵的动作切换）：
+```
+Frame A (常态)：
+平静站姿，无特殊效果，精灵自然状态。
+
+Frame B (攻击)：
+释放技能姿态，{技能名}效果全开，动态张力拉满。
 ```
 
 效果类型 `triple`（3 帧，仅二代）：
@@ -351,25 +355,15 @@ Frame C (大招 / Ultimate): 全力攻击，最大特效
 
 #### ChatGPT 生图模式（推荐首版）
 
-ChatGPT (GPT-4o + DALL·E 3) 是目前质量最好的生图选项，免费额度够用。
+ChatGPT (GPT-4o + DALL·E 3) 是目前质量最好、中文支持最强的生图选项，免费额度够用。
 
 **操作流程**：
 1. 打开 `prompts/batch-all.md`
-2. 逐段复制提示词粘贴到 ChatGPT
+2. 逐段复制中文提示词粘贴到 ChatGPT
 3. ChatGPT 生成图片后下载
 4. 放入 `staging/` 目录
 
-**ChatGPT 优化提示词（简洁版，适配 DALL·E）**：
-
-DALL·E 3 对中文支持有限，建议用简洁英文。以下为经过优化的精简版：
-
-```
-Circular Pokemon card, 2001 Cheetos snack card style.
-Pokemon: {name}, {description}.
-Pose: {pose}. Effects: {effects}.
-Style: retro anime, bold lines, vibrant colors, circular frame, no text.
-1024x1024, {rarity} rarity.
-```
+> 经验：ChatGPT 对中文提示词的理解非常精准，直接用中文描述精灵名、姿态、特效即可，不需要翻译成英文。
 
 #### 其他模型选项
 
@@ -663,7 +657,7 @@ pnpm dev                          # 预览
 | 风险 | 影响 | 应对 |
 |------|------|------|
 | AI 生图风格不统一 | 视觉混乱 | 提示词模板统一化 + 提供参考样图 |
-| ChatGPT 对中文生图支持有限 | 生成效果差 | 提供中英双语提示词，英文为主 |
+| 不同 AI 模型生图风格差异大 | 视觉不统一，拼接感强 | 提供风格参考样图，建议统一用 ChatGPT 生成 |
 | 光栅帧之间不连贯 | 翻转效果割裂 | 使用 seed 固定 + reference image |
 | PokeAPI 图片版权 | 法律风险 | README 声明非商业粉丝项目 |
 | 卡片数据记忆偏差 | 数据不准 | source 字段标注来源，开放修正 |
