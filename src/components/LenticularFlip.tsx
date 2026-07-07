@@ -166,8 +166,8 @@ export default function LenticularFlip({ card, evolutionChain }: LenticularFlipP
                 if (frameAUrl !== pokeFallback) setFrameAUrl(pokeFallback);
               }}
             />
-            {/* Edge vignette */}
-            <div className="absolute inset-0 rounded-full pointer-events-none shadow-[inset_0_0_15px_rgba(0,0,0,0.15)]" />
+            {/* Blend overlay — unifies image edge with card border */}
+            <div className="absolute inset-0 rounded-full pointer-events-none bg-gradient-to-t from-black/20 via-transparent to-black/5 mix-blend-multiply" />
             {/* Lenticular ridge overlay */}
             <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none">
               <div className="w-full h-full opacity-[0.12]" style={{
@@ -220,8 +220,8 @@ export default function LenticularFlip({ card, evolutionChain }: LenticularFlipP
               )}
             </div>
 
-            {/* Edge vignette */}
-            <div className="absolute inset-0 rounded-full pointer-events-none shadow-[inset_0_0_15px_rgba(0,0,0,0.2)]" />
+            {/* Blend overlay */}
+            <div className="absolute inset-0 rounded-full pointer-events-none bg-gradient-to-t from-black/25 via-transparent to-black/10 mix-blend-multiply" />
 
             {/* Holographic shimmer sweep */}
             <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none">

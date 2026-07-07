@@ -69,7 +69,7 @@ export default function CardCircle({ card }: CardCircleProps) {
       title={`${card.name.zh} #${card.number}`}
       prefetch={true}
     >
-      {/* Circle bubble with Pokémon image */}
+      {/* Circle bubble */}
       <div
         className={`
           ${sizeClass}
@@ -84,18 +84,18 @@ export default function CardCircle({ card }: CardCircleProps) {
           relative
         `}
       >
-        {/* Pokémon image — local first, PokeAPI fallback */}
+        {/* Pokémon image */}
         <Image
           src={imgSrc}
           alt={card.name.zh}
           fill
-          className="object-contain p-1.5"
+          className="object-contain p-1"
           unoptimized
           loading="lazy"
           onError={() => setImgSrc(pokeApiFallback)}
         />
-        {/* Subtle edge softener — doesn't add new colors, just darkens image edges slightly */}
-        <div className="absolute inset-0 rounded-full pointer-events-none shadow-[inset_0_0_6px_rgba(0,0,0,0.12)]" />
+        {/* Gradient overlay — blends image edges into the card border */}
+        <div className="absolute inset-0 rounded-full pointer-events-none bg-gradient-to-t from-black/15 via-transparent to-black/5 mix-blend-multiply" />
       </div>
 
       {/* Tooltip — visible on hover */}
