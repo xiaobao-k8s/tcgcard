@@ -268,3 +268,236 @@ Route (app)                              Size     First Load JS
 工作目录: 干净 (仅 .claude/devflow 相关文件变更)
 构建: pnpm build 通过 (8 pages)
 ```
+
+---
+
+# 验收报告: T5 + T6 + T7 + T8 实现
+
+> 验收范围: T5 (进化链页面) + T6 (稀有度榜单) + T7 (对战规则页面) + T8 (部署配置)
+> 验收日期: 2026-07-07
+> 验收人: architect-agent
+> 参考文档: `docs/architecture/ARCHITECTURE.md`, `docs/requirements/TASKS.md`, `docs/review/REVIEW_REPORT.md`, `docs/review/REVIEW_FIXES.md`, `docs/testing/TEST_REPORT.md`
+> 结论: **accepted_with_risks**
+
+---
+
+## 验收结论: **accepted_with_risks**
+
+T5、T6、T7 页面实现符合架构文档和任务要求。T8 部署配置已修复关键问题（basePath）。存在若干已记录的低风险偏离，不影响当前功能运行，但建议在后续迭代中处理。
+
+---
+
+## 1. T5: 进化链页面
+
+### 1.1 架构对照
+
+| 检查项 | 要求 | 实际 | 结果 |
+|--------|------|------|------|
+| 页面路径 | `src/app/evolution/page.tsx` | 存在 | 通过 |
+| 按进化关系分组 | 是 | `getEvolutionChainsGrouped()` 按 gen+attribute 分组 | 通过 |
+| 横排串联展示 | 是 | `EvolutionLine` 组件水平排列卡片 + 箭头 | 通过 |
+| 按属性/世代分区 | 是 | 分区标题显示「一代·旋风卡 · 火属性」等 | 通过 |
+| 点击跳转详情 | 是 | `<Link href={/${card.id}}>` | 通过 |
+| 色彩系统 | `@theme` 定义值 | 使用 `getAttributeGradient` 共享库，与 CSS 一致 | 通过 |
+| 空状态处理 | 无明确要求 | 有友好 fallback 文案 | 通过 |
+
+### 1.2 偏离项
+
+| 编号 | 优先级 | 描述 | 风险等级 |
+|------|--------|------|----------|
+| T5-D1 | P3 | `getEvolutionChains` 只跟踪 `evolves_to[0]`，分支进化（如伊布）只显示第一条。架构未明确要求分支进化，属于已知功能限制 | 低 |
+| T5-D2 | P3 | Footer 文字「进化链图鉴」与首页「怀旧零食风宝可梦图鉴」不一致。属于视觉一致性细节，不影响功能 | 低 |
+| T5-D3 | P3 | `max-w-5xl` 与首页 `max-w-6xl` 不同。对于进化链较窄布局可辩护 | 低 |
+
+### 1.3 正面评价
+
+- 良好复用 `getAttributeGradient` 和 `getAttributeEmoji` 共享库
+- 进化节点基于稀有度的边框/发光样式视觉效果出色
+- `hover:scale-105` / `hover:scale-110` 过渡与整体设计一致
+
+---
+
+## 2. T6: 稀有度榜单页面
+
+### 2.1 架构对照
+
+| 检查项 | 要求 | 实际 | 结果 |
+|--------|------|------|------|
+| 页面路径 | `src/app/rarity/page.tsx` | 存在 | 通过 |
+| 按稀有度分档 | 是 | `getCardsByRarity()` + `RARITY_ORDER` 遍历 | 通过 |
+| 传说级大卡片置顶 | 是 | `LegendaryGrid` 1/2/3 列响应式，`w-32/w-40` 大圆圈 | 通过 |
+| 稀有度星级描述 | 是 | `RarityBadge` 组件展示星级和描述 | 通过 |
+| 当年交换行情 | 是 | `TradeInfo` 组件展示各稀有度交换说明 | 通过 |
+| 色彩系统 | `@theme` 定义值 | 使用 `border-legendary-glow/60` 等，与 CSS 一致 | 通过 |
+
+### 2.2 偏离项
+
+| 编号 | 优先级 | 描述 | 风险等级 |
+|------|--------|------|----------|
+| T6-D1 | P3 | `rarity/page.tsx` 第 64-68 行内联颜色判断逻辑与 `RarityBadge.tsx` 的 `RARITY_INFO.colorClasses` 重复。属于代码复用细节，不影响功能 | 低 |
+| T6-D2 | P3 | `TradeInfo` 组件硬编码交换行情文本，与 `RarityBadge.tsx` 中 `RARITY_INFO.tradeInfo` 内容重复。数据维护成本高，但不影响当前正确性 | 低 |
+| T6-D3 | P3 | Footer 文字「稀有度榜单」与其他页面不统一 | 低 |
+
+### 2.3 已修复问题
+
+- `w-18 h-18` 无效 Tailwind 类已改为 `w-16 h-16` (review P2 → fixed)
+- `RARITY_ORDER` 重复定义已从 `src/lib/cards.ts` 导出并复用 (review P2 → fixed)
+
+### 2.4 正面评价
+
+- `LegendaryGrid` 响应式布局设计出色
+- 传说级大 emoji 圆圈 + 发光边框创造强烈视觉层次
+- 交换行情脚注与怀旧主题高度契合
+
+---
+
+## 3. T7: 对战规则页面
+
+### 3.1 架构对照
+
+| 检查项 | 要求 | 实际 | 结果 |
+|--------|------|------|------|
+| 页面路径 | `src/app/battle-rules/page.tsx` | 存在 | 通过 |
+| 一代/二代规则 | 是 | 独立 section 分别展示 | 通过 |
+| 动画示意对战流程 | 是 | `BattleStep` + `BattleArrow` (animate-pulse) 流程可视化 | 通过 |
+| DP 数值案例 | 是 | 一代/二代各一个完整案例，含计算过程 | 通过 |
+| 色彩系统 | `@theme` 定义值 | 使用 `bg-primary`, `text-rare-glow`, `text-legendary-glow` 等，与 CSS 一致 | 通过 |
+| 对比表格 | 是 | 6 项对比：卡片形状/轮数/速度/变身/获胜/数量 | 通过 |
+
+### 3.2 偏离项
+
+| 编号 | 优先级 | 描述 | 风险等级 |
+|------|--------|------|----------|
+| T7-D1 | P3 | `BattleArrow` 使用 `animate-pulse` 持续动画，缺少 `prefers-reduced-motion` 处理。影响前庭障碍用户，但当前用户群体小 | 低 |
+| T7-D2 | P3 | `max-w-4xl` 与其他页面不同。对于文字密集型页面可辩护 | 低 |
+
+### 3.3 正面评价
+
+- 对战流程 emoji 步骤 + 箭头可视化清晰
+- 一代 vs 二代对比表格格式精美
+- DP 数值案例让规则具体、有教育意义
+- 子组件（`BattleStep`, `RuleItem`, `ComparisonRow`）干净可复用
+
+---
+
+## 4. T8: 部署配置
+
+### 4.1 架构对照
+
+| 检查项 | 要求 | 实际 | 结果 |
+|--------|------|------|------|
+| `output: "export"` | SSG 静态导出 | `next.config.mjs` 第 3 行 | 通过 |
+| `basePath` | GitHub Pages 需要 | `/tcgcard` (第 7 行，已取消注释) | 通过 |
+| `images.unoptimized` | SSG 需要 | `true` (第 9 行) | 通过 |
+| GitHub Actions | 工作流文件 | `.github/workflows/deploy.yml` 存在 | 通过 |
+| Node.js 版本 | 18+ | 工作流使用 Node 20 | 通过 |
+| pnpm | 包管理 | pnpm 10 | 通过 |
+| `vercel.json` | 可选 | 存在，配置正确 | 通过 |
+
+### 4.2 偏离项
+
+| 编号 | 优先级 | 描述 | 风险等级 |
+|------|--------|------|----------|
+| T8-D1 | P3 | 未生成 `public/404.html` 用于 GitHub Pages 未知路径重定向。由于完全静态导出且路由已预渲染，直接访问路由链接时 GitHub Pages 会返回 404 而非 Next.js 的 `_not-found` | 低 |
+| T8-D2 | P3 | `vercel.json` 和 GitHub Pages 部署同时存在，未文档化哪个平台是主要的。无害但可能引起混淆 | 低 |
+
+### 4.3 已修复问题
+
+- `basePath` 被注释掉的阻塞性问题已修复 (review P1 → fixed)
+
+---
+
+## 5. 整体视觉一致性
+
+### 5.1 色彩系统
+
+| CSS 变量 | 架构定义值 | globals.css 实际值 | 页面使用 | 结果 |
+|----------|-----------|-------------------|----------|------|
+| `--color-primary` | `#f97316` | `#f97316` | `from-primary`, `text-primary`, `bg-primary` | 通过 |
+| `--color-bg-warm` | `#fffbeb` | `#fffbeb` | `bg-bg-warm` (所有页面) | 通过 |
+| `--color-card-bg` | `#fef7ed` | `#fef7ed` | `bg-card-bg` (各 section) | 通过 |
+| `--color-rare-glow` | `#ef4444` | `#ef4444` | `border-rare-glow`, `text-rare-glow` | 通过 |
+| `--color-legendary-glow` | `#8b5cf6` | `#8b5cf6` | `border-legendary-glow`, `text-legendary-glow` | 通过 |
+| `--color-text-primary` | `#78350f` | `#78350f` | `text-text-primary` | 通过 |
+| `--color-text-secondary` | `#a16207` | `#a16207` | `text-text-secondary` | 通过 |
+| `--color-border` | `#fde68a` | `#fde68a` | `border-border` | 通过 |
+
+色彩系统完全一致，零偏差。
+
+### 5.2 布局一致性
+
+| 方面 | 首页 | 进化链 | 稀有度 | 对战规则 | 评价 |
+|------|------|--------|--------|----------|------|
+| Header 渐变 | 是 | 是 | 是 | 是 | 一致 |
+| 面包屑 | 无 | 有 | 有 | 有 | 首页无面包屑可辩护 |
+| max-w | 6xl | 5xl | 5xl | 4xl | 可辩护（内容密度不同） |
+| Footer | 是 | 是 | 是 | 是 | 文字不一致（见 D 项） |
+| bg-bg-warm | 是 | 是 | 是 | 是 | 一致 |
+| border-border | 是 | 是 | 是 | 是 | 一致 |
+
+### 5.3 组件复用
+
+| 共享库 | 进化链 | 稀有度 | 对战规则 | 评价 |
+|--------|--------|--------|----------|------|
+| `getAttributeEmoji` | 使用 | 使用 | N/A | 良好 |
+| `getAttributeGradient` | 使用 | 使用 | N/A | 良好 |
+| `RarityBadge` | N/A | 使用 | N/A | 良好 |
+| `getCardsByRarity` | N/A | 使用 | N/A | 良好 |
+| `getEvolutionChainsGrouped` | 使用 | N/A | N/A | 良好 |
+
+无重复造轮子，组件复用良好。
+
+### 5.4 设计原则对照
+
+| 原则 | 实现情况 | 结果 |
+|------|----------|------|
+| 圆形元素为主 | 进化节点、稀有度圆圈、卡片圆圈均为圆形 | 通过 |
+| 稀有度越高视觉权重越大 | 传说级 w-32/w-40 > 极稀有 w-20 > 稀有/普通 w-16 | 通过 |
+| 暖色系 + 怀旧质感 | 橙/棕/金配色，卡片容器使用 `bg-card-bg` 暖色调 | 通过 |
+| CSS 3D transform 光栅效果 | T4 范围（`LenticularFlip.tsx`），非 T5-T8 | N/A |
+
+---
+
+## 6. 风险汇总
+
+| 编号 | 所属任务 | 优先级 | 描述 | 建议处理时机 |
+|------|----------|--------|------|------------|
+| T5-D1 | T5 | P3 | 分支进化只跟踪第一条 | 数据量增大或用户反馈后 |
+| T6-D1 | T6 | P3 | 内联颜色判断与 RarityBadge 重复 | 重构时可去重 |
+| T6-D2 | T6 | P3 | TradeInfo 文本与 RarityBadge 数据重复 | 数据维护成本增大时 |
+| T7-D1 | T7 | P3 | BattleArrow 缺少 prefers-reduced-motion | 无障碍要求提升时 |
+| T8-D1 | T8 | P3 | 缺少 public/404.html | 部署后可补充 |
+| 跨页面 | 整体 | P3 | Footer 文字不统一 | 后续提取共享 Footer 组件 |
+
+---
+
+## 7. 最终验收决定
+
+### 各任务状态
+
+| 任务 | 状态 | 说明 |
+|------|------|------|
+| T5: 进化链页面 | **通过** | 符合架构和任务要求，1 个已知功能限制（分支进化） |
+| T6: 稀有度榜单 | **通过** | 符合架构和任务要求，P2 问题（w-18/RARITY_ORDER）已修复 |
+| T7: 对战规则页面 | **通过** | 纯静态内容页，结构清晰，实现完整 |
+| T8: 部署配置 | **通过** | P1 阻塞问题（basePath）已修复，配置完整 |
+
+### 综合结论: **accepted_with_risks**
+
+所有任务均通过架构验收。存在的偏离项均为 P3 级别（低风险），不影响当前功能正确性和用户体验。建议按风险汇总表在后续迭代中逐步处理。
+
+### 建议下一步
+
+1. 部署到 GitHub Pages 验证线上效果
+2. 在 T9（数据补全）时验证大量卡片数据下的页面性能
+3. 考虑提取共享 Footer 组件以统一各页面 footer 文字
+
+---
+
+## 附录: 验收时 git 状态
+
+```
+最新 commit: 见 git log
+构建: pnpm build 通过 (11 pages, 含 T5-T7 路由)
+TypeScript: pnpm tsc --noEmit 通过 (0 错误)
+```
