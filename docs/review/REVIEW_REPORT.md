@@ -223,3 +223,182 @@ export function getAttributes(): string[] {
 - 构建脚本 `scripts/build-data.ts` 可用
 
 **建议进入 T3 前完成**: 改进建议 #1（模块缓存）和 #4（emoji 提取），成本极低但能改善后续开发体验。
+
+---
+
+# 审查报告: T5 + T6 + T7 + T8 实现
+
+> 审查范围: T5 (进化链页面) + T6 (稀有度榜单) + T7 (对战规则页面) + T8 (部署配置)
+> 审查日期: 2026-07-06
+> 审查人: review-agent
+
+---
+
+## 总体评价: **通过（含改进建议，T8 有阻塞性问题）**
+
+T5、T6、T7 页面实现质量良好，符合任务要求，视觉风格与奇多橙主题一致，复用了 `getAttributeEmoji`、`getAttributeGradient`、`RarityBadge` 等共享组件。T8 部署配置存在一个阻塞性问题（`basePath` 未配置），必须在部署到 GitHub Pages 前修复。
+
+---
+
+## 1. T5: 进化链页面 (`src/app/evolution/page.tsx`)
+
+### 需求对照 (per TASKS.md)
+- [x] 展示完整进化链（如迷你龙→哈克龙→快龙）
+- [x] 按属性/世代分区
+- [x] 点击精灵跳转详情
+
+### 发现
+
+| # | 类型 | 优先级 | 描述 |
+|---|------|--------|------|
+| T5-1 | 功能限制 | P2-MED | `getEvolutionChains` 函数（`src/lib/cards.ts` 第 92 行）只跟踪 `evolves_to[0]`。如果一张卡有分支进化（如伊布的多条进化线），只会显示第一条分支。页面会静默丢失数据，不会报错。 |
+| T5-2 | 代码质量 | P3-LOW | `EvolutionGroup` 内 `chains.map((chain, idx) => (<EvolutionLine key={idx} ... />))` 使用数组索引作为 key。虽然进化链从 YAML 数据推导是确定性的，但使用稳定 key（如 `chain[0].id`）是更好的做法。 |
+| T5-3 | 视觉一致性 | P3-LOW | footer 文字与其他页面不一致：进化链页用 `"进化链图鉴"`，首页用 `"怀旧零食风宝可梦图鉴"`。建议统一或提取为共享 Footer 组件。 |
+| T5-4 | 视觉一致性 | P3-LOW | `max-w-5xl` 与首页 `max-w-6xl` 不同。对于进化链较窄的布局是合理的，但应记录或提取为共享常量。 |
+
+### 正面评价
+- 良好复用 `getAttributeGradient` 和 `getAttributeEmoji` 共享库。
+- 基于稀有度的进化节点边框/发光样式视觉效果出色。
+- 空状态处理优雅，有友好的 fallback 文案。
+- `hover:scale-105` / `hover:scale-110` 过渡与 CardCircle 行为一致。
+
+---
+
+## 2. T6: 稀有度榜单页面 (`src/app/rarity/page.tsx`)
+
+### 需求对照 (per TASKS.md)
+- [x] 传说级卡片大尺寸置顶
+- [x] 显示稀有度星级和描述
+- [x] 显示当年交换行情
+
+### 发现
+
+| # | 类型 | 优先级 | 描述 |
+|---|------|--------|------|
+| T6-1 | **Bug** | **P2-MED** | **`w-18 h-18` 不是 Tailwind v4 默认类**。Tailwind 默认间距步进从 `16` 直接跳到 `20`，没有 `18`。第 162-163 行的 `w-18 h-18` 会渲染为零宽高，普通稀有度卡片将显示为不可见或破损的圆圈。应改为 `w-16 h-16`。 |
+| T6-2 | 代码重复 | P2-MED | `RARITY_ORDER` 数组在 `rarity/page.tsx`（第 8 行）和 `src/lib/cards.ts`（第 152 行）两处重复定义。应从单一来源导出（如 `src/lib/cards.ts`）。 |
+| T6-3 | 代码重复 | P3-LOW | `TradeInfo` 组件（第 202-238 行）硬编码了交换行情描述，这些文本已存在于 `RarityBadge.tsx` 的 `RARITY_INFO.tradeInfo` 中。同一数据在两个位置维护。 |
+| T6-4 | 代码质量 | P3-LOW | 第 67-70 行的内联条件颜色类（`text-legendary-glow` / `text-rare-glow` 等）与 `RarityBadge` 中的 `RARITY_INFO.colorClasses` 逻辑重复。应复用已有组件数据。 |
+| T6-5 | 视觉一致性 | P3-LOW | Footer 文字为 `"稀有度榜单"`，与其他页面不统一。同 T5-3。 |
+
+### 正面评价
+- `LegendaryGrid` 1/2/3 列响应式布局设计出色。
+- 传说级大 emoji 圆圈创造了强烈的视觉层次。
+- 交换行情脚注增添了怀旧价值，与项目主题高度契合。
+
+---
+
+## 3. T7: 对战规则页面 (`src/app/battle-rules/page.tsx`)
+
+### 需求对照 (per TASKS.md)
+- [x] 展示一代/二代对战规则
+- [x] 动画示意对战流程
+- [x] 附带 DP 数值案例
+
+### 发现
+
+| # | 类型 | 优先级 | 描述 |
+|---|------|--------|------|
+| T7-1 | 代码质量 | P3-LOW | 纯静态内容页面，无数据层依赖或类型问题。结构清晰，分节明确。 |
+| T7-2 | 视觉一致性 | P3-LOW | `max-w-4xl` 与其他页面不同。对于文字密集型页面是合理的，但应记录。 |
+| T7-3 | 无障碍 | P3-LOW | `BattleArrow` 使用 `animate-pulse` 持续动画。对于装饰性目的没问题，但前庭障碍用户可能感到不适。考虑添加 `@media (prefers-reduced-motion: reduce)` 处理。 |
+
+### 正面评价
+- 对战流程 emoji 步骤 + 箭头可视化清晰直观。
+- 一代 vs 二代对比表格格式精美。
+- 使用实际 DP 数值的案例让规则具体、有教育意义。
+- 子组件（`BattleStep`、`RuleItem`、`ComparisonRow`）干净可复用。
+
+---
+
+## 4. T8: 部署配置
+
+### 发现
+
+| # | 类型 | 优先级 | 描述 |
+|---|------|--------|------|
+| T8-1 | **Bug** | **P1-HIGH** | **`basePath` 在 `next.config.mjs` 第 7 行被注释掉了。** 如果部署到 `https://<username>.github.io/tcgcard/`，所有路由将断裂：Next.js 会生成 `/evolution` 而不是 `/tcgcard/evolution`。这是 GitHub Pages 部署的**阻塞性问题**。 |
+| T8-2 | 配置 | P2-MED | GitHub Actions 工作流未通过环境变量或动态方式配置 `basePath`。部署到 GitHub Pages 时构建必须知道正确的 `basePath`。要么取消注释并硬编码 `basePath: "/tcgcard"`，要么在 workflow 中设置 `NEXT_PUBLIC_BASE_PATH` 并在 config 中读取。 |
+| T8-3 | 配置 | P3-LOW | 未生成 `404.html` 用于 GitHub Pages。由于是完全静态导出且路由已预渲染，对未知路径的 404 处理不是关键问题。但如果直接访问路由（如分享链接），GitHub Pages 会返回 404。考虑添加 `public/404.html` 重定向到 `/tcgcard/`。 |
+| T8-4 | 配置 | P3-LOW | `vercel.json` 和 GitHub Pages 部署同时存在。如果 GitHub Pages 是主平台，`vercel.json` 是无效配置。无害但应文档化哪个平台是主要的。 |
+
+### 正面评价
+- `output: "export"` 正确配置用于静态站点生成。
+- `images.unoptimized: true` 对 SSG 是恰当的（无 Next.js 图片优化服务器）。
+- GitHub Actions 工作流使用正确版本（Node 20, pnpm 10, actions/deploy-pages@v4）。
+- `concurrency` 组防止冲突部署。
+- OIDC 令牌权限（`id-token: write`）正确配置用于 GitHub Pages。
+
+---
+
+## 5. 跨页面关注点
+
+### 5.1 视觉一致性
+
+| 方面 | 首页 | 进化链 | 稀有度 | 对战规则 |
+|------|------|--------|--------|----------|
+| `max-w` | `6xl` | `5xl` | `5xl` | `4xl` |
+| Header 渐变 | 是 | 是 | 是 | 是 |
+| Footer 文字 | "怀旧零食风" | "进化链图鉴" | "稀有度榜单" | "DP 对战规则" |
+| 面包屑 | 无 | 有 | 有 | 有 |
+
+不同的 `max-w` 值是可辩护的（内容密度不同），但不一致的 footer 文字说明缺少共享的 `Footer` 组件。
+
+### 5.2 组件复用
+
+| 共享工具 | 使用于 |
+|----------|--------|
+| `getAttributeEmoji` | evolution, rarity |
+| `getAttributeGradient` | evolution, rarity |
+| `RarityBadge` | rarity |
+| `getCardsByRarity` | rarity |
+| `getEvolutionChainsGrouped` | evolution |
+
+良好复用了现有库，未发现重复造轮子。
+
+### 5.3 TypeScript 安全
+
+所有页面都正确类型化，未发现 `any` 使用。Props 接口是内联的，但对于页面级组件来说已足够。
+
+---
+
+## 6. 改进建议汇总（按优先级排序）
+
+| 优先级 | 编号 | 描述 | 文件 |
+|--------|------|------|------|
+| **P1** | T8-1 | **修复 `basePath` 用于 GitHub Pages** -- 阻塞性问题 | `next.config.mjs` |
+| P2 | T6-1 | 修复 `w-18 h-18` -- 不是有效 Tailwind 类 | `src/app/rarity/page.tsx:162` |
+| P2 | T6-2 | 去重 `RARITY_ORDER` 数组 | `src/app/rarity/page.tsx`, `src/lib/cards.ts` |
+| P2 | T8-2 | 工作流应设置 `basePath` 环境变量 | `.github/workflows/deploy.yml` |
+| P2 | T5-1 | 文档化进化链只跟踪第一条分支的限制 | `src/lib/cards.ts` |
+| P3 | T6-3 | 去重 TradeInfo 数据 | `src/app/rarity/page.tsx`, `src/components/RarityBadge.tsx` |
+| P3 | T6-4 | 复用 RarityBadge 的颜色数据 | `src/app/rarity/page.tsx:67-70` |
+| P3 | T7-3 | 添加 `prefers-reduced-motion` 处理 | `src/app/battle-rules/page.tsx` |
+| P3 | 跨页面 | 创建共享 Footer 组件 | 所有页面 |
+
+---
+
+## 7. 验收结论
+
+**T5 (进化链页面): 通过（含改进建议）**
+- 进化链按属性/世代分组展示正确
+- 点击跳转详情页工作正常
+- 视觉风格与主题一致
+- 空状态处理得当
+
+**T6 (稀有度榜单): 通过（含改进建议）**
+- 传说级大尺寸置顶展示正确
+- 稀有度分档展示完整
+- 交换行情描述增添怀旧价值
+- **需修复 `w-18 h-18` 无效 Tailwind 类**
+
+**T7 (对战规则页面): 通过**
+- 一代/二代规则对比清晰
+- 对战流程可视化直观
+- DP 数值案例有教育意义
+- 纯静态内容页，无数据层风险
+
+**T8 (部署配置): 需修复后通过**
+- `output: "export"` 正确
+- GitHub Actions 工作流结构正确
+- **`basePath` 必须取消注释并设为 `/tcgcard`（或动态配置）**，否则 GitHub Pages 部署后所有路由将断裂

@@ -149,7 +149,7 @@ export function getEvolutionChainsGrouped(): Record<string, Card[][]> {
 /**
  * Group cards by rarity tier, ordered from legendary to common.
  */
-const RARITY_ORDER: Rarity[] = ['legendary', 'ultra-rare', 'rare', 'common'];
+export const RARITY_ORDER: Rarity[] = ['legendary', 'ultra-rare', 'rare', 'common'];
 
 export function getCardsByRarity(): Record<Rarity, Card[]> {
   const cards = loadCards();

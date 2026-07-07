@@ -1,11 +1,9 @@
-import { getCardsByRarity } from '@/lib/cards';
+import { getCardsByRarity, RARITY_ORDER } from '@/lib/cards';
 import type { Card, Rarity } from '@/lib/types';
 import Link from 'next/link';
 import RarityBadge from '@/components/RarityBadge';
 import { getAttributeEmoji } from '@/lib/attribute-emoji';
 import { getAttributeGradient } from '@/lib/attribute-gradient';
-
-const RARITY_ORDER: Rarity[] = ['legendary', 'ultra-rare', 'rare', 'common'];
 
 const RARITY_SECTION_LABELS: Record<Rarity, string> = {
   legendary: '传说级',
@@ -159,7 +157,7 @@ function CardGrid({ cards, rarity }: { cards: Card[]; rarity: Rarity }) {
     rarity === 'ultra-rare'
       ? 'w-20 h-20 text-3xl'
       : rarity === 'rare'
-        ? 'w-18 h-18 text-2xl'
+        ? 'w-16 h-16 text-2xl'
         : 'w-16 h-16 text-2xl';
 
   return (

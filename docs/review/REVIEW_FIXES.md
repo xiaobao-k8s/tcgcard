@@ -150,6 +150,46 @@ export function loadCards(): Card[] {
 
 ---
 
+## 新增修复 (T6 + T8 问题)
+
+> 修复日期: 2026-07-07
+> 修复人: developer-agent
+
+### T6: `w-18 h-18` 不是有效的 Tailwind 类
+
+**文件**: `src/app/rarity/page.tsx`
+
+**问题**: `CardGrid` 中 `rare` 分支使用 `w-18 h-18`，Tailwind 默认没有 18 这个步长（步长为 4 的倍数：16、20）。
+
+**修复**: 改为 `w-16 h-16 text-2xl`。
+
+### T6: `RARITY_ORDER` 重复定义
+
+**文件**: `src/app/rarity/page.tsx`、`src/lib/cards.ts`
+
+**问题**: `RARITY_ORDER` 常量同时在页面文件和库文件中定义，且页面未使用库文件的导出。
+
+**修复**:
+1. 将 `src/lib/cards.ts` 中的 `RARITY_ORDER` 改为 `export const`。
+2. 删除 `src/app/rarity/page.tsx` 中的重复定义，改为从 `@/lib/cards` import。
+
+### T8: `basePath` 被注释掉
+
+**文件**: `next.config.mjs`
+
+**问题**: GitHub Pages 部署需要 `basePath` 配置，但被注释掉。
+
+**修复**: 取消注释 `basePath: '/tcgcard'`。
+
+### 验证
+
+- [x] `pnpm tsc --noEmit` 通过
+- [x] `pnpm build` 成功（11 pages，3 SSG 路由正常生成）
+- [x] Tailwind 类正确（`w-16 h-16` 替代 `w-18 h-18`）
+- [x] `basePath` 配置为 `/tcgcard`
+
+---
+
 ## 二次 Review（review-agent 验收）
 
 > 验收日期: 2026-07-06
