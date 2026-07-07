@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Card } from '@/lib/types';
-import { getAttributeEmoji } from '@/lib/attribute-emoji';
 import { getAttributeGradient } from '@/lib/attribute-gradient';
 
 interface CardCircleProps {
@@ -65,6 +64,7 @@ export default function CardCircle({ card }: CardCircleProps) {
       href={`/${card.id}`}
       className={`group relative inline-flex flex-col items-center`}
       title={`${card.name.zh} #${card.number}`}
+      prefetch={true}
     >
       {/* Circle bubble with Pokémon image */}
       <div
@@ -81,25 +81,16 @@ export default function CardCircle({ card }: CardCircleProps) {
           relative
         `}
       >
-        {/* Pokémon image from PokeAPI */}
+        {/* Pokémon image from PokeAPI with lazy loading */}
         <Image
           src={imageUrl}
           alt={card.name.zh}
           fill
           className="object-contain p-1"
           unoptimized
-          onError={(e) => {
-            // Fallback to emoji if image fails to load
-            const target = e.target as HTMLImageElement;
-            target.style.display = 'none';
-            const parent = target.parentElement;
-            if (parent) {
-              const emoji = document.createElement('div');
-              emoji.className = 'text-4xl';
-              emoji.textContent = getAttributeEmoji(card.attribute);
-              parent.appendChild(emoji);
-            }
-          }}
+          loading="lazy"
+          placeholder="blur"
+          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
         />
       </div>
 
