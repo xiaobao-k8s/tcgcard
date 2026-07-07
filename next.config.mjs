@@ -4,7 +4,8 @@ const nextConfig = {
   // GitHub Pages deployment: set the basePath to your repo name.
   // Uncomment and replace with your repo name if deploying to:
   //   https://<username>.github.io/<repo-name>/
-  basePath: '/tcgcard',
+  // For local development, comment this out:
+  basePath: process.env.NODE_ENV === 'production' ? '/tcgcard' : '',
   images: {
     unoptimized: true,
   },
