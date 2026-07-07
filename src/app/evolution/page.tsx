@@ -73,7 +73,7 @@ export default function EvolutionPage() {
       </main>
 
       <footer className="text-center py-8 text-text-secondary text-sm border-t border-border mt-8">
-        <p>奇多卡片百科 &copy; 2026 &middot; 进化链图鉴</p>
+        <p>童年神奇卡片百科 &copy; 2026 &middot; 进化链图鉴</p>
       </footer>
     </div>
   );

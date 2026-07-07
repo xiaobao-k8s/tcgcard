@@ -60,12 +60,12 @@ export default function HomePage({ cards, attributes, rarities }: HomePageProps)
             <span className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-lg">
               🌀
             </span>
-            <span className="text-lg font-bold hidden sm:inline">奇多卡片百科</span>
+            <span className="text-lg font-bold hidden sm:inline">童年神奇卡片百科</span>
           </a>
 
           {/* Subtitle */}
           <p className="text-sm opacity-90 hidden md:block flex-1 text-center">
-            旋风卡图鉴 — 童年没集齐的，来这里补全
+            童年没集齐的，来这里补全
           </p>
 
           {/* Card count badge */}
@@ -131,7 +131,7 @@ export default function HomePage({ cards, attributes, rarities }: HomePageProps)
       </main>
 
       <footer className="text-center py-8 text-text-secondary text-sm border-t border-border mt-8">
-        <p>奇多卡片百科 &copy; 2026 · 怀旧零食风宝可梦图鉴</p>
+        <p>童年神奇卡片百科 &copy; 2026 · 童年神奇卡片百科</p>
       </footer>
     </div>
   );

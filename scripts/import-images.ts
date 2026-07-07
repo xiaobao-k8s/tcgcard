@@ -405,7 +405,7 @@ function printReport(result: ImportResult): void {
 
 async function main(): Promise<void> {
   console.log('========================================');
-  console.log('  奇多卡片百科 · 图片导入');
+  console.log('  童年神奇卡片百科 · 图片导入');
   console.log('========================================\n');
 
   const { source, target, dryRun } = parseImportArgs(process.argv.slice(2));

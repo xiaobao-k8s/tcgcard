@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "奇多卡片百科",
-  description: "旋风卡图鉴 - 怀旧宝可梦卡片收藏",
+  title: "童年神奇卡片百科",
+  description: "童年卡片图鉴 - 怀旧神奇宝贝卡收藏",
 };
 
 export default function RootLayout({

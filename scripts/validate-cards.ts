@@ -479,7 +479,7 @@ function check12_imageExistence(cards: CardRaw[]): CheckResult {
 
 function main(): void {
   console.log('========================================');
-  console.log('  奇多卡片百科 · 数据验证');
+  console.log('  童年神奇卡片百科 · 数据验证');
   console.log('========================================\n');
 
   const { cards, errors: parseErrors } = loadAllCards();

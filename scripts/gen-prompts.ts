@@ -322,7 +322,7 @@ function generateCardPrompts(info: MissingImageInfo, cardMap: Map<string, CardRa
 function generateBatchAll(infos: MissingImageInfo[], cardMap: Map<string, CardRaw>): string {
   const lines: string[] = [];
 
-  lines.push('# 奇多卡片百科 · AI 生图批量提示词');
+  lines.push('# 童年神奇卡片百科 · AI 生图批量提示词');
   lines.push('# 使用说明：复制以下内容，逐段粘贴到 ChatGPT (GPT-4o with DALL-E) 中');
   lines.push('# 每段 = 一张卡片的所有帧');
   lines.push('');
@@ -351,7 +351,7 @@ function generateBatchAll(infos: MissingImageInfo[], cardMap: Map<string, CardRa
 
 function main(): void {
   console.log('========================================');
-  console.log('  奇多卡片百科 · 生图提示词生成');
+  console.log('  童年神奇卡片百科 · 生图提示词生成');
   console.log('========================================\n');
 
   // Ensure prompts directory exists

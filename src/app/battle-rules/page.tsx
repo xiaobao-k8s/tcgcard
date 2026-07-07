@@ -241,7 +241,7 @@ export default function BattleRulesPage() {
       </main>
 
       <footer className="text-center py-8 text-text-secondary text-sm border-t border-border mt-8">
-        <p>奇多卡片百科 &copy; 2026 &middot; DP 对战规则</p>
+        <p>童年神奇卡片百科 &copy; 2026 &middot; DP 对战规则</p>
       </footer>
     </div>
   );
