@@ -225,3 +225,67 @@ export function loadCards(): Card[] {
 ### 结论
 
 **三项 P2 修复均已通过验收。** 修复实现与原始 review 建议一致，无引入新问题。可继续后续任务。
+
+---
+
+## 新增修复 (T9 Phase 1 Critical 问题)
+
+> 修复日期: 2026-07-07
+> 修复人: developer-agent
+> 参考报告: `docs/review/T9_PHASE1_REVIEW.md`
+
+### C1: `import-images.ts` — JPG/WebP 虚假 PNG 转换
+
+**文件**: `scripts/import-images.ts` (第 494-496 行)
+
+**问题**: `copyFileSync` 复制后仅改扩展名为 `.png`，JPEG/WebP 字节未做实际格式转换，产生无效 PNG 文件。
+
+**修复**:
+1. 安装 `sharp` 库作为项目依赖
+2. 将同步的 `copyFileSync` 替换为 `await sharp(srcPath).png().toFile(finalDest)`
+3. `main()` 改为 `async function main(): Promise<void>`
+4. 入口调用改为 `main().catch(...)` 以正确处理异步错误
+
+**影响**: 所有 JPG/WebP 输入现在被真正的转换为 PNG 格式输出，确保浏览器和构建流程正常工作。
+
+---
+
+### C2: `gen-prompts.ts` — `loadAllCards()` N+1 冗余 I/O
+
+**文件**: `scripts/gen-prompts.ts` (第 199 行)
+
+**问题**: `generateCardPrompts()` 在每张卡片循环中被调用时都重复调用 `loadAllCards()`，导致 O(n^2) 磁盘读取。
+
+**修复**:
+1. 在 `main()` 中加载一次卡片数据，构建 `cardMap`
+2. `generateCardPrompts()` 签名改为 `(info, cardMap)`，移除内部 `loadAllCards()` 调用
+3. `generateBatchAll()` 签名改为 `(infos, cardMap)`，传递 `cardMap` 参数
+4. `main()` 中两处调用均传入 `cardMap`
+
+**影响**: 从 O(n^2) 降为 O(n)，149 张卡片时减少 148 次不必要的文件系统遍历。
+
+---
+
+### C3: `generate-template.ts` — 手动拼接 YAML 字符串
+
+**文件**: `scripts/generate-template.ts` (第 95-162 行)
+
+**问题**: 导入了 `js-yaml`，构建了 `template` 对象，但忽略它并手动拼接 YAML 字符串，导致维护风险。
+
+**修复**:
+1. 使用 `yaml.dump(template, { lineWidth: -1, noRefs: true })` 生成 YAML
+2. 保留 `# === 基础信息 ===` 注释作为标题
+3. 删除 37 行手动拼接的 YAML 模板字符串
+
+**影响**: 单一数据源（`template` 对象），schema 变更只需改一处，不再存在对象与字符串同步分歧。
+
+---
+
+## 验证
+
+- [x] `npx tsc --noEmit` 通过
+- [x] `pnpm run validate` 正常运行（验证脚本本身无问题）
+- [x] `pnpm run new-card` 正常生成模板（测试 xfd-150 成功）
+- [x] `pnpm run gen-prompts` 正常执行（2.3s，cardMap 只加载一次）
+- [x] `pnpm run import-images --dry-run` 正常启动
+- [x] Git commit: `c621cf3`
