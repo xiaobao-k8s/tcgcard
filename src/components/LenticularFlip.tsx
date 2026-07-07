@@ -72,7 +72,8 @@ export default function LenticularFlip({ card, evolutionChain }: LenticularFlipP
   const sparkleId = useRef(0);
   const touchStartX = useRef<number | null>(null);
   const gradient = getAttributeGradient(card.attribute, 'dark');
-  const frameAUrl = getPokeApiImageUrl(card.number);
+  // Use local image for frame A, fallback to PokeAPI
+  const [frameAUrl, setFrameAUrl] = useState(card.image_frame_a || getPokeApiImageUrl(card.number));
   const frameBUrl = getFrameBImageUrl(card, evolutionChain);
   const hasEvolutionImage = card.effect_type === 'evolution' && frameAUrl !== frameBUrl;
   const labelColor = getAttrLabel(card.attribute);

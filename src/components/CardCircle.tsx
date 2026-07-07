@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Card } from '@/lib/types';
@@ -57,7 +58,9 @@ export default function CardCircle({ card }: CardCircleProps) {
   const sizeClass = getSizeClasses(card.rarity);
   const glowClass = getGlowClasses(card.rarity);
   const gradient = getAttributeGradient(card.attribute, 'medium');
-  const imageUrl = getPokeApiImageUrl(card.number);
+  // Try local image first, fallback to PokeAPI on error
+  const [imgSrc, setImgSrc] = useState(card.image_front);
+  const pokeApiFallback = getPokeApiImageUrl(card.number);
 
   return (
     <Link
@@ -81,9 +84,9 @@ export default function CardCircle({ card }: CardCircleProps) {
           relative
         `}
       >
-        {/* Pokémon image from PokeAPI with lazy loading */}
+        {/* Pokémon image — local first, PokeAPI fallback */}
         <Image
-          src={imageUrl}
+          src={imgSrc}
           alt={card.name.zh}
           fill
           className="object-contain p-1"
@@ -91,6 +94,7 @@ export default function CardCircle({ card }: CardCircleProps) {
           loading="lazy"
           placeholder="blur"
           blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+          onError={() => setImgSrc(pokeApiFallback)}
         />
       </div>
 
