@@ -1,58 +1,69 @@
 'use client';
 
-import { useState, useRef, type TouchEvent } from 'react';
+import { useState, useRef, useEffect, type TouchEvent } from 'react';
 import Image from 'next/image';
 import type { Card } from '@/lib/types';
 import { getAttributeGradient } from '@/lib/attribute-gradient';
 
 interface LenticularFlipProps {
   card: Card;
-  /** The full evolution chain for this card (ordered from base to final). */
   evolutionChain?: Card[];
 }
 
-/**
- * Get PokeAPI official artwork URL for a Pokémon
- */
 function getPokeApiImageUrl(number: string): string {
   const dexNum = parseInt(number, 10);
   return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${dexNum}.png`;
 }
 
-/**
- * Get the display label for the evolution frame.
- */
 function getFrameLabel(card: Card, isFrameB: boolean): string {
   if (card.effect_type === 'evolution' && card.evolves_to && card.evolves_to.length > 0) {
-    return isFrameB ? '✨ 进化形态' : '基础形态';
+    return isFrameB ? '进化形态' : '基础形态';
   }
   if (card.effect_type === 'triple') {
-    return isFrameB ? '⚡ 蓄力状态' : '常态';
+    return isFrameB ? '蓄力状态' : '常态';
   }
-  return isFrameB ? '🔥 大招' : '常态';
+  return isFrameB ? '大招' : '常态';
 }
 
-/**
- * Get the image URL for Frame B based on evolution chain
- */
 function getFrameBImageUrl(card: Card, evolutionChain?: Card[]): string {
-  // For evolution cards, show the next evolution stage
   if (card.effect_type === 'evolution' && card.evolves_to && card.evolves_to.length > 0 && evolutionChain) {
     const nextEvolution = evolutionChain.find(c => c.evolves_from === card.id);
-    if (nextEvolution) {
-      return getPokeApiImageUrl(nextEvolution.number);
-    }
+    if (nextEvolution) return getPokeApiImageUrl(nextEvolution.number);
   }
-  // For other cards, use the same image (will apply visual effects)
   return getPokeApiImageUrl(card.number);
 }
 
 export default function LenticularFlip({ card, evolutionChain }: LenticularFlipProps) {
   const [isFlipped, setIsFlipped] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [autoPlayed, setAutoPlayed] = useState(false);
   const touchStartX = useRef<number | null>(null);
   const gradient = getAttributeGradient(card.attribute, 'dark');
   const frameAUrl = getPokeApiImageUrl(card.number);
   const frameBUrl = getFrameBImageUrl(card, evolutionChain);
+  const hasEvolutionImage = card.effect_type === 'evolution' && frameAUrl !== frameBUrl;
+
+  // Auto play flip animation on first load
+  useEffect(() => {
+    if (!autoPlayed) {
+      const timer = setTimeout(() => {
+        setIsAnimating(true);
+        setIsFlipped(true);
+        setTimeout(() => {
+          setIsFlipped(false);
+          setTimeout(() => setIsAnimating(false), 600);
+        }, 1200);
+      }, 1000);
+      setAutoPlayed(true);
+      return () => clearTimeout(timer);
+    }
+  }, [autoPlayed]);
+
+  const toggleFlip = () => {
+    setIsAnimating(true);
+    setIsFlipped((prev) => !prev);
+    setTimeout(() => setIsAnimating(false), 700);
+  };
 
   const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
     touchStartX.current = e.touches[0].clientX;
@@ -61,41 +72,39 @@ export default function LenticularFlip({ card, evolutionChain }: LenticularFlipP
   const handleTouchEnd = (e: TouchEvent<HTMLDivElement>) => {
     if (touchStartX.current === null) return;
     const deltaX = e.changedTouches[0].clientX - touchStartX.current;
-    // Swipe threshold: 50px horizontal swipe triggers flip
-    if (Math.abs(deltaX) > 50) {
-      setIsFlipped((prev) => !prev);
-    }
+    if (Math.abs(deltaX) > 50) toggleFlip();
     touchStartX.current = null;
   };
 
-  const handleTouchCancel = () => {
-    touchStartX.current = null;
-  };
-
-  // Check if this is an evolution card with different images
-  const hasEvolutionImage = card.effect_type === 'evolution' && frameAUrl !== frameBUrl;
+  const handleTouchCancel = () => { touchStartX.current = null; };
 
   return (
     <div className="flex flex-col items-center gap-4">
-      {/* 3D lenticular card container */}
-      <div className="perspective-[1000px]">
+      {/* 3D card container */}
+      <div
+        className="perspective-[1000px] select-none"
+        onClick={toggleFlip}
+      >
         <div
           className={`
-            group relative
+            relative
             w-56 h-56 sm:w-72 sm:h-72
             [transform-style:preserve-3d]
-            [transition:transform_0.6s_cubic-bezier(0.4,0,0.2,1)]
             cursor-pointer
-            ${isFlipped ? '[transform:rotateY(180deg)]' : 'hover:[transform:rotateY(180deg)]'}
+            transition-all duration-700 ease-out
+            ${isFlipped ? '[transform:rotateY(180deg)_scale(1.02)]' : ''}
+            ${isAnimating ? 'scale-105' : ''}
+            hover:scale-[1.03]
           `}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
           onTouchCancel={handleTouchCancel}
           role="button"
           tabIndex={0}
-          aria-label="点击或悬停翻转卡片"
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') toggleFlip(); }}
+          aria-label={`${card.name.zh} — 点击翻转`}
         >
-          {/* Frame A (front face) - Base/Normal form */}
+          {/* ─── Frame A (Front) ─── */}
           <div
             className={`
               absolute inset-0 rounded-full
@@ -107,36 +116,32 @@ export default function LenticularFlip({ card, evolutionChain }: LenticularFlipP
               overflow-hidden
             `}
           >
-            {/* Pokémon image from PokeAPI */}
             <Image
               src={frameAUrl}
               alt={card.name.zh}
               fill
-              className="object-contain p-4 transition-transform duration-300"
+              className="object-contain p-4"
               unoptimized
               priority
             />
-            {/* Label overlay */}
+            {/* Name label */}
             <div className="absolute bottom-6 left-0 right-0 flex flex-col items-center gap-1">
               <span className="text-white/90 text-sm font-bold drop-shadow-lg bg-black/40 px-3 py-1 rounded-full">
                 {card.name.zh}
               </span>
-              <span className="text-white/80 text-xs font-medium bg-black/30 px-2 py-0.5 rounded">
+              <span className="bg-black/30 text-white/70 text-[10px] px-2 py-0.5 rounded">
                 {getFrameLabel(card, false)}
               </span>
             </div>
-            {/* Lenticular ridge lines overlay */}
+            {/* Lenticular ridges */}
             <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none">
-              <div
-                className="w-full h-full opacity-10"
-                style={{
-                  backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.3) 2px, rgba(255,255,255,0.3) 3px)',
-                }}
-              />
+              <div className="w-full h-full" style={{
+                backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 1.5px, rgba(255,255,255,0.08) 1.5px, rgba(255,255,255,0.08) 3px)',
+              }} />
             </div>
           </div>
 
-          {/* Frame B (back face) - Evolved/Attack form */}
+          {/* ─── Frame B (Back) ─── */}
           <div
             className={`
               absolute inset-0 rounded-full
@@ -150,59 +155,110 @@ export default function LenticularFlip({ card, evolutionChain }: LenticularFlipP
               ${hasEvolutionImage ? '' : ''}
             `}
           >
-            {/* Pokémon image - evolved form or same with effects */}
-            <Image
-              src={frameBUrl}
-              alt={`${card.name.zh} 进化形态`}
-              fill
-              className={`
-                object-contain p-4 transition-transform duration-300
-                ${hasEvolutionImage ? 'scale-110' : 'scale-105 brightness-125 saturate-150'}
-              `}
-              unoptimized
-            />
-            {/* Dramatic glow effect for Frame B */}
-            <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none">
-              <div className={`w-full h-full ${hasEvolutionImage ? 'bg-gradient-to-tr from-yellow-300/30 via-transparent to-orange-400/30' : 'bg-gradient-to-tr from-cyan-300/40 via-transparent to-purple-400/40'}`} />
+            {/* Pokémon image — with dramatic filter effects */}
+            <div className="absolute inset-0">
+              <Image
+                src={frameBUrl}
+                alt={`${card.name.zh} ${getFrameLabel(card, true)}`}
+                fill
+                className={`
+                  object-contain p-4
+                  ${hasEvolutionImage ? 'scale-110' : 'scale-105'}
+                  brightness-110 saturate-150
+                `}
+                unoptimized
+              />
+              {/* Hue shift overlay for dramatic effect */}
+              {!hasEvolutionImage && (
+                <div className="absolute inset-0 mix-blend-color" style={{ backgroundColor: 'rgba(255, 100, 50, 0.15)' }} />
+              )}
             </div>
-            {/* Intense shimmer effect */}
-            <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none">
-              <div className="w-full h-full bg-gradient-to-tr from-white/0 via-white/30 to-white/0 animate-pulse" />
-            </div>
-            {/* Lenticular ridge lines overlay (more intense) */}
+
+            {/* Holographic rainbow shimmer */}
             <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none">
               <div
-                className="w-full h-full opacity-20"
+                className="w-full h-full opacity-30"
                 style={{
-                  backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.5) 2px, rgba(255,255,255,0.5) 3px)',
+                  background: 'conic-gradient(from 0deg, #ff0000, #ff8800, #ffff00, #00ff00, #0088ff, #8800ff, #ff0000)',
+                  animation: 'spin 3s linear infinite',
                 }}
               />
             </div>
-            {/* Label overlay for Frame B */}
-            <div className="absolute bottom-6 left-0 right-0 flex flex-col items-center gap-1">
-              <span className="text-white text-sm font-bold drop-shadow-lg bg-gradient-to-r from-orange-500/80 to-red-500/80 px-3 py-1 rounded-full shadow-lg">
-                {getFrameLabel(card, true)}
+
+            {/* Radial glow pulse */}
+            <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none">
+              <div
+                className="w-full h-full"
+                style={{
+                  background: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.3) 0%, transparent 70%)',
+                  animation: 'pulse-glow 2s ease-in-out infinite',
+                }}
+              />
+            </div>
+
+            {/* Intense lenticular ridges for Frame B */}
+            <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none">
+              <div className="w-full h-full" style={{
+                backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 1.5px, rgba(255,255,255,0.15) 1.5px, rgba(255,255,255,0.15) 3px)',
+              }} />
+            </div>
+
+            {/* Frame B label */}
+            <div className="absolute bottom-6 left-0 right-0 flex flex-col items-center gap-1 z-10">
+              <span className="text-white text-sm font-bold drop-shadow-lg bg-gradient-to-r from-orange-500/90 to-red-500/90 px-3 py-1 rounded-full shadow-lg">
+                ✨ {getFrameLabel(card, true)}
               </span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Status label below with flip indicator */}
-      <div className="flex flex-col items-center gap-2">
-        <div className="flex items-center gap-2 text-text-secondary text-sm">
-          <span className={`transition-opacity duration-300 ${!isFlipped ? 'opacity-100' : 'opacity-40'}`}>
+      {/* ─── Status area ─── */}
+      <div className="flex flex-col items-center gap-2 w-full">
+        {/* Flip indicator bar */}
+        <div className="flex items-center gap-3 w-full max-w-[200px]">
+          <span className={`text-xs font-medium transition-all duration-500 ${!isFlipped ? 'text-primary scale-110' : 'text-text-secondary/50'}`}>
             {getFrameLabel(card, false)}
           </span>
-          <span className="text-primary animate-pulse">⟷</span>
-          <span className={`transition-opacity duration-300 ${isFlipped ? 'opacity-100' : 'opacity-40'}`}>
+          <div className="flex-1 h-6 bg-gray-200/50 rounded-full overflow-hidden relative">
+            <div
+              className={`
+                h-full rounded-full transition-all duration-700 ease-out
+                ${gradient.includes('orange') ? 'bg-gradient-to-r from-orange-400 to-orange-600' :
+                  gradient.includes('red') ? 'bg-gradient-to-r from-red-400 to-red-600' :
+                  gradient.includes('blue') ? 'bg-gradient-to-r from-blue-400 to-blue-600' :
+                  gradient.includes('green') ? 'bg-gradient-to-r from-green-400 to-green-600' :
+                  gradient.includes('purple') ? 'bg-gradient-to-r from-purple-400 to-purple-600' :
+                  'bg-gradient-to-r from-primary to-orange-500'}
+              `}
+              style={{
+                width: '50%',
+                marginLeft: isFlipped ? '50%' : '0%',
+              }}
+            />
+          </div>
+          <span className={`text-xs font-medium transition-all duration-500 ${isFlipped ? 'text-primary scale-110' : 'text-text-secondary/50'}`}>
             {getFrameLabel(card, true)}
           </span>
         </div>
-        <p className="text-text-secondary/60 text-xs">
-          悬停或滑动卡片查看光栅效果
+
+        {/* Hint text */}
+        <p className="text-text-secondary/50 text-[10px] tracking-wide">
+          点击卡片翻转 · 滑动切换形态
         </p>
       </div>
+
+      {/* Animations */}
+      <style jsx>{`
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        @keyframes pulse-glow {
+          0%, 100% { opacity: 0.4; }
+          50% { opacity: 1; }
+        }
+      `}</style>
     </div>
   );
 }
