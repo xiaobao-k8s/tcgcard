@@ -75,3 +75,41 @@ export function loadCards(): Card[] {
 | 编号 | 描述 | 原因 | 计划 |
 |------|------|------|------|
 | P2 #2 | 缺失架构文档中列出的组件 | 属于 T3-T4 范围 | 后续任务实现 |
+
+---
+
+## 二次 Review（review-agent 验收）
+
+> 验收日期: 2026-07-06
+> 验收人: review-agent
+
+### P2 #1: `loadCards()` 模块缓存 -- 通过
+
+- `src/lib/cards.ts` 中新增 `loadCardsRaw()` 函数包含原始磁盘读取逻辑
+- 模块顶层 `const cardsCache = loadCardsRaw()` 在模块加载时执行一次
+- 导出的 `loadCards()` 返回 `cardsCache`，不再读盘
+- 所有调用方 (`getCardById`, `filterCards`, `getAttributes`, `getRarities`, `generateStaticParams`) 自动共享同一份数据
+- 实现方式符合原始 review 建议
+
+### P2 #3: `build-data.ts` 代码去重 -- 通过
+
+- `scripts/build-data.ts` 已删除原有重复的 `loadAllCards()` 和 `CardData` 接口
+- 改为 `import { loadCards } from '../src/lib/cards'`，在 `main()` 中直接调用
+- 消除了约 80% 的代码重复，符合原始 review 建议
+
+### P2 #4: emoji 提取 -- 通过
+
+- 新建 `src/lib/attribute-emoji.ts`，导出 `ATTRIBUTE_EMOJI`、`DEFAULT_ATTRIBUTE_EMOJI`、`getAttributeEmoji()`
+- `src/app/page.tsx` 第 2 行 import `getAttributeEmoji`，第 35 行使用 `{getAttributeEmoji(card.attribute)}` 替换了三元链
+- `src/app/[cardId]/page.tsx` 第 2 行 import `getAttributeEmoji`，第 33 行同样使用
+- 两处硬编码三元表达式已完全消除，符合原始 review 建议
+
+### 构建验证
+
+- [x] `pnpm tsc --noEmit` 通过（无输出即无错误）
+- [x] `pnpm build` 成功（8 pages，3 SSG 路由正常生成）
+- [x] 未引入新类型错误或运行时问题
+
+### 结论
+
+**三项 P2 修复均已通过验收。** 修复实现与原始 review 建议一致，无引入新问题。可继续后续任务。
