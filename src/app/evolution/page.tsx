@@ -1,7 +1,16 @@
 import { getEvolutionChainsGrouped, getAttributes } from '@/lib/cards';
+import Image from 'next/image';
 import Link from 'next/link';
 import { getAttributeEmoji } from '@/lib/attribute-emoji';
 import { getAttributeGradient } from '@/lib/attribute-gradient';
+
+/**
+ * Get PokeAPI official artwork URL for a Pokémon
+ */
+function getPokeApiImageUrl(number: string): string {
+  const dexNum = parseInt(number, 10);
+  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${dexNum}.png`;
+}
 
 export default function EvolutionPage() {
   const groupedChains = getEvolutionChainsGrouped();
@@ -129,11 +138,16 @@ function EvolutionLine({ chain }: { chain: Card[] }) {
               border-2 border-border
               flex items-center justify-center
               shadow-md group-hover:shadow-lg
+              overflow-hidden relative
             `}
           >
-            <span className="text-2xl sm:text-3xl" role="img" aria-label={card.attribute}>
-              {getAttributeEmoji(card.attribute)}
-            </span>
+            <Image
+              src={getPokeApiImageUrl(card.number)}
+              alt={card.name.zh}
+              fill
+              className="object-contain p-1"
+              unoptimized
+            />
           </div>
           <div>
             <p className="text-sm font-medium text-text-primary group-hover:text-primary transition-colors">
@@ -175,6 +189,7 @@ function EvolutionLine({ chain }: { chain: Card[] }) {
                   border-2
                   flex items-center justify-center
                   transition-all duration-200
+                  overflow-hidden relative
                   ${
                     card.rarity === 'legendary'
                       ? 'border-legendary-glow/60 shadow-[0_0_16px_4px_rgba(139,92,246,0.3)]'
@@ -184,9 +199,13 @@ function EvolutionLine({ chain }: { chain: Card[] }) {
                   }
                 `}
               >
-                <span className="text-2xl sm:text-3xl" role="img" aria-label={card.attribute}>
-                  {getAttributeEmoji(card.attribute)}
-                </span>
+                <Image
+                  src={getPokeApiImageUrl(card.number)}
+                  alt={card.name.zh}
+                  fill
+                  className="object-contain p-1"
+                  unoptimized
+                />
               </div>
               <span className="text-xs font-medium text-text-secondary group-hover:text-primary transition-colors truncate max-w-16 sm:max-w-20 text-center">
                 {card.name.zh}

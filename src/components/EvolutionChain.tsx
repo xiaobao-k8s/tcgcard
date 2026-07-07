@@ -1,8 +1,8 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import type { Card } from '@/lib/types';
-import { getAttributeEmoji } from '@/lib/attribute-emoji';
 import { getAttributeGradient } from '@/lib/attribute-gradient';
 
 interface EvolutionChainProps {
@@ -10,6 +10,14 @@ interface EvolutionChainProps {
   chain: Card[];
   /** The currently viewed card ID. */
   currentCardId: string;
+}
+
+/**
+ * Get PokeAPI official artwork URL for a Pokémon
+ */
+function getPokeApiImageUrl(number: string): string {
+  const dexNum = parseInt(number, 10);
+  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${dexNum}.png`;
 }
 
 export default function EvolutionChain({ chain, currentCardId }: EvolutionChainProps) {
@@ -44,6 +52,8 @@ export default function EvolutionChain({ chain, currentCardId }: EvolutionChainP
                   border-2
                   flex items-center justify-center
                   transition-all duration-200
+                  overflow-hidden
+                  relative
                   ${
                     card.id === currentCardId
                       ? 'border-primary shadow-[0_0_12px_4px_rgba(249,115,22,0.4)] ring-2 ring-primary/30'
@@ -51,9 +61,13 @@ export default function EvolutionChain({ chain, currentCardId }: EvolutionChainP
                   }
                 `}
               >
-                <span className="text-xl sm:text-2xl" role="img" aria-label={card.attribute}>
-                  {getAttributeEmoji(card.attribute)}
-                </span>
+                <Image
+                  src={getPokeApiImageUrl(card.number)}
+                  alt={card.name.zh}
+                  fill
+                  className="object-contain p-1"
+                  unoptimized
+                />
               </div>
               <span
                 className={`

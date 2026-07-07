@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import type { Card } from '@/lib/types';
 import { getAttributeEmoji } from '@/lib/attribute-emoji';
@@ -9,6 +10,14 @@ interface CardCircleProps {
   card: Card;
   sizeClass?: string;
   glowClass?: string;
+}
+
+/**
+ * Get PokeAPI official artwork URL for a Pokémon
+ */
+function getPokeApiImageUrl(number: string): string {
+  const dexNum = parseInt(number, 10);
+  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${dexNum}.png`;
 }
 
 /**
@@ -45,27 +54,11 @@ function getGlowClasses(rarity: Card['rarity']): string {
   }
 }
 
-/**
- * Map rarity to emoji display size inside the circle.
- */
-function getEmojiSize(rarity: Card['rarity']): string {
-  switch (rarity) {
-    case 'legendary':
-      return 'text-4xl sm:text-5xl';
-    case 'ultra-rare':
-      return 'text-3xl sm:text-4xl';
-    case 'rare':
-      return 'text-2xl sm:text-3xl';
-    case 'common':
-      return 'text-xl sm:text-2xl';
-  }
-}
-
 export default function CardCircle({ card }: CardCircleProps) {
   const sizeClass = getSizeClasses(card.rarity);
   const glowClass = getGlowClasses(card.rarity);
-  const emojiSize = getEmojiSize(card.rarity);
   const gradient = getAttributeGradient(card.attribute, 'medium');
+  const imageUrl = getPokeApiImageUrl(card.number);
 
   return (
     <Link
@@ -73,7 +66,7 @@ export default function CardCircle({ card }: CardCircleProps) {
       className={`group relative inline-flex flex-col items-center`}
       title={`${card.name.zh} #${card.number}`}
     >
-      {/* Circle bubble */}
+      {/* Circle bubble with Pokémon image */}
       <div
         className={`
           ${sizeClass}
@@ -84,11 +77,30 @@ export default function CardCircle({ card }: CardCircleProps) {
           transition-all duration-300 ease-out
           hover:scale-110 hover:shadow-xl
           cursor-pointer
+          overflow-hidden
+          relative
         `}
       >
-        <span className={emojiSize} role="img" aria-label={card.attribute}>
-          {getAttributeEmoji(card.attribute)}
-        </span>
+        {/* Pokémon image from PokeAPI */}
+        <Image
+          src={imageUrl}
+          alt={card.name.zh}
+          fill
+          className="object-contain p-1"
+          unoptimized
+          onError={(e) => {
+            // Fallback to emoji if image fails to load
+            const target = e.target as HTMLImageElement;
+            target.style.display = 'none';
+            const parent = target.parentElement;
+            if (parent) {
+              const emoji = document.createElement('div');
+              emoji.className = 'text-4xl';
+              emoji.textContent = getAttributeEmoji(card.attribute);
+              parent.appendChild(emoji);
+            }
+          }}
+        />
       </div>
 
       {/* Tooltip — visible on hover */}

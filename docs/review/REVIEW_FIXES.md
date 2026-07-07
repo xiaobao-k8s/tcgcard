@@ -190,41 +190,56 @@ export function loadCards(): Card[] {
 
 ---
 
-## 二次 Review（review-agent 验收）
+## 二次 Review（review-agent 验收 T9 Phase 1 Critical）
 
-> 验收日期: 2026-07-06
+> 验收日期: 2026-07-07
 > 验收人: review-agent
 
-### P2 #1: `loadCards()` 模块缓存 -- 通过
+### C1: `import-images.ts` sharp 格式转换 -- 通过
 
-- `src/lib/cards.ts` 中新增 `loadCardsRaw()` 函数包含原始磁盘读取逻辑
-- 模块顶层 `const cardsCache = loadCardsRaw()` 在模块加载时执行一次
-- 导出的 `loadCards()` 返回 `cardsCache`，不再读盘
-- 所有调用方 (`getCardById`, `filterCards`, `getAttributes`, `getRarities`, `generateStaticParams`) 自动共享同一份数据
-- 实现方式符合原始 review 建议
+- 第 12 行: `import sharp from 'sharp'` 正确导入
+- 第 406 行: `main()` 改为 `async function`，第 513 行 `main().catch(...)` 正确处理异步错误
+- 第 495-496 行: `await sharp(srcPath).png().toFile(finalDest)` 替代了原来的 `copyFileSync`，执行真实格式转换
+- `package.json` 第 21 行: `"sharp": "^0.35.3"` 已作为依赖安装
+- `getDestinationPath()` 始终返回 `.png` 扩展名路径，sharp 输出格式与目标一致
+- `validateImage()` 仍只检查文件大小和格式，未做尺寸验证 -- 对应 M1（Medium），不在本次 Critical 修复范围内，可接受
 
-### P2 #3: `build-data.ts` 代码去重 -- 通过
+### C2: `gen-prompts.ts` O(n^2) 消除 -- 通过
 
-- `scripts/build-data.ts` 已删除原有重复的 `loadAllCards()` 和 `CardData` 接口
-- 改为 `import { loadCards } from '../src/lib/cards'`，在 `main()` 中直接调用
-- 消除了约 80% 的代码重复，符合原始 review 建议
+- `main()` 第 364 行: `const cards = loadAllCards()` 加载一次
+- `main()` 第 365 行: `const cardMap = new Map(cards.map((c) => [c.id, c]))` 构建查找表
+- `generateCardPrompts(info, cardMap)` (第 191 行): 签名改为接收 `cardMap`，内部不再调用 `loadAllCards()`
+- `generateBatchAll(infos, cardMap)` (第 322 行): 同样接收 `cardMap`
+- 两处调用点 (第 384 行、第 392 行) 均传入 `cardMap`
+- 复杂度从 O(n^2) 降为 O(n) -- 修复正确
 
-### P2 #4: emoji 提取 -- 通过
+### C3: `generate-template.ts` yaml.dump -- 通过
 
-- 新建 `src/lib/attribute-emoji.ts`，导出 `ATTRIBUTE_EMOJI`、`DEFAULT_ATTRIBUTE_EMOJI`、`getAttributeEmoji()`
-- `src/app/page.tsx` 第 2 行 import `getAttributeEmoji`，第 35 行使用 `{getAttributeEmoji(card.attribute)}` 替换了三元链
-- `src/app/[cardId]/page.tsx` 第 2 行 import `getAttributeEmoji`，第 33 行同样使用
-- 两处硬编码三元表达式已完全消除，符合原始 review 建议
+- 第 126-131 行: `yaml.dump(template, { lineWidth: -1, noRefs: true, quotingType: '"', forceQuotes: false })` 正确使用 js-yaml 序列化
+- `template` 对象 (第 95-123 行) 结构完整，涵盖所有必填字段
+- 手动 YAML 字符串拼接代码已删除 -- 单一数据源
 
 ### 构建验证
 
-- [x] `pnpm tsc --noEmit` 通过（无输出即无错误）
-- [x] `pnpm build` 成功（8 pages，3 SSG 路由正常生成）
-- [x] 未引入新类型错误或运行时问题
+- [x] `npx tsc --noEmit` 通过（无输出即无错误）
+
+### Medium 问题状态
+
+以下 Medium 问题未在本次修复中处理，均属合理范围：
+
+| 编号 | 描述 | 状态 |
+|------|------|------|
+| M1 | 缺少图片尺寸校验 | 未修复 -- 非 Critical |
+| M2 | `pinyinify` 函数名误导 | 未修复 -- 命名问题 |
+| M3 | 短参数别名 `-i`/`-g` 未实现 | 未修复 -- 便利性 |
+| M4 | YAML 解析错误静默忽略 | 未修复 -- 体验问题 |
+| M5 | 英文提示词模板未实现 | 未修复 -- 功能扩展 |
+| M6 | `CardRaw` 类型弱化 | 未修复 -- validate-cards.ts 未改动 |
+| M7 | 错误输出截断为 20 条 | 未修复 -- 体验问题 |
 
 ### 结论
 
-**三项 P2 修复均已通过验收。** 修复实现与原始 review 建议一致，无引入新问题。可继续后续任务。
+**三项 Critical 修复均已通过验收。** 修复实现与原始 review 建议一致，无引入新问题。`npx tsc --noEmit` 编译通过。Medium 问题可留待后续迭代处理。
 
 ---
 

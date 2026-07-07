@@ -1,12 +1,20 @@
 'use client';
 
 import { useState, useRef, type TouchEvent } from 'react';
+import Image from 'next/image';
 import type { Card } from '@/lib/types';
-import { getAttributeEmoji } from '@/lib/attribute-emoji';
 import { getAttributeGradient } from '@/lib/attribute-gradient';
 
 interface LenticularFlipProps {
   card: Card;
+}
+
+/**
+ * Get PokeAPI official artwork URL for a Pokémon
+ */
+function getPokeApiImageUrl(number: string): string {
+  const dexNum = parseInt(number, 10);
+  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${dexNum}.png`;
 }
 
 /**
@@ -28,6 +36,7 @@ export default function LenticularFlip({ card }: LenticularFlipProps) {
   const [isFlipped, setIsFlipped] = useState(false);
   const touchStartX = useRef<number | null>(null);
   const gradient = getAttributeGradient(card.attribute, 'dark');
+  const imageUrl = getPokeApiImageUrl(card.number);
 
   const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
     touchStartX.current = e.touches[0].clientX;
@@ -76,12 +85,19 @@ export default function LenticularFlip({ card }: LenticularFlipProps) {
               shadow-xl
               flex flex-col items-center justify-center
               [backface-visibility:hidden]
+              overflow-hidden
             `}
           >
-            <span className="text-6xl sm:text-7xl" role="img" aria-label={card.attribute}>
-              {getAttributeEmoji(card.attribute)}
-            </span>
-            <span className="mt-2 text-white/90 text-sm font-medium drop-shadow">
+            {/* Pokémon image from PokeAPI */}
+            <Image
+              src={imageUrl}
+              alt={card.name.zh}
+              fill
+              className="object-contain p-4"
+              unoptimized
+              priority
+            />
+            <span className="absolute bottom-8 text-white/90 text-sm font-medium drop-shadow bg-black/20 px-2 py-0.5 rounded">
               {card.name.zh}
             </span>
             {/* Lenticular ridge lines overlay */}
@@ -109,12 +125,17 @@ export default function LenticularFlip({ card }: LenticularFlipProps) {
               flex flex-col items-center justify-center
               [backface-visibility:hidden]
               [transform:rotateY(180deg)]
-              brightness-110
+              overflow-hidden
             `}
           >
-            <span className="text-6xl sm:text-7xl" role="img" aria-label={card.attribute}>
-              {getAttributeEmoji(card.attribute)}
-            </span>
+            {/* Pokémon image from PokeAPI (same as front for now) */}
+            <Image
+              src={imageUrl}
+              alt={card.name.zh}
+              fill
+              className="object-contain p-4 brightness-110"
+              unoptimized
+            />
             {/* Shimmer effect for evolved/attack form */}
             <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none">
               <div className="w-full h-full bg-gradient-to-tr from-white/0 via-white/20 to-white/0" />

@@ -1,9 +1,17 @@
 import { getCardsByRarity, RARITY_ORDER } from '@/lib/cards';
 import type { Card, Rarity } from '@/lib/types';
+import Image from 'next/image';
 import Link from 'next/link';
 import RarityBadge from '@/components/RarityBadge';
-import { getAttributeEmoji } from '@/lib/attribute-emoji';
 import { getAttributeGradient } from '@/lib/attribute-gradient';
+
+/**
+ * Get PokeAPI official artwork URL for a Pokémon
+ */
+function getPokeApiImageUrl(number: string): string {
+  const dexNum = parseInt(number, 10);
+  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${dexNum}.png`;
+}
 
 const RARITY_SECTION_LABELS: Record<Rarity, string> = {
   legendary: '传说级',
@@ -120,9 +128,14 @@ function LegendaryCard({ card }: { card: Card }) {
             transition-all duration-300
           `}
         >
-          <span className="text-5xl sm:text-6xl" role="img" aria-label={card.attribute}>
-            {getAttributeEmoji(card.attribute)}
-          </span>
+          <Image
+            src={getPokeApiImageUrl(card.number)}
+            alt={card.name.zh}
+            width={128}
+            height={128}
+            className="object-contain p-4"
+            unoptimized
+          />
         </div>
       </div>
 
@@ -184,9 +197,14 @@ function CardGrid({ cards, rarity }: { cards: Card[]; rarity: Rarity }) {
               }
             `}
           >
-            <span role="img" aria-label={card.attribute}>
-              {getAttributeEmoji(card.attribute)}
-            </span>
+            <Image
+              src={getPokeApiImageUrl(card.number)}
+              alt={card.name.zh}
+              width={rarity === 'ultra-rare' ? 80 : 64}
+              height={rarity === 'ultra-rare' ? 80 : 64}
+              className="object-contain p-2"
+              unoptimized
+            />
           </div>
           <span className="text-xs font-medium text-text-secondary group-hover:text-primary transition-colors truncate max-w-20 text-center">
             {card.name.zh}
