@@ -84,3 +84,90 @@ export function getRarities(): Rarity[] {
   const cards = loadCards();
   return Array.from(new Set(cards.map((c) => c.rarity))) as Rarity[];
 }
+
+/**
+ * Build all evolution chains from the card data.
+ * Returns an array of chains, each ordered from base form to final form.
+ */
+export function getEvolutionChains(): Card[][] {
+  const cards = loadCards();
+  const cardMap = new Map(cards.map((c) => [c.id, c]));
+  const chains: Card[][] = [];
+  const visited = new Set<string>();
+
+  for (const card of cards) {
+    // Only start from base forms (no evolves_from)
+    if (card.evolves_from) continue;
+
+    const chain: Card[] = [];
+    let current: Card | undefined = card;
+    while (current) {
+      if (visited.has(current.id)) break;
+      visited.add(current.id);
+      chain.push(current);
+      // Follow the first evolves_to if it exists
+      const nextId: string | undefined = current.evolves_to?.[0];
+      current = nextId ? cardMap.get(nextId) : undefined;
+    }
+
+    if (chain.length > 0) {
+      chains.push(chain);
+    }
+  }
+
+  // Also include standalone cards (no evolution relationships) as single-element chains
+  for (const card of cards) {
+    if (!visited.has(card.id)) {
+      visited.add(card.id);
+      chains.push([card]);
+    }
+  }
+
+  return chains;
+}
+
+/**
+ * Group evolution chains by generation and attribute.
+ */
+export function getEvolutionChainsGrouped(): Record<string, Card[][]> {
+  const chains = getEvolutionChains();
+  const grouped: Record<string, Card[][]> = {};
+
+  for (const chain of chains) {
+    if (chain.length === 0) continue;
+    const representative = chain[0];
+    const key = `gen${representative.generation}-${representative.attribute}`;
+    if (!grouped[key]) {
+      grouped[key] = [];
+    }
+    grouped[key].push(chain);
+  }
+
+  return grouped;
+}
+
+/**
+ * Group cards by rarity tier, ordered from legendary to common.
+ */
+const RARITY_ORDER: Rarity[] = ['legendary', 'ultra-rare', 'rare', 'common'];
+
+export function getCardsByRarity(): Record<Rarity, Card[]> {
+  const cards = loadCards();
+  const grouped: Record<Rarity, Card[]> = {
+    legendary: [],
+    'ultra-rare': [],
+    rare: [],
+    common: [],
+  };
+
+  for (const card of cards) {
+    grouped[card.rarity].push(card);
+  }
+
+  // Sort each group by DP attack descending (strongest first)
+  for (const rarity of RARITY_ORDER) {
+    grouped[rarity].sort((a, b) => b.back.dp_attack - a.back.dp_attack);
+  }
+
+  return grouped;
+}

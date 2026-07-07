@@ -1,47 +1,49 @@
 # 开发日志
 
-## T1 + T2: 项目初始化 + 数据层搭建 (2026-07-06)
+## T5 + T6 + T7 + T8: 进化链/稀有度/对战规则页面 + 部署配置 (2026-07-06)
 
 ### 实现内容
 
-**T1: 项目初始化**
-- 使用 `pnpm create next-app@14` 创建 Next.js 14 项目（App Router + TypeScript + src dir）
-- 升级 Tailwind CSS 到 v4（从默认 v3.4.1 升级）
-  - 移除 `tailwind.config.ts`
-  - 使用 CSS `@theme` 指令配置主题色
-  - PostCSS 插件从 `tailwindcss` 改为 `@tailwindcss/postcss`
-- 配置 Next.js 静态导出 (`output: "export"`)
-- 建立目录结构：`src/app/`, `src/components/`, `src/lib/`, `data/`, `public/cards/`, `scripts/`
-- 更新 `.gitignore` 排除构建输出和开发临时文件
-- 配置奇多橙主题色（`#f97316`）及暖色系配色方案
+**T5: 进化链页面 (`src/app/evolution/page.tsx`)**
+- 按进化关系分组展示，横排串联，箭头连接
+- 按属性/世代分区（gen1/gen2 + 属性名分组）
+- 传说/极稀有卡片带发光效果
+- 点击精灵跳转详情页
+- 无进化关系的单卡独立展示
+- 辅助函数：`getEvolutionChains()`, `getEvolutionChainsGrouped()` 添加到 `src/lib/cards.ts`
 
-**T2: 数据层搭建**
-- `src/lib/types.ts` — 定义 `Card`, `CardBack`, `CardFilters`, `Rarity`, `EffectType`, `CharacterType`, `Generation` 类型
-- `src/lib/cards.ts` — 实现以下函数：
-  - `loadCards()` — 读取 `data/gen{1,2}/*.yaml` 并解析
-  - `getCardById(id)` — 按 ID 查询单卡
-  - `filterCards(filters)` — 按代际/属性/稀有度/搜索词筛选
-  - `getAttributes()` — 获取所有唯一属性
-  - `getRarities()` — 获取所有唯一稀有度
-- `data/gen1/xfd-001.yaml` — 小火龙示例卡片
-- `data/gen1/xfd-004.yaml` — 喷火龙示例卡片（传说稀有度）
-- `data/gen2/ybd-001.yaml` — 妙蛙种子示例卡片
-- `scripts/build-data.ts` — YAML → JSON 构建脚本（可选，供客户端读取）
-- `src/app/page.tsx` — 首页，展示所有收录卡片
-- `src/app/[cardId]/page.tsx` — 单卡详情页，含面包屑、DP 数据展示
+**T6: 稀有度榜单页面 (`src/app/rarity/page.tsx`)**
+- 按稀有度分档：传说级 → 极稀有 → 稀有 → 普通
+- 传说级大尺寸卡片置顶（3 列大卡片网格，带紫色光晕）
+- 其他稀有度用小气泡网格展示
+- 每档附当年交换行情描述
+- 辅助函数：`getCardsByRarity()` 添加到 `src/lib/cards.ts`
+
+**T7: 对战规则页面 (`src/app/battle-rules/page.tsx`)**
+- 对战流程示意（出卡 → 比攻击 → 比防御 → 三局两胜）
+- 一代规则详解 + DP 数值案例
+- 二代规则详解（新增速度属性）+ DP 数值案例
+- 一代 vs 二代对比表格
+- 拍卡玩法补充说明
+
+**T8: 部署配置**
+- `next.config.mjs` — 更新 `output: "export"` + `images.unoptimized` + GitHub Pages basePath 指引
+- `.github/workflows/deploy.yml` — GitHub Actions 自动部署到 GitHub Pages
+- `vercel.json` — Vercel 静态部署配置
 
 ### 技术要点
-- 包管理：pnpm 11.7
-- Node.js v24
-- Tailwind CSS 4 使用 CSS `@import "tailwindcss"` + `@theme` 语法
-- 数据文件用 YAML 格式，服务端运行时读取（SSG 构建时执行）
-- TypeScript 严格模式，类型检查通过
+- Server Components 渲染，无需客户端 JS（evolution/rarity 页面）
+- 复用现有组件：RarityBadge
+- 复用 lib 函数：`getAttributeEmoji`, `getAttributeGradient`
+- Tailwind CSS 4 自定义阴影/渐变
+- TypeScript 严格模式，类型完整
+- ESLint `react/no-unescaped-entities` 合规
 
 ### 验收状态
-- [x] `pnpm install` 成功
-- [x] TypeScript 类型检查通过 (`pnpm tsc --noEmit`)
-- [x] `pnpm build` 成功，生成 8 个静态页面（首页 + not-found + 3 张卡片详情）
-- [ ] `pnpm dev` 待本地验证
+- [x] `pnpm tsc --noEmit` 通过
+- [x] `pnpm build` 成功，生成 11 个静态页面（含 evolution, rarity, battle-rules）
+- [x] 部署配置完整（GitHub Pages + Vercel）
+- [ ] 本地浏览器验证 3 个新页面渲染
 
 ---
 
@@ -117,3 +119,48 @@
 - [x] 进化链导航正常（横排展示，当前卡片高亮，点击跳转）
 - [x] 筛选功能正常（代际/属性/稀有度/搜索）
 - [x] 组件拆分完整：CardCircle, FilterBar, CardDetail, LenticularFlip, EvolutionChain, RarityBadge, HomePage
+
+---
+
+## T1 + T2: 项目初始化 + 数据层搭建 (2026-07-06)
+
+### 实现内容
+
+**T1: 项目初始化**
+- 使用 `pnpm create next-app@14` 创建 Next.js 14 项目（App Router + TypeScript + src dir）
+- 升级 Tailwind CSS 到 v4（从默认 v3.4.1 升级）
+  - 移除 `tailwind.config.ts`
+  - 使用 CSS `@theme` 指令配置主题色
+  - PostCSS 插件从 `tailwindcss` 改为 `@tailwindcss/postcss`
+- 配置 Next.js 静态导出 (`output: "export"`)
+- 建立目录结构：`src/app/`, `src/components/`, `src/lib/`, `data/`, `public/cards/`, `scripts/`
+- 更新 `.gitignore` 排除构建输出和开发临时文件
+- 配置奇多橙主题色（`#f97316`）及暖色系配色方案
+
+**T2: 数据层搭建**
+- `src/lib/types.ts` — 定义 `Card`, `CardBack`, `CardFilters`, `Rarity`, `EffectType`, `CharacterType`, `Generation` 类型
+- `src/lib/cards.ts` — 实现以下函数：
+  - `loadCards()` — 读取 `data/gen{1,2}/*.yaml` 并解析
+  - `getCardById(id)` — 按 ID 查询单卡
+  - `filterCards(filters)` — 按代际/属性/稀有度/搜索词筛选
+  - `getAttributes()` — 获取所有唯一属性
+  - `getRarities()` — 获取所有唯一稀有度
+- `data/gen1/xfd-001.yaml` — 小火龙示例卡片
+- `data/gen1/xfd-004.yaml` — 喷火龙示例卡片（传说稀有度）
+- `data/gen2/ybd-001.yaml` — 妙蛙种子示例卡片
+- `scripts/build-data.ts` — YAML → JSON 构建脚本（可选，供客户端读取）
+- `src/app/page.tsx` — 首页，展示所有收录卡片
+- `src/app/[cardId]/page.tsx` — 单卡详情页，含面包屑、DP 数据展示
+
+### 技术要点
+- 包管理：pnpm 11.7
+- Node.js v24
+- Tailwind CSS 4 使用 CSS `@import "tailwindcss"` + `@theme` 语法
+- 数据文件用 YAML 格式，服务端运行时读取（SSG 构建时执行）
+- TypeScript 严格模式，类型检查通过
+
+### 验收状态
+- [x] `pnpm install` 成功
+- [x] TypeScript 类型检查通过 (`pnpm tsc --noEmit`)
+- [x] `pnpm build` 成功，生成 8 个静态页面（首页 + not-found + 3 张卡片详情）
+- [ ] `pnpm dev` 待本地验证
