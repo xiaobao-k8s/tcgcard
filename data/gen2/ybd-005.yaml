@@ -1,0 +1,26 @@
+id: ybd-005
+generation: 2
+name:
+  zh: 月桂叶
+  ja: ベイリーフ
+number: "153"
+attribute: 草
+rarity: rare
+evolution_stage: 2
+evolves_from: ybd-002
+evolves_to:
+  - ybd-006
+effect_type: evolution
+image_front: /cards/gen2/ybd-005-front.png
+image_frame_a: /cards/gen2/ybd-005-frame-a.png
+image_frame_b: /cards/gen2/ybd-005-frame-b.png
+back:
+  skill: 飞叶快刀
+  dp_attack: 75
+  dp_defense: 80
+  dp_speed: 65
+  height: 1.2m
+  weight: 15.8kg
+  description: 脖子上的叶子散发出淡淡的香气。
+  character_type: pokemon
+source: pokedex

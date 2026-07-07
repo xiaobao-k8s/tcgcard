@@ -8,8 +8,9 @@ attribute: 水
 rarity: common
 evolution_stage: 1
 evolves_from: null
-evolves_to: []
-effect_type: attack
+evolves_to:
+  - ybd-009
+effect_type: evolution
 image_front: /cards/gen2/ybd-004-front.png
 image_frame_a: /cards/gen2/ybd-004-frame-a.png
 image_frame_b: /cards/gen2/ybd-004-frame-b.png

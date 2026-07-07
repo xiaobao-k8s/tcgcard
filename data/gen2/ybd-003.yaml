@@ -8,8 +8,9 @@ attribute: 火
 rarity: common
 evolution_stage: 1
 evolves_from: null
-evolves_to: []
-effect_type: attack
+evolves_to:
+  - ybd-007
+effect_type: evolution
 image_front: /cards/gen2/ybd-003-front.png
 image_frame_a: /cards/gen2/ybd-003-frame-a.png
 image_frame_b: /cards/gen2/ybd-003-frame-b.png

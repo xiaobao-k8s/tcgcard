@@ -1,0 +1,26 @@
+id: ybd-009
+generation: 2
+name:
+  zh: 蓝鳄
+  ja: アリゲイツ
+number: "159"
+attribute: 水
+rarity: rare
+evolution_stage: 2
+evolves_from: ybd-004
+evolves_to:
+  - ybd-010
+effect_type: evolution
+image_front: /cards/gen2/ybd-009-front.png
+image_frame_a: /cards/gen2/ybd-009-frame-a.png
+image_frame_b: /cards/gen2/ybd-009-frame-b.png
+back:
+  skill: 咬碎
+  dp_attack: 85
+  dp_defense: 80
+  dp_speed: 70
+  height: 1.1m
+  weight: 25.0kg
+  description: 身体变大后性格也变得更加粗暴。
+  character_type: pokemon
+source: pokedex

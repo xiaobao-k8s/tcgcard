@@ -8,8 +8,9 @@ attribute: 草
 rarity: common
 evolution_stage: 1
 evolves_from: null
-evolves_to: []
-effect_type: attack
+evolves_to:
+  - ybd-005
+effect_type: evolution
 image_front: /cards/gen2/ybd-002-front.png
 image_frame_a: /cards/gen2/ybd-002-frame-a.png
 image_frame_b: /cards/gen2/ybd-002-frame-b.png

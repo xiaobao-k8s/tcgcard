@@ -1,0 +1,24 @@
+id: xfd-020
+generation: 1
+name:
+  zh: 雷丘
+  ja: ライチュウ
+number: "026"
+attribute: 电
+rarity: rare
+evolution_stage: 2
+evolves_from: xfd-010
+evolves_to: []
+effect_type: evolution
+image_front: /cards/gen1/xfd-020-front.png
+image_frame_a: /cards/gen1/xfd-020-frame-a.png
+image_frame_b: /cards/gen1/xfd-020-frame-b.png
+back:
+  skill: 十万伏特
+  dp_attack: 75
+  dp_defense: 75
+  height: 0.8m
+  weight: 30.0kg
+  description: 蓄电能力更强，尾巴像避雷针。
+  character_type: pokemon
+source: pokedex

@@ -1,0 +1,25 @@
+id: ybd-010
+generation: 2
+name:
+  zh: 大力鳄
+  ja: オーダイル
+number: "160"
+attribute: 水
+rarity: ultra-rare
+evolution_stage: 3
+evolves_from: ybd-009
+evolves_to: []
+effect_type: evolution
+image_front: /cards/gen2/ybd-010-front.png
+image_frame_a: /cards/gen2/ybd-010-frame-a.png
+image_frame_b: /cards/gen2/ybd-010-frame-b.png
+back:
+  skill: 水炮
+  dp_attack: 125
+  dp_defense: 110
+  dp_speed: 95
+  height: 2.3m
+  weight: 88.8kg
+  description: 颚部力量惊人，能咬碎钢板。
+  character_type: pokemon
+source: pokedex

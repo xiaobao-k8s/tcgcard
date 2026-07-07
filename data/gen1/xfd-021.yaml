@@ -1,0 +1,25 @@
+id: xfd-021
+generation: 1
+name:
+  zh: 鬼斯
+  ja: ゴース
+number: "092"
+attribute: 幽灵
+rarity: common
+evolution_stage: 1
+evolves_from: null
+evolves_to:
+  - xfd-022
+effect_type: evolution
+image_front: /cards/gen1/xfd-021-front.png
+image_frame_a: /cards/gen1/xfd-021-frame-a.png
+image_frame_b: /cards/gen1/xfd-021-frame-b.png
+back:
+  skill: 舌舔
+  dp_attack: 40
+  dp_defense: 30
+  height: 1.3m
+  weight: 0.1kg
+  description: 气体形态的宝可梦，在暗处游荡。
+  character_type: pokemon
+source: pokedex

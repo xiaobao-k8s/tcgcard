@@ -1,0 +1,25 @@
+id: xfd-024
+generation: 1
+name:
+  zh: 豪力
+  ja: ゴーリキー
+number: "067"
+attribute: 格斗
+rarity: rare
+evolution_stage: 2
+evolves_from: xfd-023
+evolves_to:
+  - xfd-019
+effect_type: evolution
+image_front: /cards/gen1/xfd-024-front.png
+image_frame_a: /cards/gen1/xfd-024-frame-a.png
+image_frame_b: /cards/gen1/xfd-024-frame-b.png
+back:
+  skill: 过肩摔
+  dp_attack: 80
+  dp_defense: 75
+  height: 1.5m
+  weight: 70.5kg
+  description: 肌肉结实的格斗家，擅长投掷技。
+  character_type: pokemon
+source: pokedex

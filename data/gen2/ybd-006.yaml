@@ -1,0 +1,25 @@
+id: ybd-006
+generation: 2
+name:
+  zh: 大菊花
+  ja: メガニウム
+number: "154"
+attribute: 草
+rarity: ultra-rare
+evolution_stage: 3
+evolves_from: ybd-005
+evolves_to: []
+effect_type: evolution
+image_front: /cards/gen2/ybd-006-front.png
+image_frame_a: /cards/gen2/ybd-006-frame-a.png
+image_frame_b: /cards/gen2/ybd-006-frame-b.png
+back:
+  skill: 花瓣舞
+  dp_attack: 110
+  dp_defense: 120
+  dp_speed: 100
+  height: 1.8m
+  weight: 100.5kg
+  description: 花朵能释放出花草秘力，治愈周围的生物。
+  character_type: pokemon
+source: pokedex

@@ -6,10 +6,10 @@ name:
 number: "068"
 attribute: 格斗
 rarity: ultra-rare
-evolution_stage: 1
-evolves_from: null
+evolution_stage: 3
+evolves_from: xfd-024
 evolves_to: []
-effect_type: attack
+effect_type: evolution
 image_front: /cards/gen1/xfd-019-front.png
 image_frame_a: /cards/gen1/xfd-019-frame-a.png
 image_frame_b: /cards/gen1/xfd-019-frame-b.png

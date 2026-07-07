@@ -1,0 +1,25 @@
+id: ybd-008
+generation: 2
+name:
+  zh: 火爆兽
+  ja: バクフーン
+number: "157"
+attribute: 火
+rarity: ultra-rare
+evolution_stage: 3
+evolves_from: ybd-007
+evolves_to: []
+effect_type: evolution
+image_front: /cards/gen2/ybd-008-front.png
+image_frame_a: /cards/gen2/ybd-008-frame-a.png
+image_frame_b: /cards/gen2/ybd-008-frame-b.png
+back:
+  skill: 喷射火焰
+  dp_attack: 120
+  dp_defense: 100
+  dp_speed: 110
+  height: 1.7m
+  weight: 79.5kg
+  description: 释放的热风足以让周围的空气扭曲变形。
+  character_type: pokemon
+source: pokedex

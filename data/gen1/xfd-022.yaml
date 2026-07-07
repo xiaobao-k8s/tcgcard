@@ -1,0 +1,25 @@
+id: xfd-022
+generation: 1
+name:
+  zh: 鬼斯通
+  ja: ゴースト
+number: "093"
+attribute: 幽灵
+rarity: rare
+evolution_stage: 2
+evolves_from: xfd-021
+evolves_to:
+  - xfd-012
+effect_type: evolution
+image_front: /cards/gen1/xfd-022-front.png
+image_frame_a: /cards/gen1/xfd-022-frame-a.png
+image_frame_b: /cards/gen1/xfd-022-frame-b.png
+back:
+  skill: 暗影拳
+  dp_attack: 75
+  dp_defense: 75
+  height: 1.6m
+  weight: 0.1kg
+  description: 会用岩石般的手掌拍打对手。
+  character_type: pokemon
+source: pokedex

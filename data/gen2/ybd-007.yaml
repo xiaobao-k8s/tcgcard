@@ -1,0 +1,26 @@
+id: ybd-007
+generation: 2
+name:
+  zh: 火岩鼠
+  ja: マグマラシ
+number: "156"
+attribute: 火
+rarity: rare
+evolution_stage: 2
+evolves_from: ybd-003
+evolves_to:
+  - ybd-008
+effect_type: evolution
+image_front: /cards/gen2/ybd-007-front.png
+image_frame_a: /cards/gen2/ybd-007-frame-a.png
+image_frame_b: /cards/gen2/ybd-007-frame-b.png
+back:
+  skill: 火焰轮
+  dp_attack: 80
+  dp_defense: 75
+  dp_speed: 85
+  height: 0.9m
+  weight: 19.0kg
+  description: 背部火焰越旺盛代表状态越好。
+  character_type: pokemon
+source: pokedex

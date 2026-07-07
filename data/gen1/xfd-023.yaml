@@ -1,0 +1,25 @@
+id: xfd-023
+generation: 1
+name:
+  zh: 腕力
+  ja: ワンリキー
+number: "066"
+attribute: 格斗
+rarity: common
+evolution_stage: 1
+evolves_from: null
+evolves_to:
+  - xfd-024
+effect_type: evolution
+image_front: /cards/gen1/xfd-023-front.png
+image_frame_a: /cards/gen1/xfd-023-frame-a.png
+image_frame_b: /cards/gen1/xfd-023-frame-b.png
+back:
+  skill: 空手劈
+  dp_attack: 45
+  dp_defense: 35
+  height: 0.8m
+  weight: 19.5kg
+  description: 每天锻炼肌肉，力量持续成长。
+  character_type: pokemon
+source: pokedex
