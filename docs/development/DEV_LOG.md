@@ -1,5 +1,72 @@
 # 开发日志
 
+## T9 Phase 1: 数据录入脚本 + 图片生成工作流 (2026-07-07)
+
+### 实现内容
+
+**`scripts/validate-cards.ts` — 数据验证脚本（12 项检查）**
+1. YAML 语法正确性
+2. 必填字段完整性（id, generation, name, attribute, rarity, dp_attack/defense 等）
+3. 字段值合法性（属性/稀有度/效果类型/character_type 枚举）
+4. ID 命名规范（xfd-XXX / ybd-XXX 格式）
+5. 无重复 ID
+6. 进化链引用完整性（evolves_to/evolves_from 引用必须存在）
+7. 进化链反向一致性（A→B 则 B←A 必须成立）
+8. evolution_stage 一致性
+9. DP 数值范围合规（按稀有度+进化阶段）
+10. dp_speed 世代规则（一代 null，二代必填）
+11. source 字段存在且合法
+12. 图片文件存在性检查（warn，不 error）
+
+**`scripts/generate-template.ts` — 卡片模板生成器**
+- 输入：`--id <card-id>` + `--gen <1|2>`
+- 输出：`data/gen{1,2}/{card-id}.yaml`（预填基础字段）
+- 预填：id, generation, name (空), number (空), rarity="common", evolution_stage=1, DP 默认中值, source="user-provided"
+- 自动校验 ID 格式和前缀/世代匹配
+
+**`scripts/gen-prompts.ts` — 批量生图提示词生成器**
+- 扫描 data/ 目录找出缺图卡片
+- 为每张卡片生成 ChatGPT 格式完整提示词（中文优先，英文备选）
+- 输出：`prompts/batch-all.md`（汇总）+ `prompts/gen1/*.md` / `prompts/gen2/*.md`（单卡）
+- 包含稀有度姿态模板、属性特效描述、光栅帧规则
+
+**`scripts/import-images.ts` — 图片快速导入工具**
+- 扫描 staging/ 目录图片（支持 png/jpg/webp）
+- 4 级匹配策略：ID 直匹配 → 中文名 → 英文名映射 → 图鉴编号
+- 校验：格式、文件大小（<200KB）、目标冲突
+- 支持 `--dry-run` 预览模式
+- 输出导入报告和进度统计
+
+**`package.json` 新增 scripts：**
+- `pnpm run validate` → `scripts/validate-cards.ts`
+- `pnpm run new-card` → `scripts/generate-template.ts`
+- `pnpm run gen-prompts` → `scripts/gen-prompts.ts`
+- `pnpm run import-images` → `scripts/import-images.ts`
+
+**目录结构：**
+- `staging/.gitkeep` — 图片导入临时目录
+- `public/cards/gen1/`, `public/cards/gen2/` — 正式图片目录
+- `public/cards/placeholders/` — 占位图目录
+- `prompts/` — 生图提示词输出目录（gitignored）
+
+### 技术要点
+- TypeScript + tsx 运行时
+- js-yaml 解析 YAML 数据
+- 纯 node:fs / node:path，无额外依赖
+- validate 脚本使用 CheckResult 统一接口，支持错误/警告分级
+- import-images 支持多种文件名推断策略，无需严格命名
+
+### 验收状态
+- [x] 4 个脚本文件创建完成
+- [x] package.json scripts 添加
+- [x] `pnpm run validate` 可执行，正确检测数据问题
+- [x] `pnpm run new-card -- --id xfd-025 --gen 1` 可执行，模板生成正确
+- [x] `pnpm run gen-prompts` 可执行，提示词文件生成正确
+- [x] `pnpm run import-images` 可执行，空目录/匹配逻辑正常
+- [ ] 完整数据录入后全量验证通过（待 Phase 2 补全数据后确认）
+
+---
+
 ## T5 + T6 + T7 + T8: 进化链/稀有度/对战规则页面 + 部署配置 (2026-07-06)
 
 ### 实现内容

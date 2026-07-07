@@ -7,7 +7,11 @@
     "build": "next build",
     "build:data": "npx tsx scripts/build-data.ts",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "validate": "npx tsx scripts/validate-cards.ts",
+    "new-card": "npx tsx scripts/generate-template.ts",
+    "gen-prompts": "npx tsx scripts/gen-prompts.ts",
+    "import-images": "npx tsx scripts/import-images.ts"
   },
   "dependencies": {
     "js-yaml": "^4.1.0",
