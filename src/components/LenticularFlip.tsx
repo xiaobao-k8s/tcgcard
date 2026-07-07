@@ -28,9 +28,10 @@ function getFrameLabel(card: Card, isFrameB: boolean): string {
 function getFrameBImageUrl(card: Card, evolutionChain?: Card[]): string {
   if (card.effect_type === 'evolution' && card.evolves_to && card.evolves_to.length > 0 && evolutionChain) {
     const nextEvolution = evolutionChain.find(c => c.evolves_from === card.id);
-    if (nextEvolution) return getPokeApiImageUrl(nextEvolution.number);
+    if (nextEvolution) return nextEvolution.image_frame_b || getPokeApiImageUrl(nextEvolution.number);
   }
-  return getPokeApiImageUrl(card.number);
+  // Use local frame-b image, fallback to PokeAPI
+  return card.image_frame_b || getPokeApiImageUrl(card.number);
 }
 
 /** Attribute accent colors for frame labels */
@@ -72,7 +73,7 @@ export default function LenticularFlip({ card, evolutionChain }: LenticularFlipP
   const sparkleId = useRef(0);
   const touchStartX = useRef<number | null>(null);
   const gradient = getAttributeGradient(card.attribute, 'dark');
-  // Use local image for frame A, fallback to PokeAPI
+  // Use local image for frame A, fallback to PokeAPI on error
   const [frameAUrl, setFrameAUrl] = useState(card.image_frame_a || getPokeApiImageUrl(card.number));
   const frameBUrl = getFrameBImageUrl(card, evolutionChain);
   const hasEvolutionImage = card.effect_type === 'evolution' && frameAUrl !== frameBUrl;
@@ -160,6 +161,10 @@ export default function LenticularFlip({ card, evolutionChain }: LenticularFlipP
               className="object-contain p-5 sm:p-6"
               unoptimized
               priority
+              onError={() => {
+                const pokeFallback = getPokeApiImageUrl(card.number);
+                if (frameAUrl !== pokeFallback) setFrameAUrl(pokeFallback);
+              }}
             />
             {/* Name badge */}
             <div className="absolute bottom-5 left-0 right-0 flex flex-col items-center gap-1">

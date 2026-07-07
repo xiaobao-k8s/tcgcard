@@ -1,23 +1,20 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Card } from '@/lib/types';
 import { getAttributeGradient } from '@/lib/attribute-gradient';
 
-interface EvolutionChainProps {
-  /** The full evolution chain, ordered from base form to final form. */
-  chain: Card[];
-  /** The currently viewed card ID. */
-  currentCardId: string;
-}
-
-/**
- * Get PokeAPI official artwork URL for a Pokémon
- */
+/** PokeAPI fallback URL */
 function getPokeApiImageUrl(number: string): string {
   const dexNum = parseInt(number, 10);
   return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${dexNum}.png`;
+}
+
+interface EvolutionChainProps {
+  chain: Card[];
+  currentCardId: string;
 }
 
 export default function EvolutionChain({ chain, currentCardId }: EvolutionChainProps) {
@@ -61,13 +58,7 @@ export default function EvolutionChain({ chain, currentCardId }: EvolutionChainP
                   }
                 `}
               >
-                <Image
-                  src={getPokeApiImageUrl(card.number)}
-                  alt={card.name.zh}
-                  fill
-                  className="object-contain p-1"
-                  unoptimized
-                />
+                <ChainCardImage card={card} />
               </div>
               <span
                 className={`
@@ -82,5 +73,21 @@ export default function EvolutionChain({ chain, currentCardId }: EvolutionChainP
         ))}
       </div>
     </div>
+  );
+}
+
+/** Card image with local → PokeAPI fallback */
+function ChainCardImage({ card }: { card: Card }) {
+  const [src, setSrc] = useState(card.image_front);
+  const pokeFallback = getPokeApiImageUrl(card.number);
+  return (
+    <Image
+      src={src}
+      alt={card.name.zh}
+      fill
+      className="object-contain p-1"
+      unoptimized
+      onError={() => setSrc(pokeFallback)}
+    />
   );
 }

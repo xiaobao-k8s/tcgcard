@@ -3,12 +3,16 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { getAttributeEmoji } from '@/lib/attribute-emoji';
 import { getAttributeGradient } from '@/lib/attribute-gradient';
+import type { Card } from '@/lib/types';
 
-/**
- * Get PokeAPI official artwork URL for a Pokémon
- */
-function getPokeApiImageUrl(number: string): string {
-  const dexNum = parseInt(number, 10);
+/** Cards that have local images in public/cards/ */
+const LOCAL_IMAGE_IDS = new Set(
+  Array.from({ length: 9 }, (_, i) => `xfd-${String(i + 1).padStart(3, '0')}`)
+);
+
+function getCardImageUrl(card: Card): string {
+  if (LOCAL_IMAGE_IDS.has(card.id)) return card.image_front;
+  const dexNum = parseInt(card.number, 10);
   return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${dexNum}.png`;
 }
 
@@ -81,8 +85,6 @@ export default function EvolutionPage() {
 
 // ─── Sub-components ──────────────────────────────────────────────────────
 
-import type { Card } from '@/lib/types';
-
 function EvolutionGroup({
   attribute,
   chains,
@@ -142,7 +144,7 @@ function EvolutionLine({ chain }: { chain: Card[] }) {
             `}
           >
             <Image
-              src={getPokeApiImageUrl(card.number)}
+              src={getCardImageUrl(card)}
               alt={card.name.zh}
               fill
               className="object-contain p-1"
@@ -200,7 +202,7 @@ function EvolutionLine({ chain }: { chain: Card[] }) {
                 `}
               >
                 <Image
-                  src={getPokeApiImageUrl(card.number)}
+                  src={getCardImageUrl(card)}
                   alt={card.name.zh}
                   fill
                   className="object-contain p-1"
