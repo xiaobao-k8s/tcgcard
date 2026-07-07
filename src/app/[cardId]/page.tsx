@@ -1,7 +1,8 @@
-import { getCardById, loadCards } from "@/lib/cards";
-import { getAttributeEmoji } from "@/lib/attribute-emoji";
-import Link from "next/link";
-import { notFound } from "next/navigation";
+import { getCardById, loadCards } from '@/lib/cards';
+import type { Card } from '@/lib/types';
+import CardDetail from '@/components/CardDetail';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
 
 interface PageProps {
   params: { cardId: string };
@@ -11,91 +12,104 @@ export function generateStaticParams(): { cardId: string }[] {
   return loadCards().map((card) => ({ cardId: card.id }));
 }
 
+/**
+ * Build the full evolution chain for a given card by traversing
+ * evolves_from upward and then evolves_to downward.
+ */
+function buildEvolutionChain(card: Card, allCards: Card[]): Card[] {
+  const cardMap = new Map(allCards.map((c) => [c.id, c]));
+  const chain: Card[] = [];
+
+  // Walk up to find the base form
+  let current: Card | undefined = card;
+  const visited = new Set<string>();
+  while (current) {
+    if (visited.has(current.id)) break;
+    visited.add(current.id);
+    chain.unshift(current);
+    if (current.evolves_from) {
+      current = cardMap.get(current.evolves_from);
+    } else {
+      break;
+    }
+  }
+
+  // Walk down from the original card to collect all descendants
+  const queue: Card[] = [card];
+  const visitedDown = new Set<string>([card.id]);
+  while (queue.length > 0) {
+    const node = queue.shift()!;
+    if (node.evolves_to) {
+      for (const nextId of node.evolves_to) {
+        if (!visitedDown.has(nextId)) {
+          const nextCard = cardMap.get(nextId);
+          if (nextCard) {
+            visitedDown.add(nextId);
+            chain.push(nextCard);
+            queue.push(nextCard);
+          }
+        }
+      }
+    }
+  }
+
+  // Deduplicate chain (base walk may have added cards that the down-walk also finds)
+  const seen = new Set<string>();
+  const deduped: Card[] = [];
+  for (const c of chain) {
+    if (!seen.has(c.id)) {
+      seen.add(c.id);
+      deduped.push(c);
+    }
+  }
+
+  return deduped;
+}
+
 export default function CardDetailPage({ params }: PageProps) {
   const card = getCardById(params.cardId);
   if (!card) notFound();
 
+  const allCards = loadCards();
+  const evolutionChain = buildEvolutionChain(card, allCards);
+
   return (
     <div className="min-h-screen bg-bg-warm">
-      <header className="bg-primary text-white py-4 px-4">
-        <div className="max-w-4xl mx-auto">
-          <Link href="/" className="text-sm hover:underline">
-            &larr; 返回首页
+      {/* Header with breadcrumb navigation */}
+      <header className="bg-gradient-to-r from-primary to-orange-500 text-white py-4 px-4 shadow-md">
+        <div className="max-w-4xl mx-auto flex items-center gap-2 text-sm">
+          <Link href="/" className="hover:underline opacity-80 hover:opacity-100 transition-opacity">
+            图鉴
           </Link>
+          <span className="opacity-50">/</span>
+          <span className="opacity-80">
+            {card.generation === 1 ? '一代·旋风卡' : '二代·比斗卡'}
+          </span>
+          <span className="opacity-50">/</span>
+          <span className="opacity-80">{card.attribute}</span>
+          <span className="opacity-50">/</span>
+          <span className="font-medium">{card.name.zh}</span>
         </div>
       </header>
 
       <main className="max-w-4xl mx-auto px-4 py-8">
-        <div className="bg-card-bg rounded-2xl p-8 border-2 border-border">
-          <div className="text-center">
-            <div className="w-32 h-32 mx-auto rounded-full bg-primary/20 flex items-center justify-center mb-4">
-              <span className="text-5xl">
-                {getAttributeEmoji(card.attribute)}
-              </span>
-            </div>
-            <h1 className="text-2xl font-bold text-text-primary">
-              {card.name.zh}
-            </h1>
-            <p className="text-text-secondary text-sm mt-1">
-              {card.name.ja}
-            </p>
-            <p className="text-text-secondary text-xs mt-1">
-              {card.number}
-            </p>
-          </div>
-
-          <div className="mt-6 grid grid-cols-2 gap-4">
-            <div className="bg-bg-warm rounded-lg p-3">
-              <p className="text-xs text-text-secondary">属性</p>
-              <p className="font-medium text-text-primary">{card.attribute}</p>
-            </div>
-            <div className="bg-bg-warm rounded-lg p-3">
-              <p className="text-xs text-text-secondary">稀有度</p>
-              <p className="font-medium text-text-primary capitalize">{card.rarity}</p>
-            </div>
-            <div className="bg-bg-warm rounded-lg p-3">
-              <p className="text-xs text-text-secondary">进化阶段</p>
-              <p className="font-medium text-text-primary">{card.evolution_stage}</p>
-            </div>
-            <div className="bg-bg-warm rounded-lg p-3">
-              <p className="text-xs text-text-secondary">效果类型</p>
-              <p className="font-medium text-text-primary">{card.effect_type}</p>
-            </div>
-          </div>
-
-          <div className="mt-6 border-t border-border pt-6">
-            <h2 className="text-lg font-semibold text-text-primary mb-4">
-              卡片背面数据
-            </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <div className="text-center">
-                <p className="text-2xl font-bold text-primary">{card.back.dp_attack}</p>
-                <p className="text-xs text-text-secondary mt-1">攻击</p>
-              </div>
-              <div className="text-center">
-                <p className="text-2xl font-bold text-primary">{card.back.dp_defense}</p>
-                <p className="text-xs text-text-secondary mt-1">防御</p>
-              </div>
-              <div className="text-center">
-                <p className="text-2xl font-bold text-primary">{card.back.dp_speed ?? "-"}</p>
-                <p className="text-xs text-text-secondary mt-1">速度</p>
-              </div>
-              <div className="text-center">
-                <p className="text-lg font-bold text-primary">{card.back.skill}</p>
-                <p className="text-xs text-text-secondary mt-1">技能</p>
-              </div>
-            </div>
-            <p className="mt-4 text-sm text-text-secondary text-center italic">
-              &ldquo;{card.back.description}&rdquo;
-            </p>
-            <div className="mt-2 text-center text-xs text-text-secondary">
-              <span>身高: {card.back.height}</span>
-              <span className="mx-2">|</span>
-              <span>体重: {card.back.weight}</span>
-            </div>
-          </div>
+        {/* Card title */}
+        <div className="text-center mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-text-primary">
+            {card.name.zh}
+          </h1>
+          <p className="text-text-secondary text-sm mt-1">
+            {card.name.ja} · #{card.number}
+          </p>
         </div>
+
+        {/* CardDetail component (lenticular flip + evolution chain + back data + rarity) */}
+        <CardDetail card={card} evolutionChain={evolutionChain} />
       </main>
+
+      <footer className="text-center py-8 text-text-secondary text-sm border-t border-border mt-8">
+        <p>奇多卡片百科 &copy; 2026 · 怀旧零食风宝可梦图鉴</p>
+      </footer>
     </div>
   );
 }

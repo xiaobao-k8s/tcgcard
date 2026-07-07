@@ -42,3 +42,78 @@
 - [x] TypeScript 类型检查通过 (`pnpm tsc --noEmit`)
 - [x] `pnpm build` 成功，生成 8 个静态页面（首页 + not-found + 3 张卡片详情）
 - [ ] `pnpm dev` 待本地验证
+
+---
+
+## T3 + T4: 首页布局优化 + 单卡详情页优化 (2026-07-06)
+
+### 实现内容
+
+**T3: 首页布局优化**
+
+新建组件：
+- `src/components/CardCircle.tsx` — 稀有度气泡网格卡片
+  - 按稀有度缩放圆圈尺寸（legendary 最大，common 最小）
+  - 稀有度越高发光效果越强（legendary 紫色光晕，ultra-rare 红色光晕，rare 橙色光晕）
+  - 按属性映射渐变色背景
+  - 悬停 tooltip 显示卡片名称和编号
+  - 悬停放大动画 (scale-110)
+- `src/components/FilterBar.tsx` — 筛选栏
+  - 代际 Tab 切换（全部 / 一代·旋风卡 / 二代·比斗卡）
+  - 搜索框（支持中文名、日文名、编号搜索）
+  - 属性筛选 Chip（动态获取所有属性）
+  - 稀有度筛选 Chip（带颜色区分：传说紫/极稀有红/稀有橙）
+- `src/components/HomePage.tsx` — 首页客户端组件（处理筛选状态）
+
+更新 `src/app/page.tsx`：
+- 拆分为 Server Component (数据加载) + Client Component (交互)
+- 顶部导航栏：Logo + 副标题 + 卡片数量徽章
+- 嵌入 FilterBar 筛选栏
+- 稀有度气泡网格（按稀有度排序，高稀有度在前）
+- 清除筛选按钮
+- 空结果提示
+
+**T4: 单卡详情页优化**
+
+新建组件：
+- `src/components/LenticularFlip.tsx` — 光栅翻转动画
+  - CSS 3D transform (`rotateY(180deg)`) 模拟光栅翻转
+  - 正面显示基础形态，翻转后显示进化形态/大招
+  - 光栅条纹叠加层 (repeating-linear-gradient)
+  - 显示当前画面状态标签
+  - 按属性映射渐变色
+- `src/components/EvolutionChain.tsx` — 进化链导航
+  - 横排展示进化链（圆形小卡片 + 箭头连接）
+  - 当前卡片高亮（橙色光环）
+  - 点击跳转到对应卡片详情
+  - 只有 1 张卡片时不渲染
+- `src/components/RarityBadge.tsx` — 稀有度标签
+  - 星级显示（★/☆）
+  - 稀有度等级标签（普通/稀有/极稀有/传说级）
+  - 可选显示描述文案和当年交换行情
+  - 稀有度越高发光效果越强
+- `src/components/CardDetail.tsx` — 卡片详情组合组件
+  - 集成 LenticularFlip、EvolutionChain、RarityBadge
+  - 背面数据面板：编号/属性/代际、身高体重、DP 攻防速、技能、图鉴描述
+  - 稀有度信息区（星级 + 描述 + 交换行情）
+
+更新 `src/app/[cardId]/page.tsx`：
+- 面包屑导航：图鉴 / 代际 / 属性 / 卡片名
+- 进化链构建函数 `buildEvolutionChain`：从 `evolves_from` 向上遍历 + `evolves_to` 向下遍历
+- 使用 CardDetail 组件替代原有简单展示
+
+### 技术要点
+- Server/Client Component 分离：`page.tsx` 为 Server Component 加载数据，`HomePage.tsx` 为 Client Component 处理交互
+- CSS 3D Transform：`perspective` + `transform-style: preserve-3d` + `backface-visibility: hidden` + `rotateY(180deg)`
+- Tailwind CSS 4 任意值语法：`shadow-[0_0_24px_8px_rgba(139,92,246,0.5)]`、`perspective-[1000px]`
+- `useMemo` 缓存筛选和排序计算结果
+- TypeScript 严格模式，所有组件 Props 类型定义完整
+
+### 验收状态
+- [x] `pnpm tsc --noEmit` 通过
+- [x] `pnpm build` 成功，生成 8 个静态页面
+- [x] 首页显示稀有度气泡网格（大小按稀有度缩放，带发光效果）
+- [x] 详情页有光栅翻转效果（CSS 3D transform，悬停触发）
+- [x] 进化链导航正常（横排展示，当前卡片高亮，点击跳转）
+- [x] 筛选功能正常（代际/属性/稀有度/搜索）
+- [x] 组件拆分完整：CardCircle, FilterBar, CardDetail, LenticularFlip, EvolutionChain, RarityBadge, HomePage
