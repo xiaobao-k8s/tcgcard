@@ -89,13 +89,13 @@ export default function CardCircle({ card }: CardCircleProps) {
           src={imgSrc}
           alt={card.name.zh}
           fill
-          className="object-contain p-1"
+          className="object-contain p-1.5"
           unoptimized
           loading="lazy"
-          placeholder="blur"
-          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
           onError={() => setImgSrc(pokeApiFallback)}
         />
+        {/* Subtle edge softener — doesn't add new colors, just darkens image edges slightly */}
+        <div className="absolute inset-0 rounded-full pointer-events-none shadow-[inset_0_0_6px_rgba(0,0,0,0.12)]" />
       </div>
 
       {/* Tooltip — visible on hover */}

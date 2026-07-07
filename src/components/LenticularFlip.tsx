@@ -166,6 +166,14 @@ export default function LenticularFlip({ card, evolutionChain }: LenticularFlipP
                 if (frameAUrl !== pokeFallback) setFrameAUrl(pokeFallback);
               }}
             />
+            {/* Edge vignette */}
+            <div className="absolute inset-0 rounded-full pointer-events-none shadow-[inset_0_0_15px_rgba(0,0,0,0.15)]" />
+            {/* Lenticular ridge overlay */}
+            <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none">
+              <div className="w-full h-full opacity-[0.12]" style={{
+                backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 1.5px, rgba(255,255,255,0.12) 1.5px, rgba(255,255,255,0.12) 3px)',
+              }} />
+            </div>
             {/* Name badge */}
             <div className="absolute bottom-5 left-0 right-0 flex flex-col items-center gap-1">
               <span className="text-white text-sm font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] bg-black/30 px-4 py-1 rounded-full backdrop-blur-[1px]">
@@ -174,12 +182,6 @@ export default function LenticularFlip({ card, evolutionChain }: LenticularFlipP
               <span className="bg-black/20 text-white/60 text-[10px] px-2 py-0.5 rounded tracking-wider">
                 {getFrameLabel(card, false)}
               </span>
-            </div>
-            {/* Lenticular ridge overlay */}
-            <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none">
-              <div className="w-full h-full opacity-[0.12]" style={{
-                backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 1.5px, rgba(255,255,255,0.12) 1.5px, rgba(255,255,255,0.12) 3px)',
-              }} />
             </div>
             {/* Corner shine */}
             <div className="absolute -top-6 -right-6 w-16 h-16 bg-white/10 rotate-45 blur-sm" />
@@ -217,6 +219,9 @@ export default function LenticularFlip({ card, evolutionChain }: LenticularFlipP
                   style={{ background: 'linear-gradient(135deg, #ff8c00, #ff4500)' }} />
               )}
             </div>
+
+            {/* Edge vignette */}
+            <div className="absolute inset-0 rounded-full pointer-events-none shadow-[inset_0_0_15px_rgba(0,0,0,0.2)]" />
 
             {/* Holographic shimmer sweep */}
             <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none">
