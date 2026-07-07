@@ -1,10 +1,10 @@
 id: xfd-001
 generation: 1
 name:
-  zh: 小火龙
-  ja: ヒトカゲ
-number: XFD-001
-attribute: 火
+  zh: 妙蛙种子
+  ja: フシギダネ
+number: "001"
+attribute: 草
 rarity: common
 evolution_stage: 1
 evolves_from: null
@@ -15,11 +15,11 @@ image_front: /cards/gen1/xfd-001-front.png
 image_frame_a: /cards/gen1/xfd-001-frame-a.png
 image_frame_b: /cards/gen1/xfd-001-frame-b.png
 back:
-  skill: 火花
-  dp_attack: 50
-  dp_defense: 40
-  dp_speed: 50
-  height: 0.6m
-  weight: 8.5kg
-  description: 背上的火焰代表生命力，健康时火焰更旺。
+  skill: 飞叶快刀
+  dp_attack: 45
+  dp_defense: 50
+  height: 0.7m
+  weight: 6.9kg
+  description: 背上有一颗神奇的种子，吸收阳光后慢慢长大。
   character_type: pokemon
+source: pokedex

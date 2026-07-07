@@ -1,0 +1,24 @@
+id: xfd-015
+generation: 1
+name:
+  zh: 快龙
+  ja: カイリュー
+number: "149"
+attribute: 龙
+rarity: legendary
+evolution_stage: 3
+evolves_from: xfd-014
+evolves_to: []
+effect_type: evolution
+image_front: /cards/gen1/xfd-015-front.png
+image_frame_a: /cards/gen1/xfd-015-frame-a.png
+image_frame_b: /cards/gen1/xfd-015-frame-b.png
+back:
+  skill: 龙之俯冲
+  dp_attack: 150
+  dp_defense: 145
+  height: 2.2m
+  weight: 210.0kg
+  description: 智慧的传说宝可梦，能在 16 小时内环绕地球飞行一圈。
+  character_type: pokemon
+source: pokedex

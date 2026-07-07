@@ -1,0 +1,24 @@
+id: xfd-016
+generation: 1
+name:
+  zh: 超梦
+  ja: ミュウツー
+number: "150"
+attribute: 超能力
+rarity: legendary
+evolution_stage: 1
+evolves_from: null
+evolves_to: []
+effect_type: attack
+image_front: /cards/gen1/xfd-016-front.png
+image_frame_a: /cards/gen1/xfd-016-frame-a.png
+image_frame_b: /cards/gen1/xfd-016-frame-b.png
+back:
+  skill: 波导弹
+  dp_attack: 155
+  dp_defense: 140
+  height: 2.0m
+  weight: 122.0kg
+  description: 基因重组诞生的最强宝可梦，拥有恐怖的战斗力。
+  character_type: pokemon
+source: pokedex

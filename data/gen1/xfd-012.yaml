@@ -1,0 +1,24 @@
+id: xfd-012
+generation: 1
+name:
+  zh: 耿鬼
+  ja: ゲンガー
+number: "094"
+attribute: 幽灵
+rarity: rare
+evolution_stage: 1
+evolves_from: null
+evolves_to: []
+effect_type: attack
+image_front: /cards/gen1/xfd-012-front.png
+image_frame_a: /cards/gen1/xfd-012-frame-a.png
+image_frame_b: /cards/gen1/xfd-012-frame-b.png
+back:
+  skill: 暗影球
+  dp_attack: 75
+  dp_defense: 70
+  height: 1.5m
+  weight: 40.5kg
+  description: 潜伏在暗影中，被它的影子吞噬后便无影无踪。
+  character_type: pokemon
+source: pokedex

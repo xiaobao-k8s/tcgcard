@@ -1,0 +1,25 @@
+id: ybd-003
+generation: 2
+name:
+  zh: 火球鼠
+  ja: ヒノアラシ
+number: "155"
+attribute: 火
+rarity: common
+evolution_stage: 1
+evolves_from: null
+evolves_to: []
+effect_type: attack
+image_front: /cards/gen2/ybd-003-front.png
+image_frame_a: /cards/gen2/ybd-003-frame-a.png
+image_frame_b: /cards/gen2/ybd-003-frame-b.png
+back:
+  skill: 火花
+  dp_attack: 45
+  dp_defense: 40
+  dp_speed: 55
+  height: 0.5m
+  weight: 7.9kg
+  description: 愤怒或兴奋时，背上的火焰会猛烈燃烧。
+  character_type: pokemon
+source: pokedex

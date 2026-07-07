@@ -1,0 +1,24 @@
+id: xfd-018
+generation: 1
+name:
+  zh: 拉普拉斯
+  ja: ラプラス
+number: "131"
+attribute: 冰
+rarity: ultra-rare
+evolution_stage: 1
+evolves_from: null
+evolves_to: []
+effect_type: attack
+image_front: /cards/gen1/xfd-018-front.png
+image_frame_a: /cards/gen1/xfd-018-frame-a.png
+image_frame_b: /cards/gen1/xfd-018-frame-b.png
+back:
+  skill: 冰冻光束
+  dp_attack: 110
+  dp_defense: 115
+  height: 2.5m
+  weight: 220.0kg
+  description: 温顺的宝可梦，背着厚厚甲壳的温柔精灵，载人渡过大海。
+  character_type: pokemon
+source: pokedex

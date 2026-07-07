@@ -1,0 +1,24 @@
+id: xfd-019
+generation: 1
+name:
+  zh: 怪力
+  ja: カイリキー
+number: "068"
+attribute: 格斗
+rarity: ultra-rare
+evolution_stage: 1
+evolves_from: null
+evolves_to: []
+effect_type: attack
+image_front: /cards/gen1/xfd-019-front.png
+image_frame_a: /cards/gen1/xfd-019-frame-a.png
+image_frame_b: /cards/gen1/xfd-019-frame-b.png
+back:
+  skill: 十字劈
+  dp_attack: 125
+  dp_defense: 100
+  height: 1.6m
+  weight: 130.0kg
+  description: 四只手臂蕴含毁天灭地的力量，能轻松举起大卡车。
+  character_type: pokemon
+source: pokedex

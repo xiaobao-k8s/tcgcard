@@ -1,0 +1,25 @@
+id: xfd-008
+generation: 1
+name:
+  zh: 卡咪龟
+  ja: カメール
+number: "008"
+attribute: 水
+rarity: rare
+evolution_stage: 2
+evolves_from: xfd-007
+evolves_to:
+  - xfd-009
+effect_type: evolution
+image_front: /cards/gen1/xfd-008-front.png
+image_frame_a: /cards/gen1/xfd-008-frame-a.png
+image_frame_b: /cards/gen1/xfd-008-frame-b.png
+back:
+  skill: 泡沫光线
+  dp_attack: 80
+  dp_defense: 85
+  height: 1.0m
+  weight: 22.5kg
+  description: 甲壳边缘变得锋利，冲撞力大幅提升。
+  character_type: pokemon
+source: pokedex

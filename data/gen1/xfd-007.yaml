@@ -1,0 +1,25 @@
+id: xfd-007
+generation: 1
+name:
+  zh: 杰尼龟
+  ja: ゼニガメ
+number: "007"
+attribute: 水
+rarity: common
+evolution_stage: 1
+evolves_from: null
+evolves_to:
+  - xfd-008
+effect_type: evolution
+image_front: /cards/gen1/xfd-007-front.png
+image_frame_a: /cards/gen1/xfd-007-frame-a.png
+image_frame_b: /cards/gen1/xfd-007-frame-b.png
+back:
+  skill: 水枪
+  dp_attack: 45
+  dp_defense: 50
+  height: 0.5m
+  weight: 9.0kg
+  description: 坚硬的甲壳能抵御强大攻击，喷水威力十足。
+  character_type: pokemon
+source: pokedex

@@ -1,0 +1,24 @@
+id: xfd-009
+generation: 1
+name:
+  zh: 水箭龟
+  ja: カメックス
+number: "009"
+attribute: 水
+rarity: ultra-rare
+evolution_stage: 3
+evolves_from: xfd-008
+evolves_to: []
+effect_type: evolution
+image_front: /cards/gen1/xfd-009-front.png
+image_frame_a: /cards/gen1/xfd-009-frame-a.png
+image_frame_b: /cards/gen1/xfd-009-frame-b.png
+back:
+  skill: 水炮
+  dp_attack: 115
+  dp_defense: 120
+  height: 1.6m
+  weight: 85.5kg
+  description: 甲壳上的两门水炮能射出高压水柱，威力惊人。
+  character_type: pokemon
+source: pokedex

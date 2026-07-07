@@ -1,5 +1,65 @@
 # 开发日志
 
+## T9 Phase 2: 20 张代表性卡片数据录入 (2026-07-07)
+
+### 卡片清单（23 张，含修复预存卡）
+
+**Gen1 妙蛙种子进化链（xfd-001~003）：**
+- xfd-001: 妙蛙种子 (common, 草, stage 1)
+- xfd-002: 妙蛙草 (rare, 草, stage 2)
+- xfd-003: 妙蛙花 (ultra-rare, 草, stage 3)
+
+**Gen1 小火龙进化链（xfd-004~006）：**
+- xfd-004: 小火龙 (common, 火, stage 1)
+- xfd-005: 火恐龙 (rare, 火, stage 2)
+- xfd-006: 喷火龙 (ultra-rare, 火, stage 3)
+
+**Gen1 杰尼龟进化链（xfd-007~009）：**
+- xfd-007: 杰尼龟 (common, 水, stage 1)
+- xfd-008: 卡咪龟 (rare, 水, stage 2)
+- xfd-009: 水箭龟 (ultra-rare, 水, stage 3)
+
+**Gen1 独立卡（xfd-010~019）：**
+- xfd-010: 皮卡丘 (common, 电, 无进化)
+- xfd-011: 胖丁 (rare, 一般, 无进化)
+- xfd-012: 耿鬼 (rare, 幽灵, 无进化)
+- xfd-013: 迷你龙 (legendary, 龙, stage 1)
+- xfd-014: 哈克龙 (legendary, 龙, stage 2)
+- xfd-015: 快龙 (legendary, 龙, stage 3)
+- xfd-016: 超梦 (legendary, 超能力, 无进化)
+- xfd-017: 梦幻 (legendary, 超能力, 无进化)
+- xfd-018: 拉普拉斯 (ultra-rare, 冰, 无进化)
+- xfd-019: 怪力 (ultra-rare, 格斗, 无进化)
+
+**Gen2 卡（ybd-001~004）：**
+- ybd-001: 信使鸟 (rare, 冰, 无进化)
+- ybd-002: 菊草叶 (common, 草, 无进化)
+- ybd-003: 火球鼠 (common, 火, 无进化)
+- ybd-004: 小锯鳄 (common, 水, 无进化)
+
+### 覆盖统计
+- 稀有度：common (9), rare (7), ultra-rare (5), legendary (5)
+- 属性：草、火、水、电、一般、幽灵、龙、超能力、冰、格斗（10 种）
+- 进化链：妙蛙种子链、小火龙链、杰尼龟链、迷你龙链
+- 世代：Gen1 (19 张), Gen2 (4 张)
+- DP 世代规则：Gen1 全部 dp_speed=null，Gen2 全部 dp_speed 为数值
+
+### 预存卡修复
+- xfd-001 原为小火龙，修正为妙蛙种子（符合设计文档 xfd-001=#001 的 ID 映射规则）
+- xfd-004 原为喷火龙（legendary），修正为小火龙（common，阶段 1）
+- ybd-001 原为妙蛙种子，修正为信使鸟（Gen2 卡）
+
+### 验证状态
+- `pnpm run validate` 0 errors, 12/12 checks pass
+- 警告为预期内容：7 个 no-evo DP range warning（common/rare 无进化链尚未定义范围），69 个 missing image warning
+
+### 修复记录
+- 修正 xfd-001 和 xfd-004 的 ID 映射，使其与 `docs/superpowers/specs/2026-07-06-t9-data-entry-design.md` 附录 A 的编号规则一致
+- 修正 ybd-001 进化链错误引用
+- 为所有卡片补充 `source` 字段（缺失的预存卡添加 pokedex 来源）
+
+---
+
 ## T9 Phase 1: 数据录入脚本 + 图片生成工作流 (2026-07-07)
 
 ### 实现内容

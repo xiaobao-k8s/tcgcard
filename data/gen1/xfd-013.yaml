@@ -1,0 +1,25 @@
+id: xfd-013
+generation: 1
+name:
+  zh: 迷你龙
+  ja: ミニリュウ
+number: "147"
+attribute: 龙
+rarity: legendary
+evolution_stage: 1
+evolves_from: null
+evolves_to:
+  - xfd-014
+effect_type: evolution
+image_front: /cards/gen1/xfd-013-front.png
+image_frame_a: /cards/gen1/xfd-013-frame-a.png
+image_frame_b: /cards/gen1/xfd-013-frame-b.png
+back:
+  skill: 龙之怒
+  dp_attack: 80
+  dp_defense: 75
+  height: 1.8m
+  weight: 3.3kg
+  description: 传说中的宝可梦，拥有不断蜕皮成长的特性。
+  character_type: pokemon
+source: pokedex

@@ -1,0 +1,24 @@
+id: xfd-010
+generation: 1
+name:
+  zh: 皮卡丘
+  ja: ピカチュウ
+number: "025"
+attribute: 电
+rarity: common
+evolution_stage: 1
+evolves_from: null
+evolves_to: []
+effect_type: attack
+image_front: /cards/gen1/xfd-010-front.png
+image_frame_a: /cards/gen1/xfd-010-frame-a.png
+image_frame_b: /cards/gen1/xfd-010-frame-b.png
+back:
+  skill: 十万伏特
+  dp_attack: 45
+  dp_defense: 35
+  height: 0.4m
+  weight: 6.0kg
+  description: "脸颊的电气袋储存着强大电力，紧张时会放电。"
+  character_type: pokemon
+source: pokedex

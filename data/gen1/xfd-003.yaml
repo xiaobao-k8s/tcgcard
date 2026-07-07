@@ -1,0 +1,24 @@
+id: xfd-003
+generation: 1
+name:
+  zh: 妙蛙花
+  ja: フシギバナ
+number: "003"
+attribute: 草
+rarity: ultra-rare
+evolution_stage: 3
+evolves_from: xfd-002
+evolves_to: []
+effect_type: evolution
+image_front: /cards/gen1/xfd-003-front.png
+image_frame_a: /cards/gen1/xfd-003-frame-a.png
+image_frame_b: /cards/gen1/xfd-003-frame-b.png
+back:
+  skill: 强力鞭打
+  dp_attack: 115
+  dp_defense: 125
+  height: 2.0m
+  weight: 100.0kg
+  description: 背上盛开着巨大的花朵，散发着浓郁的香气。
+  character_type: pokemon
+source: pokedex

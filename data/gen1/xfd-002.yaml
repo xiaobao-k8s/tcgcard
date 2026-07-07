@@ -1,0 +1,25 @@
+id: xfd-002
+generation: 1
+name:
+  zh: 妙蛙草
+  ja: フシギソウ
+number: "002"
+attribute: 草
+rarity: rare
+evolution_stage: 2
+evolves_from: xfd-001
+evolves_to:
+  - xfd-003
+effect_type: evolution
+image_front: /cards/gen1/xfd-002-front.png
+image_frame_a: /cards/gen1/xfd-002-frame-a.png
+image_frame_b: /cards/gen1/xfd-002-frame-b.png
+back:
+  skill: 日光束
+  dp_attack: 85
+  dp_defense: 90
+  height: 1.0m
+  weight: 13.0kg
+  description: 背上的花苞开始绽放，能闻到淡淡的花香。
+  character_type: pokemon
+source: pokedex

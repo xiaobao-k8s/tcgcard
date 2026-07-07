@@ -1,0 +1,25 @@
+id: ybd-004
+generation: 2
+name:
+  zh: 小锯鳄
+  ja: ワニノコ
+number: "158"
+attribute: 水
+rarity: common
+evolution_stage: 1
+evolves_from: null
+evolves_to: []
+effect_type: attack
+image_front: /cards/gen2/ybd-004-front.png
+image_frame_a: /cards/gen2/ybd-004-frame-a.png
+image_frame_b: /cards/gen2/ybd-004-frame-b.png
+back:
+  skill: 咬住
+  dp_attack: 50
+  dp_defense: 45
+  dp_speed: 40
+  height: 0.6m
+  weight: 9.5kg
+  description: 发达的颚部咬合力极强，喜欢到处咬东西。
+  character_type: pokemon
+source: pokedex

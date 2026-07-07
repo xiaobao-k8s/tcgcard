@@ -1,0 +1,24 @@
+id: xfd-017
+generation: 1
+name:
+  zh: 梦幻
+  ja: ミュウ
+number: "151"
+attribute: 超能力
+rarity: legendary
+evolution_stage: 1
+evolves_from: null
+evolves_to: []
+effect_type: attack
+image_front: /cards/gen1/xfd-017-front.png
+image_frame_a: /cards/gen1/xfd-017-frame-a.png
+image_frame_b: /cards/gen1/xfd-017-frame-b.png
+back:
+  skill: 变身
+  dp_attack: 140
+  dp_defense: 135
+  height: 0.4m
+  weight: 4.0kg
+  description: 据说拥有所有宝可梦的遗传因子，能学会任何技能。
+  character_type: pokemon
+source: pokedex

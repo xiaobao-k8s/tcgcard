@@ -1,0 +1,24 @@
+id: xfd-011
+generation: 1
+name:
+  zh: 胖丁
+  ja: プリン
+number: "039"
+attribute: 一般
+rarity: rare
+evolution_stage: 1
+evolves_from: null
+evolves_to: []
+effect_type: attack
+image_front: /cards/gen1/xfd-011-front.png
+image_frame_a: /cards/gen1/xfd-011-frame-a.png
+image_frame_b: /cards/gen1/xfd-011-frame-b.png
+back:
+  skill: 唱歌
+  dp_attack: 65
+  dp_defense: 70
+  height: 0.5m
+  weight: 5.5kg
+  description: 用令人入睡的歌声让对手陷入沉睡。
+  character_type: pokemon
+source: pokedex

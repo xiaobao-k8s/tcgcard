@@ -1,0 +1,25 @@
+id: ybd-002
+generation: 2
+name:
+  zh: 菊草叶
+  ja: チコリータ
+number: "152"
+attribute: 草
+rarity: common
+evolution_stage: 1
+evolves_from: null
+evolves_to: []
+effect_type: attack
+image_front: /cards/gen2/ybd-002-front.png
+image_frame_a: /cards/gen2/ybd-002-frame-a.png
+image_frame_b: /cards/gen2/ybd-002-frame-b.png
+back:
+  skill: 飞叶快刀
+  dp_attack: 40
+  dp_defense: 45
+  dp_speed: 50
+  height: 0.9m
+  weight: 6.4kg
+  description: 头上的叶子能感知温度和湿度，性格温顺可爱。
+  character_type: pokemon
+source: pokedex

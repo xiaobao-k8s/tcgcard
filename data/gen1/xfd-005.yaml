@@ -1,0 +1,25 @@
+id: xfd-005
+generation: 1
+name:
+  zh: 火恐龙
+  ja: リザード
+number: "005"
+attribute: 火
+rarity: rare
+evolution_stage: 2
+evolves_from: xfd-004
+evolves_to:
+  - xfd-006
+effect_type: evolution
+image_front: /cards/gen1/xfd-005-front.png
+image_frame_a: /cards/gen1/xfd-005-frame-a.png
+image_frame_b: /cards/gen1/xfd-005-frame-b.png
+back:
+  skill: 火焰牙
+  dp_attack: 80
+  dp_defense: 75
+  height: 1.1m
+  weight: 19.0kg
+  description: 爪子锋利，尾巴的火焰燃烧得更猛烈。
+  character_type: pokemon
+source: pokedex

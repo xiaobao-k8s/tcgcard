@@ -1,0 +1,25 @@
+id: xfd-014
+generation: 1
+name:
+  zh: 哈克龙
+  ja: ハクリュウ
+number: "148"
+attribute: 龙
+rarity: legendary
+evolution_stage: 2
+evolves_from: xfd-013
+evolves_to:
+  - xfd-015
+effect_type: evolution
+image_front: /cards/gen1/xfd-014-front.png
+image_frame_a: /cards/gen1/xfd-014-frame-a.png
+image_frame_b: /cards/gen1/xfd-014-frame-b.png
+back:
+  skill: 龙波动
+  dp_attack: 110
+  dp_defense: 105
+  height: 4.0m
+  weight: 16.5kg
+  description: 优雅地飞翔，体内蕴藏着强大的龙之能量。
+  character_type: pokemon
+source: pokedex
