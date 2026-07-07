@@ -13,7 +13,7 @@ export default function CardDetail({ card, evolutionChain }: CardDetailProps) {
   return (
     <div className="flex flex-col items-center gap-8">
       {/* Lenticular flip card — center */}
-      <LenticularFlip card={card} />
+      <LenticularFlip card={card} evolutionChain={evolutionChain} />
 
       {/* Evolution chain navigation */}
       {evolutionChain.length > 1 && (
