@@ -141,7 +141,6 @@ function pinyinify(text: string): string {
     'golem': ['隆隆岩'],
     'graveler': ['隆隆石'],
     'geodude': ['小拳石'],
-    'alakazam': ['胡地'],
     'slowbro': ['呆壳兽'],
     'slowpoke': ['呆呆兽'],
     'magneton': ['三合一磁怪'],
@@ -155,9 +154,6 @@ function pinyinify(text: string): string {
     'muk': ['臭臭泥'],
     'shellder': ['大舌贝'],
     'cloyster': ['刺甲贝'],
-    'gastly': ['鬼斯'],
-    'haunter': ['鬼斯通'],
-    'gengar': ['耿鬼'],
     'onix': ['大岩蛇'],
     'drowzee': ['催眠貘'],
     'hypno': ['引梦貘人'],
@@ -209,11 +205,6 @@ function pinyinify(text: string): string {
     'articuno': ['急冻鸟'],
     'zapdos': ['闪电鸟'],
     'moltres': ['火焰鸟'],
-    'dratini': ['迷你龙'],
-    'dragonair': ['哈克龙'],
-    'dragonite': ['快龙'],
-    'mewtwo': ['超梦'],
-    'mew': ['梦幻'],
     // Gen 2
     'lugia': ['洛奇亚'],
     'ho-oh': ['凤王'],
@@ -464,7 +455,7 @@ function main(): void {
     // Validate image
     const validation = validateImage(srcPath);
     if (!validation.valid) {
-      result.failed.push(`${image} — ${validation.join('; ')}`);
+      result.failed.push(`${image} — ${validation.issues.join('; ')}`);
       continue;
     }
 

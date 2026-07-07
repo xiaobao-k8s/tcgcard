@@ -155,7 +155,7 @@ function check2_requiredFields(cards: CardRaw[]): CheckResult {
     const id = String(card.id ?? 'unknown');
 
     for (const field of requiredTopLevel) {
-      const val = (card as Record<string, unknown>)[field];
+      const val = (card as unknown as Record<string, unknown>)[field];
       if (val === undefined || val === null || (typeof val === 'string' && val.trim() === '')) {
         errors.push(`  [MISSING] ${id}: missing required field "${field}"`);
       }
@@ -206,15 +206,15 @@ function check3_enumValues(cards: CardRaw[]): CheckResult {
     }
 
     if (card.rarity !== undefined && !VALID_RARITIES.has(card.rarity as never)) {
-      errors.push(`  [INVALID] ${id}: rarity "${card.rarity}" not in ${[...VALID_RARITIES].join(', ')}`);
+      errors.push(`  [INVALID] ${id}: rarity "${card.rarity}" not in ${Array.from(VALID_RARITIES).join(', ')}`);
     }
 
     if (card.effect_type !== undefined && !VALID_EFFECT_TYPES.has(card.effect_type as never)) {
-      errors.push(`  [INVALID] ${id}: effect_type "${card.effect_type}" not in ${[...VALID_EFFECT_TYPES].join(', ')}`);
+      errors.push(`  [INVALID] ${id}: effect_type "${card.effect_type}" not in ${Array.from(VALID_EFFECT_TYPES).join(', ')}`);
     }
 
     if (card.back?.character_type !== undefined && !VALID_CHARACTER_TYPES.has(card.back.character_type as never)) {
-      errors.push(`  [INVALID] ${id}: back.character_type "${card.back.character_type}" not in ${[...VALID_CHARACTER_TYPES].join(', ')}`);
+      errors.push(`  [INVALID] ${id}: back.character_type "${card.back.character_type}" not in ${Array.from(VALID_CHARACTER_TYPES).join(', ')}`);
     }
 
     // triple effect requires image_frame_c
@@ -250,7 +250,7 @@ function check5_duplicateIds(cards: CardRaw[]): CheckResult {
   }
 
   const errors: string[] = [];
-  for (const [id, occurrences] of seen) {
+  for (const [id, occurrences] of Array.from(seen.entries())) {
     if (occurrences.length > 1) {
       errors.push(`  [DUPLICATE] id "${id}" appears ${occurrences.length} times`);
     }
@@ -441,7 +441,7 @@ function check11_sourceField(cards: CardRaw[]): CheckResult {
     if (card.source === undefined || card.source === null) {
       errors.push(`  [MISSING] ${id}: "source" field is missing`);
     } else if (!VALID_SOURCES.has(String(card.source))) {
-      errors.push(`  [INVALID] ${id}: source "${card.source}" not in ${[...VALID_SOURCES].join(', ')}`);
+      errors.push(`  [INVALID] ${id}: source "${card.source}" not in ${Array.from(VALID_SOURCES).join(', ')}`);
     }
   }
 
