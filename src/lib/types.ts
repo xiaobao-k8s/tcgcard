@@ -32,6 +32,7 @@ export interface Card {
   image_frame_b: string;
   image_frame_c?: string;
   back: CardBack;
+  source?: string;
 }
 
 export interface CardFilters {

@@ -73,43 +73,44 @@ export default function CardDetailPage({ params }: PageProps) {
   const allCards = loadCards();
   const evolutionChain = buildEvolutionChain(card, allCards);
 
+  // Determine previous and next cards (by current display order)
+  const currentIndex = allCards.findIndex(c => c.id === card.id);
+  const prevCard = currentIndex > 0 ? allCards[currentIndex - 1] : null;
+  const nextCard = currentIndex < allCards.length - 1 ? allCards[currentIndex + 1] : null;
+
   return (
     <div className="min-h-screen bg-bg-warm">
-      {/* Header with breadcrumb navigation */}
-      <header className="bg-gradient-to-r from-primary to-orange-500 text-white py-4 px-4 shadow-md">
-        <div className="max-w-4xl mx-auto flex items-center gap-2 text-sm">
-          <Link href="/" className="hover:underline opacity-80 hover:opacity-100 transition-opacity">
-            图鉴
-          </Link>
-          <span className="opacity-50">/</span>
-          <span className="opacity-80">
-            {card.generation === 1 ? '一代·旋风卡' : '二代·比斗卡'}
+      {/* Header with breadcrumb */}
+      <header className="bg-gradient-to-r from-primary to-orange-500 text-white px-4 shadow-md">
+        <div className="max-w-6xl mx-auto flex items-center justify-between py-3">
+          <div className="flex items-center gap-2 text-sm">
+            <Link href="/" className="hover:underline opacity-80 hover:opacity-100 transition-opacity">
+              图鉴
+            </Link>
+            <span className="opacity-50">/</span>
+            <span className="opacity-80">{card.generation === 1 ? '一代·旋风卡' : '二代·比斗卡'}</span>
+            <span className="opacity-50">/</span>
+            <span className="opacity-80">{card.attribute}</span>
+            <span className="opacity-50">/</span>
+            <span className="font-medium">{card.name.zh}</span>
+          </div>
+          {/* Card count badge */}
+          <span className="bg-white/20 rounded-full px-3 py-1 text-xs">
+            {currentIndex + 1} / {allCards.length}
           </span>
-          <span className="opacity-50">/</span>
-          <span className="opacity-80">{card.attribute}</span>
-          <span className="opacity-50">/</span>
-          <span className="font-medium">{card.name.zh}</span>
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 py-8">
-        {/* Card title */}
-        <div className="text-center mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-text-primary">
-            {card.name.zh}
-          </h1>
-          <p className="text-text-secondary text-sm mt-1">
-            {card.name.ja} · #{card.number}
-          </p>
-        </div>
-
-        {/* CardDetail component (lenticular flip + evolution chain + back data + rarity) */}
-        <CardDetail card={card} evolutionChain={evolutionChain} />
+      <main className="max-w-6xl mx-auto px-4 py-6">
+        <CardDetail
+          card={card}
+          evolutionChain={evolutionChain}
+          prevCard={prevCard}
+          nextCard={nextCard}
+          currentIndex={currentIndex}
+          totalCards={allCards.length}
+        />
       </main>
-
-      <footer className="text-center py-8 text-text-secondary text-sm border-t border-border mt-8">
-        <p>奇多卡片百科 &copy; 2026 · 怀旧零食风宝可梦图鉴</p>
-      </footer>
     </div>
   );
 }
