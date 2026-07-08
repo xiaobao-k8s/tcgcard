@@ -30,7 +30,7 @@ export default function CardDetail({ card, evolutionChain, prevCard, nextCard, c
         <div className="lg:col-span-2 flex flex-col items-center gap-4">
           {/* Card flip */}
           <div className="bg-card-bg rounded-2xl border-2 border-border p-4 sm:p-6 shadow-sm w-full max-w-sm">
-            <LenticularFlip card={card} evolutionChain={evolutionChain} />
+            <LenticularFlip card={card} />
           </div>
 
           {/* Evolution chain */}

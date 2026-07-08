@@ -7,7 +7,6 @@ import { getAttributeGradient } from '@/lib/attribute-gradient';
 
 interface LenticularFlipProps {
   card: Card;
-  evolutionChain?: Card[];
 }
 
 function getPokeApiImageUrl(number: string): string {
@@ -35,11 +34,9 @@ function getCardImageUrl(card: Card, type: 'image_front' | 'image_frame_a' | 'im
   return getPokeApiImageUrl(card.number);
 }
 
-function getFrameBImageUrl(card: Card, evolutionChain?: Card[]): string {
-  if (card.effect_type === 'evolution' && card.evolves_to && card.evolves_to.length > 0 && evolutionChain) {
-    const nextEvolution = evolutionChain.find(c => c.evolves_from === card.id);
-    if (nextEvolution) return getCardImageUrl(nextEvolution, 'image_frame_b');
-  }
+function getFrameBImageUrl(card: Card): string {
+  // Frame B: always use the card's own frame-b image.
+  // The image was already generated as the evolved/attack form for this card.
   return getCardImageUrl(card, 'image_frame_b');
 }
 
@@ -76,14 +73,14 @@ function getAttrLabel(effect: string): { from: string; to: string } {
   return ATTR_LABEL[key || 'fire'];
 }
 
-export default function LenticularFlip({ card, evolutionChain }: LenticularFlipProps) {
+export default function LenticularFlip({ card }: LenticularFlipProps) {
   const [isFlipped, setIsFlipped] = useState(false);
   const [sparkles, setSparkles] = useState<{ id: number; x: number; y: number; delay: number }[]>([]);
   const sparkleId = useRef(0);
   const touchStartX = useRef<number | null>(null);
   const gradient = getAttributeGradient(card.attribute, 'dark');
   const frameAUrl = getCardImageUrl(card, 'image_frame_a');
-  const frameBUrl = getFrameBImageUrl(card, evolutionChain);
+  const frameBUrl = getFrameBImageUrl(card);
   const hasEvolutionImage = card.effect_type === 'evolution' && frameAUrl !== frameBUrl;
   const labelColor = getAttrLabel(card.attribute);
 
