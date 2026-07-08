@@ -14,6 +14,10 @@ out/
 .vscode/
 .idea/
 
+# User generated image sources (not the imported public/cards/)
+cards/
+透明背景/
+
 # OS
 .DS_Store
 Thumbs.db

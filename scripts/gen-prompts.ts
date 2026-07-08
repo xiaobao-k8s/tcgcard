@@ -165,27 +165,53 @@ function getEffectLabel(effectType: string): string {
   }
 }
 
+function getBiomeDesc(attribute: string): string {
+  const map: Record<string, string> = {
+    '火': '火属性元素',
+    '水': '水属性元素',
+    '草': '草属性元素',
+    '电': '雷属性元素',
+    '超能力': '超能力属性',
+    '格斗': '格斗属性',
+    '毒': '毒属性',
+    '地面': '大地属性',
+    '岩石': '岩石属性',
+    '虫': '虫属性',
+    '飞行': '飞行属性',
+    '幽灵': '幽灵属性',
+    '冰': '冰属性',
+    '龙': '龙属性',
+    '一般': '普通属性',
+    '钢': '钢属性',
+    '恶': '暗属性',
+    '妖精': '妖精属性',
+  };
+  return map[attribute] || '原创元素';
+}
+
 function generateFramePrompt(
   card: CardRaw,
   frameLabel: string,
   stageDescription: string
 ): string {
-  const { name, attribute, rarity, number } = card;
+  const { name, attribute, rarity } = card;
   const effect = ATTRIBUTE_EFFECTS[attribute] || '干净清爽的微光效果';
   const pose = RARITY_POSE[rarity] || '自然姿态';
   const intensity = RARITY_EFFECT_INTENSITY[rarity] || '适中特效';
 
-  return `生成一张 2001 年奇多 Pokémon 旋风卡风格的圆形卡片插画。
-精灵：${name.zh}（${name.ja}），全国图鉴 #${number}。
+  return `生成一张原创的 2000 年代日式宠物对战圆形旋风收藏卡风格插画。
+画面是 1:1 方图，中间是一张圆形塑料收藏卡。
+原创生物描述：${name.zh}（${name.ja}），${getBiomeDesc(attribute)}。
 姿态：${pose}。${stageDescription}
 元素特效：${effect}。${intensity}。
 背景：${attribute}属性色调渐变，圆形卡片边框。
 风格要求：
 - 2000 年代怀旧日式动画风，鲜艳饱和配色，粗线条描边
 - 圆形卡片构图（约 4cm 直径感），光栅卡质感（轻微 3D 深度、光泽表面）
-- 精灵正面朝向，动态但轮廓清晰
-- 干净插图，不要任何文字
-- 分辨率 1024×1024，精灵居中`;
+- 主体正面朝向，动态但轮廓清晰
+- 干净插图，不要任何文字、数字、Logo、字母、水印
+- 不要复刻真实商业卡牌边框，不要做成金属徽章或游戏技能图标
+- 分辨率 1024×1024，主体居中`;
 }
 
 function generateCardPrompts(info: MissingImageInfo, cardMap: Map<string, CardRaw>): string {
@@ -207,13 +233,16 @@ function generateCardPrompts(info: MissingImageInfo, cardMap: Map<string, CardRa
   lines.push('');
   lines.push('---');
   lines.push('');
+  lines.push('> 合规声明：本提示词使用原创生物名称和元素属性，不涉及任何官方 IP。');
+  lines.push('> 完全使用"2000 年代日式动画风、圆形旋风收藏卡、光栅质感"等通用审美。');
+  lines.push('');
 
   // Generate prompts for each missing frame
   if (missingFrames.includes('front')) {
     lines.push(`## 主图 (front.png)`);
     lines.push('用于卡片列表缩略图，取进化后姿态。');
     lines.push('');
-    lines.push(generateFramePrompt(card, '主图', `${stageLabel}，正面全身像，代表性姿态。`));
+    lines.push(generateFramePrompt(card, '主图', `${stageLabel}，正面全身像，代表性姿态，稳定的原创生物展示。`));
     lines.push('');
     lines.push('---');
     lines.push('');
@@ -228,7 +257,7 @@ function generateCardPrompts(info: MissingImageInfo, cardMap: Map<string, CardRa
       lines.push(generateFramePrompt(
         card,
         `进化前形态`,
-        `进化前姿态，尺寸稍小，姿态温和可爱。${evolvesFromCard ? `精灵名：${fromName}。` : ''}`
+        `进化前姿态，正常体型，姿态温和可爱，特效温和。${evolvesFromCard ? `原创生物：${fromName}。` : ''}`
       ));
       lines.push('');
       lines.push('---');
@@ -242,7 +271,7 @@ function generateCardPrompts(info: MissingImageInfo, cardMap: Map<string, CardRa
       lines.push(generateFramePrompt(
         card,
         `进化后形态`,
-        `进化后姿态，尺寸稍大，姿态更强更有力，特效更明显。${evolvesToCards.length > 0 ? `精灵名：${toName}。` : ''}`
+        `进化后姿态，视觉存在感比 Frame A 大 20%–35%，姿态更强更有力，属性特效更强，背景更深。${evolvesToCards.length > 0 ? `原创生物：${toName}。` : ''}`
       ));
       lines.push('');
       lines.push('---');
@@ -254,7 +283,7 @@ function generateCardPrompts(info: MissingImageInfo, cardMap: Map<string, CardRa
     if (missingFrames.includes('frame-a')) {
       lines.push(`## Frame A: 常态 (frame-a.png)`);
       lines.push('');
-      lines.push(generateFramePrompt(card, '常态', `平静站姿，无特殊效果，精灵自然状态。`));
+      lines.push(generateFramePrompt(card, '常态', `平静站姿，无特殊效果，原创生物自然状态，特效温和。`));
       lines.push('');
       lines.push('---');
       lines.push('');
@@ -263,7 +292,7 @@ function generateCardPrompts(info: MissingImageInfo, cardMap: Map<string, CardRa
     if (missingFrames.includes('frame-b')) {
       lines.push(`## Frame B: 攻击 (frame-b.png)`);
       lines.push('');
-      lines.push(generateFramePrompt(card, '攻击', `释放技能「${skillName}」姿态，技能效果全开，动态张力拉满。`));
+      lines.push(generateFramePrompt(card, '攻击', `释放技能「${skillName}」姿态，视觉存在感比 Frame A 大 20%–35%，技能效果全开，属性特效更强，背景更深。`));
       lines.push('');
       lines.push('---');
       lines.push('');
@@ -272,7 +301,7 @@ function generateCardPrompts(info: MissingImageInfo, cardMap: Map<string, CardRa
     if (missingFrames.includes('frame-a')) {
       lines.push(`## Frame A: 常态 (frame-a.png)`);
       lines.push('');
-      lines.push(generateFramePrompt(card, '常态', `平静站姿，无明显特效，精灵自然状态。`));
+      lines.push(generateFramePrompt(card, '常态', `平静站姿，无明显特效，原创生物自然状态，特效温和。`));
       lines.push('');
       lines.push('---');
       lines.push('');
@@ -281,7 +310,7 @@ function generateCardPrompts(info: MissingImageInfo, cardMap: Map<string, CardRa
     if (missingFrames.includes('frame-b')) {
       lines.push(`## Frame B: 蓄力 (frame-b.png)`);
       lines.push('');
-      lines.push(generateFramePrompt(card, '蓄力', `蓄力姿态，元素能量汇聚，光芒逐渐增强。`));
+      lines.push(generateFramePrompt(card, '蓄力', `蓄力姿态，元素能量汇聚，光芒逐渐增强，视觉存在感比 Frame A 大 20%–35%。`));
       lines.push('');
       lines.push('---');
       lines.push('');
@@ -291,7 +320,7 @@ function generateCardPrompts(info: MissingImageInfo, cardMap: Map<string, CardRa
       const skillName = card.back?.skill || '大招技能';
       lines.push(`## Frame C: 大招 (frame-c.png)`);
       lines.push('');
-      lines.push(generateFramePrompt(card, '大招', `全力释放「${skillName}」，最大特效，全屏元素爆发。`));
+      lines.push(generateFramePrompt(card, '大招', `全力释放「${skillName}」，最大特效，视觉存在感比 Frame A 大 20%–35%，属性特效最强，背景最深。`));
       lines.push('');
       lines.push('---');
       lines.push('');
@@ -329,6 +358,18 @@ function generateBatchAll(infos: MissingImageInfo[], cardMap: Map<string, CardRa
   lines.push(`共 ${infos.length} 张卡片缺图。`);
   lines.push('');
   lines.push('---');
+  lines.push('');
+  lines.push('## 全局风格一致提示词');
+  lines.push('');
+  lines.push('每张卡片生成时都遵循以下通用风格设定：');
+  lines.push('');
+  lines.push('```text');
+  lines.push('生成一张原创的 2000 年代日式宠物对战圆形旋风收藏卡风格插画。');
+  lines.push('画面是 1:1 方图，中间是一张圆形塑料收藏卡，类似直径约 4cm 的小圆片卡。卡片正面为原创元素生物插画，主体居中，正面朝向或轻微侧转，轮廓清晰。');
+  lines.push('整体风格为 2000 年代怀旧日式动画风，鲜艳饱和配色，粗线条描边，轻微 cel-shading，干净插图。卡片表面有轻微光栅卡质感、全息反光、塑料光泽和一点点 3D 厚度，但不要做成金属徽章，不要像游戏技能图标，不要像贴纸图标。');
+  lines.push('圆形边框简洁、有旋风卡感觉，边框不要过度装饰，不要抢主体。');
+  lines.push('无文字、无数字、无 Logo、无字母、无水印。');
+  lines.push('```');
   lines.push('');
 
   for (let i = 0; i < infos.length; i++) {
