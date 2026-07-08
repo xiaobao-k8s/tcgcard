@@ -4,13 +4,17 @@ import Image from 'next/image';
 import Link from 'next/link';
 import RarityBadge from '@/components/RarityBadge';
 import { getAttributeGradient } from '@/lib/attribute-gradient';
+import { getImageUrl, getPokeApiImageUrl } from '@/lib/image-url';
 
-/**
- * Get PokeAPI official artwork URL for a Pokémon
- */
-function getPokeApiImageUrl(number: string): string {
-  const dexNum = parseInt(number, 10);
-  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${dexNum}.png`;
+/** All 34 cards have local images */
+const LOCAL_IMAGE_IDS = new Set([
+  ...Array.from({ length: 24 }, (_, i) => `xfd-${String(i + 1).padStart(3, '0')}`),
+  ...Array.from({ length: 10 }, (_, i) => `ybd-${String(i + 1).padStart(3, '0')}`),
+]);
+
+function getCardImageUrl(card: Card): string {
+  if (LOCAL_IMAGE_IDS.has(card.id)) return getImageUrl(card.image_front);
+  return getPokeApiImageUrl(card.number);
 }
 
 const RARITY_SECTION_LABELS: Record<Rarity, string> = {
@@ -129,7 +133,7 @@ function LegendaryCard({ card }: { card: Card }) {
           `}
         >
           <Image
-            src={getPokeApiImageUrl(card.number)}
+            src={getCardImageUrl(card)}
             alt={card.name.zh}
             width={128}
             height={128}
@@ -198,7 +202,7 @@ function CardGrid({ cards, rarity }: { cards: Card[]; rarity: Rarity }) {
             `}
           >
             <Image
-              src={getPokeApiImageUrl(card.number)}
+              src={getCardImageUrl(card)}
               alt={card.name.zh}
               width={rarity === 'ultra-rare' ? 80 : 64}
               height={rarity === 'ultra-rare' ? 80 : 64}
