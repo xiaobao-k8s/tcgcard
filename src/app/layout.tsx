@@ -11,7 +11,7 @@ const NAV_LINKS = [
   { href: "/", label: "🏠 图鉴" },
   { href: "/evolution", label: "⛓️ 进化链" },
   { href: "/rarity", label: "💎 稀有度" },
-  { href: "/battle-rules", label: "⚔️ 对战" },
+  { href: "/battle", label: "⚔️ 对战" },
 ];
 
 export default function RootLayout({
