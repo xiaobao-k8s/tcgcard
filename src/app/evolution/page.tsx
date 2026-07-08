@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { getAttributeEmoji } from '@/lib/attribute-emoji';
 import { getAttributeGradient } from '@/lib/attribute-gradient';
 import type { Card } from '@/lib/types';
+import { getImageUrl, getPokeApiImageUrl } from '@/lib/image-url';
 
 /** All 34 cards now have local images */
 const LOCAL_IMAGE_IDS = new Set([
@@ -12,9 +13,8 @@ const LOCAL_IMAGE_IDS = new Set([
 ]);
 
 function getCardImageUrl(card: Card): string {
-  if (LOCAL_IMAGE_IDS.has(card.id)) return card.image_front;
-  const dexNum = parseInt(card.number, 10);
-  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${dexNum}.png`;
+  if (LOCAL_IMAGE_IDS.has(card.id)) return getImageUrl(card.image_front);
+  return getPokeApiImageUrl(card.number);
 }
 
 export default function EvolutionPage() {

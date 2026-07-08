@@ -4,14 +4,10 @@ import { useState, useRef, type TouchEvent } from 'react';
 import Image from 'next/image';
 import type { Card } from '@/lib/types';
 import { getAttributeGradient } from '@/lib/attribute-gradient';
+import { getImageUrl, getPokeApiImageUrl } from '@/lib/image-url';
 
 interface LenticularFlipProps {
   card: Card;
-}
-
-function getPokeApiImageUrl(number: string): string {
-  const dexNum = parseInt(number, 10);
-  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${dexNum}.png`;
 }
 
 function getFrameLabel(card: Card, isFrameB: boolean): string {
@@ -32,7 +28,7 @@ const LOCAL_IMAGE_CARDS = new Set([
 
 function getCardImageUrl(card: Card, type: 'image_front' | 'image_frame_a' | 'image_frame_b'): string {
   // Only use local if the card has generated images
-  if (LOCAL_IMAGE_CARDS.has(card.id)) return card[type];
+  if (LOCAL_IMAGE_CARDS.has(card.id)) return getImageUrl(card[type]);
   return getPokeApiImageUrl(card.number);
 }
 

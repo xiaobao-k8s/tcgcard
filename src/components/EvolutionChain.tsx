@@ -5,12 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { Card } from '@/lib/types';
 import { getAttributeGradient } from '@/lib/attribute-gradient';
-
-/** PokeAPI fallback URL */
-function getPokeApiImageUrl(number: string): string {
-  const dexNum = parseInt(number, 10);
-  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${dexNum}.png`;
-}
+import { getImageUrl, getPokeApiImageUrl } from '@/lib/image-url';
 
 interface EvolutionChainProps {
   chain: Card[];
@@ -78,7 +73,7 @@ export default function EvolutionChain({ chain, currentCardId }: EvolutionChainP
 
 /** Card image with local → PokeAPI fallback */
 function ChainCardImage({ card }: { card: Card }) {
-  const [src, setSrc] = useState(card.image_front);
+  const [src, setSrc] = useState(getImageUrl(card.image_front));
   const pokeFallback = getPokeApiImageUrl(card.number);
   return (
     <Image

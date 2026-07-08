@@ -5,19 +5,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { Card } from '@/lib/types';
 import { getAttributeGradient } from '@/lib/attribute-gradient';
+import { getImageUrl, getPokeApiImageUrl } from '@/lib/image-url';
 
 interface CardCircleProps {
   card: Card;
   sizeClass?: string;
   glowClass?: string;
-}
-
-/**
- * Get PokeAPI official artwork URL for a Pokémon
- */
-function getPokeApiImageUrl(number: string): string {
-  const dexNum = parseInt(number, 10);
-  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${dexNum}.png`;
 }
 
 /**
@@ -65,7 +58,7 @@ export default function CardCircle({ card }: CardCircleProps) {
   const glowClass = getGlowClasses(card.rarity);
   const gradient = getAttributeGradient(card.attribute, 'medium');
   // Use local image if available, otherwise PokeAPI
-  const imgSrc = LOCAL_IMAGE_CARDS.has(card.id) ? card.image_front : getPokeApiImageUrl(card.number);
+  const imgSrc = LOCAL_IMAGE_CARDS.has(card.id) ? getImageUrl(card.image_front) : getPokeApiImageUrl(card.number);
   const [imgFailed, setImgFailed] = useState(false);
 
   return (
