@@ -63,10 +63,9 @@ export default function CardCircle({ card }: CardCircleProps) {
   const sizeClass = getSizeClasses(card.rarity);
   const glowClass = getGlowClasses(card.rarity);
   const gradient = getAttributeGradient(card.attribute, 'medium');
-  // Use local image only if file exists, otherwise PokeAPI directly (avoids 404 → onError chain)
-  const initialSrc = LOCAL_IMAGE_CARDS.has(card.id) ? card.image_front : getPokeApiImageUrl(card.number);
-  const [imgSrc, setImgSrc] = useState(initialSrc);
-  const pokeApiFallback = getPokeApiImageUrl(card.number);
+  // Use local image if available, otherwise PokeAPI
+  const imgSrc = LOCAL_IMAGE_CARDS.has(card.id) ? card.image_front : getPokeApiImageUrl(card.number);
+  const [imgFailed, setImgFailed] = useState(false);
 
   return (
     <Link
@@ -90,16 +89,18 @@ export default function CardCircle({ card }: CardCircleProps) {
           relative
         `}
       >
-        {/* Pokémon image */}
-        <Image
-          src={imgSrc}
-          alt={card.name.zh}
-          fill
-          className="object-contain p-1"
-          unoptimized
-          loading="lazy"
-          onError={() => setImgSrc(pokeApiFallback)}
-        />
+        {/* Pokémon image — only show if not failed */}
+        {!imgFailed && (
+          <Image
+            src={imgSrc}
+            alt={card.name.zh}
+            fill
+            className="object-contain p-1"
+            unoptimized
+            loading="lazy"
+            onError={() => setImgFailed(true)}
+          />
+        )}
       </div>
 
       {/* Tooltip — visible on hover */}
