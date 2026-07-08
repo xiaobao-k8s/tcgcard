@@ -54,10 +54,11 @@ function getGlowClasses(rarity: Card['rarity']): string {
   }
 }
 
-/** Cards that have local images */
-const LOCAL_IMAGE_CARDS = new Set(
-  Array.from({ length: 9 }, (_, i) => `xfd-${String(i + 1).padStart(3, '0')}`)
-);
+/** All 34 cards now have local images from PokeAPI download */
+const LOCAL_IMAGE_CARDS = new Set([
+  ...Array.from({ length: 24 }, (_, i) => `xfd-${String(i + 1).padStart(3, '0')}`),
+  ...Array.from({ length: 10 }, (_, i) => `ybd-${String(i + 1).padStart(3, '0')}`),
+]);
 
 export default function CardCircle({ card }: CardCircleProps) {
   const sizeClass = getSizeClasses(card.rarity);

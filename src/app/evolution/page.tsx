@@ -5,10 +5,11 @@ import { getAttributeEmoji } from '@/lib/attribute-emoji';
 import { getAttributeGradient } from '@/lib/attribute-gradient';
 import type { Card } from '@/lib/types';
 
-/** Cards that have local images in public/cards/ */
-const LOCAL_IMAGE_IDS = new Set(
-  Array.from({ length: 9 }, (_, i) => `xfd-${String(i + 1).padStart(3, '0')}`)
-);
+/** All 34 cards now have local images */
+const LOCAL_IMAGE_IDS = new Set([
+  ...Array.from({ length: 24 }, (_, i) => `xfd-${String(i + 1).padStart(3, '0')}`),
+  ...Array.from({ length: 10 }, (_, i) => `ybd-${String(i + 1).padStart(3, '0')}`),
+]);
 
 function getCardImageUrl(card: Card): string {
   if (LOCAL_IMAGE_IDS.has(card.id)) return card.image_front;

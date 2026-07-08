@@ -24,9 +24,11 @@ function getFrameLabel(card: Card, isFrameB: boolean): string {
   return isFrameB ? '大招' : '常态';
 }
 
-const LOCAL_IMAGE_CARDS = new Set(
-  Array.from({ length: 9 }, (_, i) => `xfd-${String(i + 1).padStart(3, '0')}`)
-);
+/** All 34 cards now have local images */
+const LOCAL_IMAGE_CARDS = new Set([
+  ...Array.from({ length: 24 }, (_, i) => `xfd-${String(i + 1).padStart(3, '0')}`),
+  ...Array.from({ length: 10 }, (_, i) => `ybd-${String(i + 1).padStart(3, '0')}`),
+]);
 
 function getCardImageUrl(card: Card, type: 'image_front' | 'image_frame_a' | 'image_frame_b'): string {
   // Only use local if the card has generated images
