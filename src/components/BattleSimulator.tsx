@@ -282,18 +282,30 @@ export default function BattleSimulator({ allCards }: Props) {
             })}
           </div>
 
-          {/* Winner */}
+          {/* Winner — computed from rounds data for reliability */}
           {phase === 'done' ? (
             <div className="mt-6 text-center animate-[fadeIn_0.5s_ease-out]">
-              <div className={'inline-flex items-center gap-3 px-8 py-4 rounded-2xl text-xl font-bold shadow-lg ' + (lScore > rScore ? 'bg-primary text-white' : rScore > lScore ? 'bg-blue-500 text-white' : 'bg-gray-200 text-text-secondary')}>
-                <span className="text-3xl">{lScore !== rScore ? '🏆' : '🤝'}</span>
-                <div>
-                  {lScore > rScore ? lName + ' 获胜！' : rScore > lScore ? rName + ' 获胜！' : '平局！'}
-                  <p className="text-xs opacity-70 font-normal mt-0.5">
-                    {lScore > rScore ? lName : rScore > lScore ? rName : '双方'} 以 {Math.max(lScore, rScore)}:{Math.min(lScore, rScore)} 取胜
-                  </p>
-                </div>
-              </div>
+              {(() => {
+                // Count total wins from all rounds
+                let lWins = 0, rWins = 0;
+                for (const r of rounds) {
+                  if (r.leftWin) lWins++;
+                  if (r.rightWin) rWins++;
+                }
+                const isDraw = lWins === rWins;
+                const lWon = lWins > rWins;
+                return (
+                  <div className={'inline-flex items-center gap-3 px-8 py-4 rounded-2xl text-xl font-bold shadow-lg ' + (lWon ? 'bg-primary text-white' : isDraw ? 'bg-gray-200 text-text-secondary' : 'bg-blue-500 text-white')}>
+                    <span className="text-3xl">{isDraw ? '🤝' : '🏆'}</span>
+                    <div>
+                      {isDraw ? '平局！' : (lWon ? lName : rName) + ' 获胜！'}
+                      <p className="text-xs opacity-70 font-normal mt-0.5">
+                        {isDraw ? '不分胜负' : (lWon ? lName : rName) + ' 以 ' + Math.max(lWins, rWins) + ':' + Math.min(lWins, rWins) + ' 取胜'}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })()}
               <div className="mt-4">
                 <button onClick={reset} className="px-6 py-2.5 bg-card-bg border-2 border-border rounded-full text-sm font-medium text-text-primary hover:border-primary/40 transition-colors">
                   🔄 再来一局
