@@ -54,12 +54,18 @@ function getGlowClasses(rarity: Card['rarity']): string {
   }
 }
 
+/** Cards that have local images */
+const LOCAL_IMAGE_CARDS = new Set(
+  Array.from({ length: 9 }, (_, i) => `xfd-${String(i + 1).padStart(3, '0')}`)
+);
+
 export default function CardCircle({ card }: CardCircleProps) {
   const sizeClass = getSizeClasses(card.rarity);
   const glowClass = getGlowClasses(card.rarity);
   const gradient = getAttributeGradient(card.attribute, 'medium');
-  // Try local image first, fallback to PokeAPI on error
-  const [imgSrc, setImgSrc] = useState(card.image_front);
+  // Use local image only if file exists, otherwise PokeAPI directly (avoids 404 → onError chain)
+  const initialSrc = LOCAL_IMAGE_CARDS.has(card.id) ? card.image_front : getPokeApiImageUrl(card.number);
+  const [imgSrc, setImgSrc] = useState(initialSrc);
   const pokeApiFallback = getPokeApiImageUrl(card.number);
 
   return (
@@ -94,8 +100,6 @@ export default function CardCircle({ card }: CardCircleProps) {
           loading="lazy"
           onError={() => setImgSrc(pokeApiFallback)}
         />
-        {/* Gradient overlay — blends image edges into the card border */}
-        <div className="absolute inset-0 rounded-full pointer-events-none bg-gradient-to-t from-black/15 via-transparent to-black/5 mix-blend-multiply" />
       </div>
 
       {/* Tooltip — visible on hover */}

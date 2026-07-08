@@ -25,13 +25,22 @@ function getFrameLabel(card: Card, isFrameB: boolean): string {
   return isFrameB ? '大招' : '常态';
 }
 
+const LOCAL_IMAGE_CARDS = new Set(
+  Array.from({ length: 9 }, (_, i) => `xfd-${String(i + 1).padStart(3, '0')}`)
+);
+
+function getCardImageUrl(card: Card, type: 'image_front' | 'image_frame_a' | 'image_frame_b'): string {
+  // Only use local if the card has generated images
+  if (LOCAL_IMAGE_CARDS.has(card.id)) return card[type];
+  return getPokeApiImageUrl(card.number);
+}
+
 function getFrameBImageUrl(card: Card, evolutionChain?: Card[]): string {
   if (card.effect_type === 'evolution' && card.evolves_to && card.evolves_to.length > 0 && evolutionChain) {
     const nextEvolution = evolutionChain.find(c => c.evolves_from === card.id);
-    if (nextEvolution) return nextEvolution.image_frame_b || getPokeApiImageUrl(nextEvolution.number);
+    if (nextEvolution) return getCardImageUrl(nextEvolution, 'image_frame_b');
   }
-  // Use local frame-b image, fallback to PokeAPI
-  return card.image_frame_b || getPokeApiImageUrl(card.number);
+  return getCardImageUrl(card, 'image_frame_b');
 }
 
 /** Attribute accent colors for frame labels */
@@ -73,8 +82,7 @@ export default function LenticularFlip({ card, evolutionChain }: LenticularFlipP
   const sparkleId = useRef(0);
   const touchStartX = useRef<number | null>(null);
   const gradient = getAttributeGradient(card.attribute, 'dark');
-  // Use local image for frame A, fallback to PokeAPI on error
-  const [frameAUrl, setFrameAUrl] = useState(card.image_frame_a || getPokeApiImageUrl(card.number));
+  const frameAUrl = getCardImageUrl(card, 'image_frame_a');
   const frameBUrl = getFrameBImageUrl(card, evolutionChain);
   const hasEvolutionImage = card.effect_type === 'evolution' && frameAUrl !== frameBUrl;
   const labelColor = getAttrLabel(card.attribute);
@@ -161,13 +169,7 @@ export default function LenticularFlip({ card, evolutionChain }: LenticularFlipP
               className="object-contain p-5 sm:p-6"
               unoptimized
               priority
-              onError={() => {
-                const pokeFallback = getPokeApiImageUrl(card.number);
-                if (frameAUrl !== pokeFallback) setFrameAUrl(pokeFallback);
-              }}
             />
-            {/* Blend overlay — unifies image edge with card border */}
-            <div className="absolute inset-0 rounded-full pointer-events-none bg-gradient-to-t from-black/20 via-transparent to-black/5 mix-blend-multiply" />
             {/* Lenticular ridge overlay */}
             <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none">
               <div className="w-full h-full opacity-[0.12]" style={{
@@ -219,9 +221,6 @@ export default function LenticularFlip({ card, evolutionChain }: LenticularFlipP
                   style={{ background: 'linear-gradient(135deg, #ff8c00, #ff4500)' }} />
               )}
             </div>
-
-            {/* Blend overlay */}
-            <div className="absolute inset-0 rounded-full pointer-events-none bg-gradient-to-t from-black/25 via-transparent to-black/10 mix-blend-multiply" />
 
             {/* Holographic shimmer sweep */}
             <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none">
