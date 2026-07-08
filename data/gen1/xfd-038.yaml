@@ -1,0 +1,25 @@
+id: xfd-038
+generation: 1
+name:
+  zh: 阿柏蛇
+  ja: アーボ
+number: "023"
+attribute: 毒
+rarity: common
+evolution_stage: 1
+evolves_from: null
+evolves_to:
+  - xfd-039
+effect_type: evolution
+image_front: /cards/gen1/xfd-038-front.png
+image_frame_a: /cards/gen1/xfd-038-frame-a.png
+image_frame_b: /cards/gen1/xfd-038-frame-b.png
+back:
+  skill: 紧束
+  dp_attack: 40
+  dp_defense: 45
+  height: 2.0m
+  weight: 6.9kg
+  description: 会吐出蛇信感知周围气息，勒紧猎物使其窒息。
+  character_type: pokemon
+source: pokedex

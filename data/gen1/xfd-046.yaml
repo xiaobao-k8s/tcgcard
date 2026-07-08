@@ -1,0 +1,25 @@
+id: xfd-046
+generation: 1
+name:
+  zh: 走路草
+  ja: ナゾノクサ
+number: "043"
+attribute: 草
+rarity: common
+evolution_stage: 1
+evolves_from: null
+evolves_to:
+  - xfd-047
+effect_type: evolution
+image_front: /cards/gen1/xfd-046-front.png
+image_frame_a: /cards/gen1/xfd-046-frame-a.png
+image_frame_b: /cards/gen1/xfd-046-frame-b.png
+back:
+  skill: 溶解液
+  dp_attack: 40
+  dp_defense: 40
+  height: 0.5m
+  weight: 5.4kg
+  description: 像植物一样行走，白天埋土里，晚上出来活动。
+  character_type: pokemon
+source: pokedex

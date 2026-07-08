@@ -1,0 +1,24 @@
+id: xfd-035
+generation: 1
+name:
+  zh: 拉达
+  ja: ラッタ
+number: "020"
+attribute: 一般
+rarity: rare
+evolution_stage: 2
+evolves_from: xfd-034
+evolves_to: []
+effect_type: evolution
+image_front: /cards/gen1/xfd-035-front.png
+image_frame_a: /cards/gen1/xfd-035-frame-a.png
+image_frame_b: /cards/gen1/xfd-035-frame-b.png
+back:
+  skill: 必杀门牙
+  dp_attack: 90
+  dp_defense: 75
+  height: 0.7m
+  weight: 18.5kg
+  description: 坚硬的牙齿能咬穿钢铁，胡须用来保持平衡。
+  character_type: pokemon
+source: pokedex

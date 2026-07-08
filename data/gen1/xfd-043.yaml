@@ -1,0 +1,24 @@
+id: xfd-043
+generation: 1
+name:
+  zh: 胖可丁
+  ja: プクリン
+number: "040"
+attribute: 一般
+rarity: rare
+evolution_stage: 2
+evolves_from: xfd-011
+evolves_to: []
+effect_type: evolution
+image_front: /cards/gen1/xfd-043-front.png
+image_frame_a: /cards/gen1/xfd-043-frame-a.png
+image_frame_b: /cards/gen1/xfd-043-frame-b.png
+back:
+  skill: 连环巴掌
+  dp_attack: 80
+  dp_defense: 85
+  height: 1.0m
+  weight: 12.0kg
+  description: 身体弹性极佳，能鼓起吸入大量空气膨胀。
+  character_type: pokemon
+source: pokedex

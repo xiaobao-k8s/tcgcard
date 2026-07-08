@@ -8,7 +8,7 @@ import { getImageUrl, getPokeApiImageUrl } from '@/lib/image-url';
 
 /** All 34 cards now have local images */
 const LOCAL_IMAGE_IDS = new Set([
-  ...Array.from({ length: 24 }, (_, i) => `xfd-${String(i + 1).padStart(3, '0')}`),
+  ...Array.from({ length: 56 }, (_, i) => `xfd-${String(i + 1).padStart(3, "0")}`),
   ...Array.from({ length: 10 }, (_, i) => `ybd-${String(i + 1).padStart(3, '0')}`),
 ]);
 

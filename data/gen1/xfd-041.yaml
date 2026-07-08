@@ -1,0 +1,25 @@
+id: xfd-041
+generation: 1
+name:
+  zh: 六尾
+  ja: ロコン
+number: "037"
+attribute: 火
+rarity: common
+evolution_stage: 1
+evolves_from: null
+evolves_to:
+  - xfd-042
+effect_type: evolution
+image_front: /cards/gen1/xfd-041-front.png
+image_frame_a: /cards/gen1/xfd-041-frame-a.png
+image_frame_b: /cards/gen1/xfd-041-frame-b.png
+back:
+  skill: 火花
+  dp_attack: 45
+  dp_defense: 40
+  height: 0.6m
+  weight: 9.9kg
+  description: 可爱的狐狸宝可梦，尾巴会随着成长而分叉。
+  character_type: pokemon
+source: pokedex

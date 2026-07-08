@@ -1,0 +1,24 @@
+id: xfd-037
+generation: 1
+name:
+  zh: 大嘴雀
+  ja: オニドリル
+number: "022"
+attribute: 飞行
+rarity: rare
+evolution_stage: 2
+evolves_from: xfd-036
+evolves_to: []
+effect_type: evolution
+image_front: /cards/gen1/xfd-037-front.png
+image_frame_a: /cards/gen1/xfd-037-frame-a.png
+image_frame_b: /cards/gen1/xfd-037-frame-b.png
+back:
+  skill: 直冲钻
+  dp_attack: 90
+  dp_defense: 75
+  height: 1.2m
+  weight: 38.0kg
+  description: 长长的尖嘴和锋利的爪子是它的武器，飞行速度极快。
+  character_type: pokemon
+source: pokedex

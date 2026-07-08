@@ -1,0 +1,25 @@
+id: xfd-034
+generation: 1
+name:
+  zh: 小拉达
+  ja: コラッタ
+number: "019"
+attribute: 一般
+rarity: common
+evolution_stage: 1
+evolves_from: null
+evolves_to:
+  - xfd-035
+effect_type: evolution
+image_front: /cards/gen1/xfd-034-front.png
+image_frame_a: /cards/gen1/xfd-034-frame-a.png
+image_frame_b: /cards/gen1/xfd-034-frame-b.png
+back:
+  skill: 撞击
+  dp_attack: 45
+  dp_defense: 35
+  height: 0.3m
+  weight: 3.5kg
+  description: 锋利的门牙能啃穿任何东西，繁殖力极强。
+  character_type: pokemon
+source: pokedex

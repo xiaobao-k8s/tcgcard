@@ -1,0 +1,25 @@
+id: xfd-028
+generation: 1
+name:
+  zh: 独角虫
+  ja: ビードル
+number: "013"
+attribute: 虫
+rarity: common
+evolution_stage: 1
+evolves_from: null
+evolves_to:
+  - xfd-029
+effect_type: evolution
+image_front: /cards/gen1/xfd-028-front.png
+image_frame_a: /cards/gen1/xfd-028-frame-a.png
+image_frame_b: /cards/gen1/xfd-028-frame-b.png
+back:
+  skill: 毒针
+  dp_attack: 40
+  dp_defense: 35
+  height: 0.3m
+  weight: 3.2kg
+  description: 头顶的尖刺含有剧毒，要多加小心。
+  character_type: pokemon
+source: pokedex

@@ -1,0 +1,25 @@
+id: xfd-036
+generation: 1
+name:
+  zh: 烈雀
+  ja: オニスズメ
+number: "021"
+attribute: 飞行
+rarity: common
+evolution_stage: 1
+evolves_from: null
+evolves_to:
+  - xfd-037
+effect_type: evolution
+image_front: /cards/gen1/xfd-036-front.png
+image_frame_a: /cards/gen1/xfd-036-frame-a.png
+image_frame_b: /cards/gen1/xfd-036-frame-b.png
+back:
+  skill: 啄
+  dp_attack: 45
+  dp_defense: 30
+  height: 0.3m
+  weight: 2.0kg
+  description: 性格暴躁，领地意识强，会主动攻击入侵者。
+  character_type: pokemon
+source: pokedex

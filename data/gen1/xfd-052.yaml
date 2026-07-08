@@ -1,0 +1,24 @@
+id: xfd-052
+generation: 1
+name:
+  zh: 哥达鸭
+  ja: ゴルダック
+number: "055"
+attribute: 水
+rarity: rare
+evolution_stage: 2
+evolves_from: xfd-051
+evolves_to: []
+effect_type: evolution
+image_front: /cards/gen1/xfd-052-front.png
+image_frame_a: /cards/gen1/xfd-052-frame-a.png
+image_frame_b: /cards/gen1/xfd-052-frame-b.png
+back:
+  skill: 水炮
+  dp_attack: 90
+  dp_defense: 85
+  height: 1.7m
+  weight: 76.6kg
+  description: 游泳速度快过人类奥运冠军，前爪有蹼。
+  character_type: pokemon
+source: pokedex

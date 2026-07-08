@@ -1,0 +1,24 @@
+id: xfd-054
+generation: 1
+name:
+  zh: 火爆猴
+  ja: オコリザル
+number: "057"
+attribute: 格斗
+rarity: rare
+evolution_stage: 2
+evolves_from: xfd-053
+evolves_to: []
+effect_type: evolution
+image_front: /cards/gen1/xfd-054-front.png
+image_frame_a: /cards/gen1/xfd-054-frame-a.png
+image_frame_b: /cards/gen1/xfd-054-frame-b.png
+back:
+  skill: 十字劈
+  dp_attack: 95
+  dp_defense: 80
+  height: 1.0m
+  weight: 32.0kg
+  description: 极其易怒，一旦发怒就会疯狂攻击周围的一切。
+  character_type: pokemon
+source: pokedex

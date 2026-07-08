@@ -1,0 +1,24 @@
+id: xfd-030
+generation: 1
+name:
+  zh: 大针蜂
+  ja: スピアー
+number: "015"
+attribute: 虫
+rarity: ultra-rare
+evolution_stage: 3
+evolves_from: xfd-029
+evolves_to: []
+effect_type: evolution
+image_front: /cards/gen1/xfd-030-front.png
+image_frame_a: /cards/gen1/xfd-030-frame-a.png
+image_frame_b: /cards/gen1/xfd-030-frame-b.png
+back:
+  skill: 双针
+  dp_attack: 115
+  dp_defense: 100
+  height: 1.0m
+  weight: 29.5kg
+  description: 双手的毒针锐利无比，能连续发起攻击。
+  character_type: pokemon
+source: pokedex

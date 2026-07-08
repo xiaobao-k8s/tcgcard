@@ -1,0 +1,25 @@
+id: xfd-055
+generation: 1
+name:
+  zh: 卡蒂狗
+  ja: ガーディ
+number: "058"
+attribute: 火
+rarity: common
+evolution_stage: 1
+evolves_from: null
+evolves_to:
+  - xfd-056
+effect_type: evolution
+image_front: /cards/gen1/xfd-055-front.png
+image_frame_a: /cards/gen1/xfd-055-frame-a.png
+image_frame_b: /cards/gen1/xfd-055-frame-b.png
+back:
+  skill: 火焰牙
+  dp_attack: 50
+  dp_defense: 45
+  height: 0.7m
+  weight: 19.0kg
+  description: 嗅觉灵敏，忠诚勇敢，是优秀的护卫宝可梦。
+  character_type: pokemon
+source: pokedex

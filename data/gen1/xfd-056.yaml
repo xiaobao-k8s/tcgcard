@@ -1,0 +1,24 @@
+id: xfd-056
+generation: 1
+name:
+  zh: 风速狗
+  ja: ウインディ
+number: "059"
+attribute: 火
+rarity: ultra-rare
+evolution_stage: 3
+evolves_from: xfd-055
+evolves_to: []
+effect_type: evolution
+image_front: /cards/gen1/xfd-056-front.png
+image_frame_a: /cards/gen1/xfd-056-frame-a.png
+image_frame_b: /cards/gen1/xfd-056-frame-b.png
+back:
+  skill: 闪焰冲锋
+  dp_attack: 120
+  dp_defense: 110
+  height: 1.9m
+  weight: 155.0kg
+  description: 威风凛凛的传说宝可梦，奔跑速度如风。
+  character_type: pokemon
+source: pokedex

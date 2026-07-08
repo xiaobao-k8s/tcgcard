@@ -1,0 +1,24 @@
+id: xfd-042
+generation: 1
+name:
+  zh: 九尾
+  ja: キュウコン
+number: "038"
+attribute: 火
+rarity: rare
+evolution_stage: 2
+evolves_from: xfd-041
+evolves_to: []
+effect_type: evolution
+image_front: /cards/gen1/xfd-042-front.png
+image_frame_a: /cards/gen1/xfd-042-frame-a.png
+image_frame_b: /cards/gen1/xfd-042-frame-b.png
+back:
+  skill: 喷射火焰
+  dp_attack: 90
+  dp_defense: 85
+  height: 1.1m
+  weight: 19.9kg
+  description: 九条尾巴各具灵性，据说能活一千年。
+  character_type: pokemon
+source: pokedex

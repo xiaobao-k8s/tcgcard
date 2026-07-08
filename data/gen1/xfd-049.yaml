@@ -1,0 +1,25 @@
+id: xfd-049
+generation: 1
+name:
+  zh: 地鼠
+  ja: ディグダ
+number: "050"
+attribute: 地面
+rarity: common
+evolution_stage: 1
+evolves_from: null
+evolves_to:
+  - xfd-050
+effect_type: evolution
+image_front: /cards/gen1/xfd-049-front.png
+image_frame_a: /cards/gen1/xfd-049-frame-a.png
+image_frame_b: /cards/gen1/xfd-049-frame-b.png
+back:
+  skill: 泼沙
+  dp_attack: 45
+  dp_defense: 35
+  height: 0.2m
+  weight: 0.8kg
+  description: 在地下挖洞居住，会露出头来观察四周。
+  character_type: pokemon
+source: pokedex

@@ -1,0 +1,25 @@
+id: xfd-053
+generation: 1
+name:
+  zh: 猴怪
+  ja: マンキー
+number: "056"
+attribute: 格斗
+rarity: common
+evolution_stage: 1
+evolves_from: null
+evolves_to:
+  - xfd-054
+effect_type: evolution
+image_front: /cards/gen1/xfd-053-front.png
+image_frame_a: /cards/gen1/xfd-053-frame-a.png
+image_frame_b: /cards/gen1/xfd-053-frame-b.png
+back:
+  skill: 空手劈
+  dp_attack: 50
+  dp_defense: 40
+  height: 0.5m
+  weight: 28.0kg
+  description: 怒火中烧时会暴走，需要小心安抚。
+  character_type: pokemon
+source: pokedex

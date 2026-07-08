@@ -1,0 +1,25 @@
+id: xfd-051
+generation: 1
+name:
+  zh: 可达鸭
+  ja: コダック
+number: "054"
+attribute: 水
+rarity: common
+evolution_stage: 1
+evolves_from: null
+evolves_to:
+  - xfd-052
+effect_type: evolution
+image_front: /cards/gen1/xfd-051-front.png
+image_frame_a: /cards/gen1/xfd-051-frame-a.png
+image_frame_b: /cards/gen1/xfd-051-frame-b.png
+back:
+  skill: 水枪
+  dp_attack: 45
+  dp_defense: 40
+  height: 0.8m
+  weight: 19.6kg
+  description: 经常头痛，头痛时就会释放超能力。
+  character_type: pokemon
+source: pokedex

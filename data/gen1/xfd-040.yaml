@@ -1,0 +1,24 @@
+id: xfd-040
+generation: 1
+name:
+  zh: 皮皮
+  ja: ピッピ
+number: "035"
+attribute: 妖精
+rarity: rare
+evolution_stage: 1
+evolves_from: null
+evolves_to: []
+effect_type: attack
+image_front: /cards/gen1/xfd-040-front.png
+image_frame_a: /cards/gen1/xfd-040-frame-a.png
+image_frame_b: /cards/gen1/xfd-040-frame-b.png
+back:
+  skill: 连环巴掌
+  dp_attack: 65
+  dp_defense: 70
+  height: 0.6m
+  weight: 7.5kg
+  description: 神秘的月之宝可梦，喜欢在月光下跳舞。
+  character_type: pokemon
+source: pokedex

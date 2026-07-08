@@ -1,0 +1,24 @@
+id: xfd-048
+generation: 1
+name:
+  zh: 霸王花
+  ja: ラフレシア
+number: "045"
+attribute: 草
+rarity: ultra-rare
+evolution_stage: 3
+evolves_from: xfd-047
+evolves_to: []
+effect_type: evolution
+image_front: /cards/gen1/xfd-048-front.png
+image_frame_a: /cards/gen1/xfd-048-frame-a.png
+image_frame_b: /cards/gen1/xfd-048-frame-b.png
+back:
+  skill: 花瓣舞
+  dp_attack: 115
+  dp_defense: 110
+  height: 1.2m
+  weight: 18.6kg
+  description: 拥有世界上最大的花，散发着诱人的花香。
+  character_type: pokemon
+source: pokedex

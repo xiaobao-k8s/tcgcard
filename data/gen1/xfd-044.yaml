@@ -1,0 +1,25 @@
+id: xfd-044
+generation: 1
+name:
+  zh: 超音蝠
+  ja: ズバット
+number: "041"
+attribute: 毒
+rarity: common
+evolution_stage: 1
+evolves_from: null
+evolves_to:
+  - xfd-045
+effect_type: evolution
+image_front: /cards/gen1/xfd-044-front.png
+image_frame_a: /cards/gen1/xfd-044-frame-a.png
+image_frame_b: /cards/gen1/xfd-044-frame-b.png
+back:
+  skill: 超音波
+  dp_attack: 35
+  dp_defense: 35
+  height: 0.8m
+  weight: 7.5kg
+  description: 无眼，靠超声波感知周围环境，生活在洞穴中。
+  character_type: pokemon
+source: pokedex

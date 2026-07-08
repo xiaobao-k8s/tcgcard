@@ -22,7 +22,7 @@ function getFrameLabel(card: Card, isFrameB: boolean): string {
 
 /** All 34 cards now have local images */
 const LOCAL_IMAGE_CARDS = new Set([
-  ...Array.from({ length: 24 }, (_, i) => `xfd-${String(i + 1).padStart(3, '0')}`),
+  ...Array.from({ length: 56 }, (_, i) => `xfd-${String(i + 1).padStart(3, "0")}`),
   ...Array.from({ length: 10 }, (_, i) => `ybd-${String(i + 1).padStart(3, '0')}`),
 ]);
 

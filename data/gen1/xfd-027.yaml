@@ -1,0 +1,24 @@
+id: xfd-027
+generation: 1
+name:
+  zh: 巴大蝴
+  ja: バタフリー
+number: "012"
+attribute: 虫
+rarity: ultra-rare
+evolution_stage: 3
+evolves_from: xfd-026
+evolves_to: []
+effect_type: evolution
+image_front: /cards/gen1/xfd-027-front.png
+image_frame_a: /cards/gen1/xfd-027-frame-a.png
+image_frame_b: /cards/gen1/xfd-027-frame-b.png
+back:
+  skill: 催眠粉
+  dp_attack: 105
+  dp_defense: 100
+  height: 1.1m
+  weight: 32.0kg
+  description: 色彩斑斓的翅膀上覆盖着细密鳞粉，能施展催眠粉。
+  character_type: pokemon
+source: pokedex

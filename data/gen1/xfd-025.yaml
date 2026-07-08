@@ -1,0 +1,25 @@
+id: xfd-025
+generation: 1
+name:
+  zh: 绿毛虫
+  ja: キャタピー
+number: "010"
+attribute: 虫
+rarity: common
+evolution_stage: 1
+evolves_from: null
+evolves_to:
+  - xfd-026
+effect_type: evolution
+image_front: /cards/gen1/xfd-025-front.png
+image_frame_a: /cards/gen1/xfd-025-frame-a.png
+image_frame_b: /cards/gen1/xfd-025-frame-b.png
+back:
+  skill: 撞击
+  dp_attack: 35
+  dp_defense: 40
+  height: 0.3m
+  weight: 2.9kg
+  description: 身体软软的，受到惊吓时会喷出刺鼻的气味。
+  character_type: pokemon
+source: pokedex

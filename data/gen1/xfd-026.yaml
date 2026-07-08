@@ -1,0 +1,25 @@
+id: xfd-026
+generation: 1
+name:
+  zh: 铁甲蛹
+  ja: トランセル
+number: "011"
+attribute: 虫
+rarity: rare
+evolution_stage: 2
+evolves_from: xfd-025
+evolves_to:
+  - xfd-027
+effect_type: evolution
+image_front: /cards/gen1/xfd-026-front.png
+image_frame_a: /cards/gen1/xfd-026-frame-a.png
+image_frame_b: /cards/gen1/xfd-026-frame-b.png
+back:
+  skill: 变硬
+  dp_attack: 75
+  dp_defense: 90
+  height: 0.7m
+  weight: 9.9kg
+  description: 外壳坚硬，积蓄进化所需的能量。
+  character_type: pokemon
+source: pokedex

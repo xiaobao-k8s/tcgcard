@@ -1,0 +1,25 @@
+id: xfd-029
+generation: 1
+name:
+  zh: 铁壳蛹
+  ja: コクーン
+number: "014"
+attribute: 虫
+rarity: rare
+evolution_stage: 2
+evolves_from: xfd-028
+evolves_to:
+  - xfd-030
+effect_type: evolution
+image_front: /cards/gen1/xfd-029-front.png
+image_frame_a: /cards/gen1/xfd-029-frame-a.png
+image_frame_b: /cards/gen1/xfd-029-frame-b.png
+back:
+  skill: 变硬
+  dp_attack: 75
+  dp_defense: 90
+  height: 0.6m
+  weight: 10.0kg
+  description: 外表坚硬，静静等待进化的时刻。
+  character_type: pokemon
+source: pokedex

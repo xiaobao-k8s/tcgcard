@@ -1,0 +1,25 @@
+id: xfd-031
+generation: 1
+name:
+  zh: 波波
+  ja: ポッポ
+number: "016"
+attribute: 飞行
+rarity: common
+evolution_stage: 1
+evolves_from: null
+evolves_to:
+  - xfd-032
+effect_type: evolution
+image_front: /cards/gen1/xfd-031-front.png
+image_frame_a: /cards/gen1/xfd-031-frame-a.png
+image_frame_b: /cards/gen1/xfd-031-frame-b.png
+back:
+  skill: 起风
+  dp_attack: 40
+  dp_defense: 35
+  height: 0.3m
+  weight: 1.8kg
+  description: 性格温顺的鸟类宝可梦，常在草丛中寻找食物。
+  character_type: pokemon
+source: pokedex

@@ -1,0 +1,24 @@
+id: xfd-033
+generation: 1
+name:
+  zh: 比雕
+  ja: ピジョット
+number: "018"
+attribute: 飞行
+rarity: ultra-rare
+evolution_stage: 3
+evolves_from: xfd-032
+evolves_to: []
+effect_type: evolution
+image_front: /cards/gen1/xfd-033-front.png
+image_frame_a: /cards/gen1/xfd-033-frame-a.png
+image_frame_b: /cards/gen1/xfd-033-frame-b.png
+back:
+  skill: 勇鸟猛攻
+  dp_attack: 115
+  dp_defense: 105
+  height: 1.5m
+  weight: 39.5kg
+  description: 张开翅膀就能卷起巨大风暴，飞行速度达马赫2。
+  character_type: pokemon
+source: pokedex

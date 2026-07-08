@@ -1,0 +1,24 @@
+id: xfd-039
+generation: 1
+name:
+  zh: 阿柏怪
+  ja: アーボック
+number: "024"
+attribute: 毒
+rarity: rare
+evolution_stage: 2
+evolves_from: xfd-038
+evolves_to: []
+effect_type: evolution
+image_front: /cards/gen1/xfd-039-front.png
+image_frame_a: /cards/gen1/xfd-039-frame-a.png
+image_frame_b: /cards/gen1/xfd-039-frame-b.png
+back:
+  skill: 毒击
+  dp_attack: 90
+  dp_defense: 80
+  height: 3.5m
+  weight: 65.0kg
+  description: 拥有剧毒的獠牙，一击就能让猎物失去反抗能力。
+  character_type: pokemon
+source: pokedex

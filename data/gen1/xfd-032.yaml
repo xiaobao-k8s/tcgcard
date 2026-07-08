@@ -1,0 +1,25 @@
+id: xfd-032
+generation: 1
+name:
+  zh: 比比鸟
+  ja: ピジョン
+number: "017"
+attribute: 飞行
+rarity: rare
+evolution_stage: 2
+evolves_from: xfd-031
+evolves_to:
+  - xfd-033
+effect_type: evolution
+image_front: /cards/gen1/xfd-032-front.png
+image_frame_a: /cards/gen1/xfd-032-frame-a.png
+image_frame_b: /cards/gen1/xfd-032-frame-b.png
+back:
+  skill: 翅膀攻击
+  dp_attack: 85
+  dp_defense: 80
+  height: 1.1m
+  weight: 30.0kg
+  description: 视力极佳，飞行速度很快，是可靠的伙伴。
+  character_type: pokemon
+source: pokedex

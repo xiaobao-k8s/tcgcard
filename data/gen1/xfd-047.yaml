@@ -1,0 +1,25 @@
+id: xfd-047
+generation: 1
+name:
+  zh: 臭臭花
+  ja: クサイハナ
+number: "044"
+attribute: 草
+rarity: rare
+evolution_stage: 2
+evolves_from: xfd-046
+evolves_to:
+  - xfd-048
+effect_type: evolution
+image_front: /cards/gen1/xfd-047-front.png
+image_frame_a: /cards/gen1/xfd-047-frame-a.png
+image_frame_b: /cards/gen1/xfd-047-frame-b.png
+back:
+  skill: 麻痹粉
+  dp_attack: 80
+  dp_defense: 85
+  height: 0.8m
+  weight: 8.6kg
+  description: 会散发令人眩晕的恶臭来驱赶敌人。
+  character_type: pokemon
+source: pokedex

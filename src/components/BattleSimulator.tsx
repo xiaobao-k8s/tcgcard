@@ -16,7 +16,7 @@ interface RoundResult {
 type Phase = 'selecting' | 'battling' | 'done';
 
 const LOCAL = new Set([
-  ...Array.from({ length: 24 }, (_, i) => 'xfd-' + String(i + 1).padStart(3, '0')),
+  ...Array.from({ length: 56 }, (_, i) => `xfd-${String(i + 1).padStart(3, "0")}`),
   ...Array.from({ length: 10 }, (_, i) => 'ybd-' + String(i + 1).padStart(3, '0')),
 ]);
 
